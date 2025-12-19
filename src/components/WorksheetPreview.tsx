@@ -173,10 +173,13 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
         <p className="text-center text-sm text-muted-foreground mb-6">
           {safeString(data?.instructions) || "Color with your favorite colors!"}
         </p>
-        <div className="flex justify-center">
-          <div className="w-48 h-48 border-2 border-foreground/20 rounded-2xl flex items-center justify-center bg-muted/30">
-            <WordIcon word={images[0]} size={80} className="text-foreground/40" />
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {images.map((img, idx) => (
+            <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-xl flex flex-col items-center justify-center bg-muted/30 p-3">
+              <WordIcon word={img} size={48} className="text-foreground/40" />
+              <span className="text-sm font-medium text-foreground mt-2 capitalize">{img}</span>
+            </div>
+          ))}
         </div>
         <div className="flex flex-wrap justify-center gap-2 mt-6">
           {words.map((color, idx) => (
@@ -186,15 +189,6 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
             </span>
           ))}
         </div>
-        {images.length > 1 && (
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            {images.slice(1).map((img, idx) => (
-              <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-xl flex items-center justify-center">
-                <WordIcon word={img} size={36} className="text-foreground/40" />
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     );
   }

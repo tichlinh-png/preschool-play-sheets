@@ -173,11 +173,11 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
         <p className="text-center text-sm text-muted-foreground mb-6">
           {safeString(data?.instructions) || "Color with your favorite colors!"}
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           {images.map((img, idx) => (
-            <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-xl flex flex-col items-center justify-center bg-muted/30 p-3">
-              <WordIcon word={img} size={48} className="text-foreground/40" />
-              <span className="text-sm font-medium text-foreground mt-2 capitalize">{img}</span>
+            <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-2xl flex flex-col items-center justify-center bg-muted/30 p-4">
+              <WordIcon word={img} size={80} className="text-foreground/40" />
+              <span className="text-base font-medium text-foreground mt-3 capitalize">{img}</span>
             </div>
           ))}
         </div>

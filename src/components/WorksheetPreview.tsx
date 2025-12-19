@@ -437,7 +437,6 @@ export const WorksheetPreview = ({
                 ))}
                 <span className="text-2xl font-bold text-gray-400">→</span>
                 <div className="w-14 h-14 border-2 border-dashed border-gray-500 rounded-lg flex items-center justify-center bg-white">
-                  <span className="text-2xl text-gray-300">?</span>
                 </div>
               </div>
             </div>

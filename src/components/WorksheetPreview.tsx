@@ -7,7 +7,8 @@ import {
   Umbrella, Cloud, Droplets, Flame, Leaf, Mountain,
   Bike, Plane, Ship, Train, Truck,
   Camera, Music, Gift, Clock, Key, Lock, Bell, Phone,
-  Smile, Frown, Glasses, Crown, Gem,
+  Smile, Frown, Glasses, Crown, Gem, Rat, Bug, Turtle, Snail,
+  Egg, Carrot, Drumstick,
   LucideIcon, ImageIcon
 } from 'lucide-react';
 
@@ -41,7 +42,10 @@ function getIconForWord(word: string): LucideIcon {
   
   const iconMap: Record<string, LucideIcon> = {
     // Animals
-    fish: Fish, cat: Cat, dog: Dog, bird: Bird, goat: Dog, rabbit: Cat, lion: Cat,
+    fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
+    rabbit: Rat, bug: Bug, turtle: Turtle, snail: Snail,
+    goat: Drumstick, // Farm animal representation
+    lion: Cat, tiger: Cat, // Big cats fallback to cat
     // People
     father: User, mother: User, girl: Baby, boy: Baby, man: User, woman: User, baby: Baby,
     // Nature

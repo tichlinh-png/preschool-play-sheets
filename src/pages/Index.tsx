@@ -102,7 +102,7 @@ const Index = () => {
 
       <section className="container mx-auto px-4 py-8 text-center">
         <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight max-w-3xl mx-auto">
-          Create <span className="gradient-primary bg-clip-text text-transparent">Fun Worksheets</span> for Kids
+          Create Worksheets for Kids
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
           Upload an image or describe content - Generate tracing, coloring, and odd one out worksheets

@@ -23,7 +23,9 @@ export interface WorksheetData {
   letters?: string[];
   words?: string[];
   images?: string[];
-  oddItem?: string;
+  colorInstructions?: { item: string; color: string }[];
+  countingItems?: { item: string; count: number }[];
+  matchingPairs?: { image: string; word: string }[];
   instructions?: string;
 }
 
@@ -99,32 +101,20 @@ const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: nu
   return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
 };
 
-
-function getColorHex(color: unknown): string {
-  const str = safeString(color).toLowerCase();
-  if (!str) return "#888888";
-  
-  const colorMap: Record<string, string> = {
-    red: "#FF6B6B", blue: "#4ECDC4", yellow: "#FFE66D", green: "#95E1D3",
-    pink: "#F38181", orange: "#FFA502", purple: "#A855F7", brown: "#8B4513",
-    black: "#1A1A1A", white: "#F5F5F5",
-  };
-  return colorMap[str] || "#888888";
-}
-
 export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
 
+  // TRACE WORKSHEET
   if (worksheetType === "trace") {
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     
     return (
-      <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
-        <h3 className="font-display text-xl font-bold text-center mb-2 text-foreground">
-          ✏️ Trace the Words
+      <div className="bg-white rounded-2xl p-6 shadow-card border-2 border-gray-300 print:shadow-none">
+        <h3 className="font-display text-xl font-bold text-center mb-2 text-gray-800">
+          Trace the Words
         </h3>
-        <p className="text-center text-sm text-muted-foreground mb-6">
+        <p className="text-center text-sm text-gray-600 mb-6">
           {safeString(data?.instructions) || `Learn about: ${worksheetTopic}`}
         </p>
         <div className="space-y-6">
@@ -132,17 +122,17 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
             <div key={idx} className="space-y-3">
               {/* Word with icon */}
               <div className="flex items-center gap-3 justify-center">
-                <WordIcon word={word} size={40} className="text-primary" />
-                <span className="text-2xl font-display font-bold text-foreground">{word}</span>
+                <WordIcon word={word} size={40} className="text-gray-700" />
+                <span className="text-2xl font-display font-bold text-gray-800">{word}</span>
               </div>
               {/* Traceable word */}
               <div className="flex justify-center">
-                <div className="px-6 py-4 bg-muted/30 rounded-xl border-2 border-dashed border-primary/30">
+                <div className="px-6 py-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-400">
                   <span 
                     className="text-4xl font-display font-bold tracking-[0.2em]"
                     style={{ 
                       color: 'transparent',
-                      WebkitTextStroke: '2px hsl(var(--primary) / 0.4)',
+                      WebkitTextStroke: '2px #9ca3af',
                       textShadow: 'none'
                     }}
                   >
@@ -151,8 +141,8 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
                 </div>
               </div>
               {/* Practice line */}
-              <div className="h-12 border-b-2 border-dashed border-muted-foreground/30 mx-4">
-                <span className="text-xs text-muted-foreground">Write here:</span>
+              <div className="h-12 border-b-2 border-dashed border-gray-400 mx-4">
+                <span className="text-xs text-gray-500">Write here:</span>
               </div>
             </div>
           ))}
@@ -161,62 +151,138 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
+  // COLOR WORKSHEET - with specific coloring instructions
   if (worksheetType === "color") {
-    const images = (data?.images || ["apple"]).map(safeString).filter(Boolean);
-    const words = (data?.words || ["red", "green", "yellow"]).map(safeString).filter(Boolean);
+    const colorInstructions = data?.colorInstructions || [
+      { item: "fish", color: "blue" },
+      { item: "apple", color: "red" },
+    ];
     
     return (
-      <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
-        <h3 className="font-display text-xl font-bold text-center mb-2 text-foreground">
-          🎨 Color the {worksheetTopic}
+      <div className="bg-white rounded-2xl p-6 shadow-card border-2 border-gray-300 print:shadow-none">
+        <h3 className="font-display text-xl font-bold text-center mb-2 text-gray-800">
+          Coloring Activity
         </h3>
-        <p className="text-center text-sm text-muted-foreground mb-6">
-          {safeString(data?.instructions) || "Color with your favorite colors!"}
+        <p className="text-center text-sm text-gray-600 mb-6">
+          {safeString(data?.instructions) || "Follow the instructions to color each picture!"}
         </p>
-        <div className="grid grid-cols-2 gap-6">
-          {images.map((img, idx) => (
-            <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-2xl flex flex-col items-center justify-center bg-muted/30 p-4">
-              <WordIcon word={img} size={80} className="text-foreground/40" />
-              <span className="text-base font-medium text-foreground mt-3 capitalize">{img}</span>
-            </div>
-          ))}
+        
+        {/* Instructions list */}
+        <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <p className="font-bold text-gray-800 mb-3">Instructions:</p>
+          <ul className="space-y-2">
+            {colorInstructions.map((instruction, idx) => (
+              <li key={idx} className="flex items-center gap-2 text-gray-700">
+                <span className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold">
+                  {idx + 1}
+                </span>
+                <span>Color the <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong></span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="flex flex-wrap justify-center gap-2 mt-6">
-          {words.map((color, idx) => (
-            <span key={idx} className="px-3 py-1 rounded-full text-sm font-medium"
-              style={{ backgroundColor: getColorHex(color), color: '#fff' }}>
-              {color}
-            </span>
+
+        {/* Images to color */}
+        <div className="grid grid-cols-2 gap-6">
+          {colorInstructions.map((instruction, idx) => (
+            <div key={idx} className="aspect-square border-2 border-gray-400 rounded-2xl flex flex-col items-center justify-center bg-white p-4">
+              <WordIcon word={instruction.item} size={80} className="text-gray-400" />
+              <span className="text-base font-medium text-gray-700 mt-3 capitalize">{instruction.item}</span>
+              <span className="text-xs text-gray-500 mt-1">({instruction.color})</span>
+            </div>
           ))}
         </div>
       </div>
     );
   }
 
-  if (worksheetType === "oddOneOut") {
-    const images = (data?.images || ["apple", "apple", "apple", "banana"]).map(safeString).filter(Boolean);
-    const oddItem = safeString(data?.oddItem);
+  // COUNTING WORKSHEET
+  if (worksheetType === "counting") {
+    const countingItems = data?.countingItems || [
+      { item: "apple", count: 3 },
+      { item: "fish", count: 5 },
+    ];
     
     return (
-      <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
-        <h3 className="font-display text-xl font-bold text-center mb-2 text-foreground">
-          🔍 Find the Odd One Out
+      <div className="bg-white rounded-2xl p-6 shadow-card border-2 border-gray-300 print:shadow-none">
+        <h3 className="font-display text-xl font-bold text-center mb-2 text-gray-800">
+          Counting Activity
         </h3>
-        <p className="text-center text-sm text-muted-foreground mb-6">
-          {safeString(data?.instructions) || `Topic: ${worksheetTopic}`}
+        <p className="text-center text-sm text-gray-600 mb-6">
+          {safeString(data?.instructions) || "Count the objects and write the number!"}
         </p>
-        <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
-          {images.map((img, i) => (
-            <div key={i} className={cn(
-              "aspect-square rounded-2xl border-2 border-border flex items-center justify-center",
-              "hover:border-primary hover:shadow-soft transition-all cursor-pointer bg-muted"
-            )}>
-              <WordIcon word={img} size={48} className="text-foreground" />
+        
+        <div className="space-y-8">
+          {countingItems.map((item, idx) => (
+            <div key={idx} className="border-2 border-gray-300 rounded-xl p-4">
+              {/* Icons to count */}
+              <div className="flex flex-wrap justify-center gap-3 mb-4">
+                {Array.from({ length: item.count }).map((_, i) => (
+                  <div key={i} className="w-12 h-12 flex items-center justify-center">
+                    <WordIcon word={item.item} size={40} className="text-gray-600" />
+                  </div>
+                ))}
+              </div>
+              
+              {/* Answer box */}
+              <div className="flex items-center justify-center gap-4">
+                <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
+                <div className="w-16 h-16 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center">
+                  <span className="text-gray-300 text-2xl">?</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-        <p className="text-center text-sm text-muted-foreground mt-4">Circle the one that is different!</p>
-        {oddItem && <p className="text-center text-xs text-primary mt-2 opacity-50">(Answer: {oddItem})</p>}
+      </div>
+    );
+  }
+
+  // MATCHING WORKSHEET
+  if (worksheetType === "matching") {
+    const matchingPairs = data?.matchingPairs || [
+      { image: "cat", word: "Cat" },
+      { image: "dog", word: "Dog" },
+      { image: "fish", word: "Fish" },
+    ];
+    
+    // Shuffle words for the right column
+    const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
+    
+    return (
+      <div className="bg-white rounded-2xl p-6 shadow-card border-2 border-gray-300 print:shadow-none">
+        <h3 className="font-display text-xl font-bold text-center mb-2 text-gray-800">
+          Matching Activity
+        </h3>
+        <p className="text-center text-sm text-gray-600 mb-6">
+          {safeString(data?.instructions) || "Draw a line to match each picture with its word!"}
+        </p>
+        
+        <div className="flex justify-between items-start gap-8">
+          {/* Left column - Images */}
+          <div className="flex-1 space-y-6">
+            {matchingPairs.map((pair, idx) => (
+              <div key={idx} className="flex items-center gap-3">
+                <div className="w-20 h-20 border-2 border-gray-400 rounded-xl flex items-center justify-center bg-white">
+                  <WordIcon word={pair.image} size={48} className="text-gray-600" />
+                </div>
+                <div className="w-8 h-0.5 border-t-2 border-dashed border-gray-400"></div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Right column - Words (shuffled) */}
+          <div className="flex-1 space-y-6">
+            {shuffledWords.map((pair, idx) => (
+              <div key={idx} className="flex items-center gap-3 justify-end">
+                <div className="w-8 h-0.5 border-t-2 border-dashed border-gray-400"></div>
+                <div className="px-6 py-4 border-2 border-gray-400 rounded-xl bg-white">
+                  <span className="text-xl font-bold text-gray-800 capitalize">{pair.word}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

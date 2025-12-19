@@ -74,19 +74,21 @@ export const exportToWord = async (worksheets: WorksheetData[]): Promise<void> =
         .worksheet { page-break-after: always; margin-bottom: 40px; }
         .worksheet:last-child { page-break-after: avoid; }
         h1 { text-align: center; color: #333; font-size: 24px; }
-        h2 { text-align: center; color: #0d9488; font-size: 20px; }
+        h2 { text-align: center; color: #333; font-size: 20px; }
         .topic { text-align: center; font-size: 16px; margin: 20px 0; }
         .instructions { text-align: center; font-style: italic; color: #666; margin: 15px 0; }
         .letter-big { text-align: center; font-size: 120px; color: #ccc; font-weight: bold; letter-spacing: 20px; }
         .practice-boxes { text-align: center; margin: 20px 0; }
-        .box { display: inline-block; width: 60px; height: 60px; border: 2px dashed #ccc; margin: 5px; }
-        .words { text-align: center; background: #f0f0f0; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 400px; }
-        .practice-line { border-bottom: 3px dashed #0d9488; margin: 40px 20px; height: 60px; }
+        .box { display: inline-block; width: 60px; height: 60px; border: 2px dashed #999; margin: 5px; }
+        .words { text-align: center; background: #f5f5f5; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 400px; }
+        .practice-line { border-bottom: 3px dashed #999; margin: 40px 20px; height: 60px; }
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 30px 0; }
-        .grid-item { width: 100px; height: 100px; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 48px; border-radius: 10px; }
-        .colors { text-align: center; margin: 20px 0; }
-        .color-chip { display: inline-block; padding: 5px 15px; margin: 5px; border-radius: 20px; color: white; }
-        .answer { text-align: center; font-size: 12px; color: #999; margin-top: 30px; }
+        .grid-item { width: 100px; height: 100px; border: 2px solid #999; display: flex; align-items: center; justify-content: center; font-size: 48px; border-radius: 10px; }
+        .instruction-list { background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .instruction-item { margin: 10px 0; }
+        .answer-box { width: 60px; height: 60px; border: 2px dashed #999; display: inline-block; margin: 10px; }
+        .matching-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+        .matching-item { padding: 15px 25px; border: 2px solid #999; border-radius: 10px; }
       </style>
     </head>
     <body>
@@ -97,71 +99,89 @@ export const exportToWord = async (worksheets: WorksheetData[]): Promise<void> =
     htmlContent += `<h1>KidsSheet - English Worksheet</h1>`;
     
     if (worksheet.type === 'trace') {
-      htmlContent += `<h2>✏️ Trace the Letter</h2>`;
+      htmlContent += `<h2>Trace the Words</h2>`;
       htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
       if (worksheet.instructions) {
         htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
       }
       
-      if (worksheet.letters) {
-        worksheet.letters.forEach(letter => {
-          htmlContent += `<div class="letter-big">${letter}</div>`;
-          htmlContent += `<div class="practice-boxes">`;
-          for (let i = 0; i < 4; i++) {
-            htmlContent += `<span class="box"></span>`;
-          }
+      if (worksheet.words && worksheet.words.length > 0) {
+        worksheet.words.forEach(word => {
+          htmlContent += `<div style="text-align: center; margin: 30px 0;">`;
+          htmlContent += `<div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">${word}</div>`;
+          htmlContent += `<div style="font-size: 48px; color: #ccc; letter-spacing: 10px; border: 2px dashed #ccc; padding: 20px; display: inline-block;">${word}</div>`;
           htmlContent += `</div>`;
+          htmlContent += `<div class="practice-line"><small style="color: #999;">Write here:</small></div>`;
         });
       }
-      
-      if (worksheet.words && worksheet.words.length > 0) {
-        htmlContent += `<div class="words"><strong>Words:</strong> ${worksheet.words.join(', ')}</div>`;
-      }
-      
-      htmlContent += `<div class="practice-line"><small style="color: #999;">Practice writing here...</small></div>`;
     }
     
     if (worksheet.type === 'color') {
-      htmlContent += `<h2>🎨 Coloring Activity</h2>`;
+      htmlContent += `<h2>Coloring Activity</h2>`;
       htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
       if (worksheet.instructions) {
         htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
       }
       
-      if (worksheet.images && worksheet.images.length > 0) {
-        htmlContent += `<div class="words"><strong>Things to color:</strong> ${worksheet.images.join(', ')}</div>`;
-      }
-      
-      if (worksheet.words && worksheet.words.length > 0) {
-        htmlContent += `<div class="colors"><strong>Colors to use:</strong><br/>`;
-        worksheet.words.forEach(color => {
-          const colorHex = getColorHex(color);
-          htmlContent += `<span class="color-chip" style="background-color: ${colorHex};">${color}</span>`;
+      if (worksheet.colorInstructions && worksheet.colorInstructions.length > 0) {
+        htmlContent += `<div class="instruction-list">`;
+        htmlContent += `<p><strong>Instructions:</strong></p>`;
+        worksheet.colorInstructions.forEach((instruction, idx) => {
+          htmlContent += `<div class="instruction-item">${idx + 1}. Color the <strong>${instruction.item}</strong> → <strong>${instruction.color.toUpperCase()}</strong></div>`;
+        });
+        htmlContent += `</div>`;
+        
+        htmlContent += `<div class="grid">`;
+        worksheet.colorInstructions.forEach(instruction => {
+          htmlContent += `<div class="grid-item" style="flex-direction: column;"><div style="font-size: 24px;">🖼️</div><div style="font-size: 14px; margin-top: 5px;">${instruction.item}</div></div>`;
         });
         htmlContent += `</div>`;
       }
-      
-      htmlContent += `<div style="border: 2px dashed #ccc; height: 200px; margin: 30px; display: flex; align-items: center; justify-content: center; color: #999;">Drawing Space - Print and let children color here</div>`;
     }
     
-    if (worksheet.type === 'oddOneOut') {
-      htmlContent += `<h2>🔍 Find the Odd One Out</h2>`;
+    if (worksheet.type === 'counting') {
+      htmlContent += `<h2>Counting Activity</h2>`;
       htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
       if (worksheet.instructions) {
         htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
       }
       
-      if (worksheet.images && worksheet.images.length > 0) {
-        htmlContent += `<div class="grid">`;
-        worksheet.images.forEach(img => {
-          htmlContent += `<div class="grid-item">${img}</div>`;
+      if (worksheet.countingItems && worksheet.countingItems.length > 0) {
+        worksheet.countingItems.forEach(item => {
+          htmlContent += `<div style="border: 2px solid #999; border-radius: 10px; padding: 20px; margin: 20px 0;">`;
+          htmlContent += `<div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">`;
+          for (let i = 0; i < item.count; i++) {
+            htmlContent += `<span style="font-size: 32px;">⭐</span>`;
+          }
+          htmlContent += `</div>`;
+          htmlContent += `<div style="text-align: center;">How many <strong>${item.item}s</strong>? <span class="answer-box"></span></div>`;
+          htmlContent += `</div>`;
         });
-        htmlContent += `</div>`;
-        htmlContent += `<div class="instructions">Circle the one that is different!</div>`;
+      }
+    }
+    
+    if (worksheet.type === 'matching') {
+      htmlContent += `<h2>Matching Activity</h2>`;
+      htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
+      if (worksheet.instructions) {
+        htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
       }
       
-      if (worksheet.oddItem) {
-        htmlContent += `<div class="answer">(Answer for teacher: ${worksheet.oddItem})</div>`;
+      if (worksheet.matchingPairs && worksheet.matchingPairs.length > 0) {
+        htmlContent += `<div style="display: flex; justify-content: space-around;">`;
+        htmlContent += `<div>`;
+        worksheet.matchingPairs.forEach(pair => {
+          htmlContent += `<div class="matching-item" style="margin: 15px 0;">🖼️ ${pair.image}</div>`;
+        });
+        htmlContent += `</div>`;
+        htmlContent += `<div>`;
+        const shuffled = [...worksheet.matchingPairs].sort(() => Math.random() - 0.5);
+        shuffled.forEach(pair => {
+          htmlContent += `<div class="matching-item" style="margin: 15px 0;">${pair.word}</div>`;
+        });
+        htmlContent += `</div>`;
+        htmlContent += `</div>`;
+        htmlContent += `<div class="instructions">Draw lines to match pictures with words!</div>`;
       }
     }
     
@@ -181,19 +201,3 @@ export const exportToWord = async (worksheets: WorksheetData[]): Promise<void> =
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
-
-function getColorHex(color: string): string {
-  const colorMap: Record<string, string> = {
-    red: '#FF6B6B',
-    blue: '#4ECDC4',
-    yellow: '#FFE66D',
-    green: '#95E1D3',
-    pink: '#F38181',
-    orange: '#FFA502',
-    purple: '#A855F7',
-    brown: '#8B4513',
-    black: '#1A1A1A',
-    white: '#F5F5F5',
-  };
-  return colorMap[color.toLowerCase()] || '#888888';
-}

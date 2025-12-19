@@ -133,6 +133,10 @@ serve(async (req) => {
       const data = await response.json();
       const content = data.choices?.[0]?.message?.content;
 
+      // Parse user input words
+      const userWords = description.split(',').map(w => w.trim()).filter(Boolean);
+      const wordCount = userWords.length;
+
       if (content) {
         try {
           // Clean up the response - remove markdown code blocks if present
@@ -148,37 +152,50 @@ serve(async (req) => {
           }
           
           const parsed = JSON.parse(cleanContent.trim());
+          
+          // Limit output to match user input count
+          if (type === 'trace' && parsed.words) {
+            parsed.words = parsed.words.slice(0, wordCount);
+          }
+          if (type === 'color' && parsed.colorInstructions) {
+            parsed.colorInstructions = parsed.colorInstructions.slice(0, wordCount);
+          }
+          if (type === 'counting' && parsed.countingItems) {
+            parsed.countingItems = parsed.countingItems.slice(0, wordCount);
+          }
+          if (type === 'matching' && parsed.matchingPairs) {
+            parsed.matchingPairs = parsed.matchingPairs.slice(0, wordCount);
+          }
+          
           worksheets.push({
             type,
             ...parsed
           });
         } catch (parseError) {
           console.error('Failed to parse AI response:', content);
-          // Provide fallback content based on type
+          // Provide fallback content based on type - use exact user words
           const fallback: WorksheetContent = {
             type,
             topic: description || 'Learning Fun',
             instructions: 'Have fun learning!'
           };
           
+          const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
+          
           if (type === 'trace') {
-            fallback.words = description.split(',').map(w => w.trim()).filter(Boolean);
+            fallback.words = userWords;
           } else if (type === 'color') {
-            const items = description.split(',').map(w => w.trim()).filter(Boolean);
-            const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple'];
-            fallback.colorInstructions = items.map((item, i) => ({
+            fallback.colorInstructions = userWords.map((item, i) => ({
               item: item.toLowerCase(),
               color: colors[i % colors.length]
             }));
           } else if (type === 'counting') {
-            const items = description.split(',').map(w => w.trim()).filter(Boolean);
-            fallback.countingItems = items.map(item => ({
+            fallback.countingItems = userWords.map(item => ({
               item: item.toLowerCase(),
               count: Math.floor(Math.random() * 8) + 2
             }));
           } else if (type === 'matching') {
-            const items = description.split(',').map(w => w.trim()).filter(Boolean);
-            fallback.matchingPairs = items.map(item => ({
+            fallback.matchingPairs = userWords.map(item => ({
               image: item.toLowerCase(),
               word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
             }));

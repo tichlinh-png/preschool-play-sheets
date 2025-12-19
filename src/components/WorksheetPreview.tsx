@@ -25,6 +25,10 @@ export interface WorksheetData {
   colorInstructions?: { item: string; color: string }[];
   countingItems?: { item: string; count: number }[];
   matchingPairs?: { image: string; word: string }[];
+  fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  oddOneOutGroups?: { items: string[]; oddItem: string; reason: string }[];
+  circleCorrectItems?: { question: string; options: string[]; correctAnswer: string }[];
+  patternItems?: { sequence: string[]; answer: string }[];
   instructions?: string;
 }
 
@@ -285,6 +289,124 @@ export const WorksheetPreview = ({
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Fill in the blank worksheet
+  if (worksheetType === "fill-blank") {
+    const fillBlankWords = data?.fillBlankWords || [
+      { word: "cat", blankedWord: "c_t", missingLetter: "a" },
+      { word: "dog", blankedWord: "d_g", missingLetter: "o" }
+    ];
+    return (
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <WorksheetHeader title="Fill in the Missing Letter" exerciseNumber={5} />
+        <div className="grid grid-cols-2 gap-4">
+          {fillBlankWords.map((item, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-4">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <WordIconOrImage word={item.word} size={48} className="text-gray-600" wordImages={wordImages} />
+              </div>
+              <div className="text-center">
+                <span className="text-3xl font-bold tracking-widest" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                  {item.blankedWord.split('').map((char, i) => (
+                    <span 
+                      key={i} 
+                      className={char === '_' ? 'inline-block w-8 border-b-2 border-gray-800 mx-1' : ''}
+                    >
+                      {char !== '_' ? char : ''}
+                    </span>
+                  ))}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Odd one out worksheet
+  if (worksheetType === "odd-one-out") {
+    const oddOneOutGroups = data?.oddOneOutGroups || [
+      { items: ["cat", "dog", "fish", "apple"], oddItem: "apple", reason: "not an animal" }
+    ];
+    return (
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <WorksheetHeader title="Find the Odd One Out" exerciseNumber={6} />
+        <div className="space-y-6">
+          {oddOneOutGroups.map((group, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-4">
+              <p className="text-sm text-gray-600 mb-3 text-center">Cross out (X) the one that does not belong:</p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                {group.items.map((item, i) => (
+                  <div key={i} className="w-20 h-20 border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-2">
+                    <WordIconOrImage word={item} size={36} className="text-gray-600" wordImages={wordImages} />
+                    <span className="text-xs mt-1 capitalize">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Circle the correct answer worksheet
+  if (worksheetType === "circle-correct") {
+    const circleCorrectItems = data?.circleCorrectItems || [
+      { question: "Which one can fly?", options: ["cat", "bird", "fish"], correctAnswer: "bird" }
+    ];
+    return (
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <WorksheetHeader title="Circle the Correct Answer" exerciseNumber={7} />
+        <div className="space-y-6">
+          {circleCorrectItems.map((item, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-4">
+              <p className="text-lg font-bold text-gray-800 mb-4 text-center">{item.question}</p>
+              <div className="flex justify-center gap-6 flex-wrap">
+                {item.options.map((option, i) => (
+                  <div key={i} className="w-24 h-24 border-2 border-gray-400 rounded-full flex flex-col items-center justify-center bg-white p-2">
+                    <WordIconOrImage word={option} size={40} className="text-gray-600" wordImages={wordImages} />
+                    <span className="text-xs mt-1 capitalize">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Pattern completion worksheet
+  if (worksheetType === "pattern") {
+    const patternItems = data?.patternItems || [
+      { sequence: ["apple", "banana", "apple", "banana", "apple"], answer: "banana" }
+    ];
+    return (
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <WorksheetHeader title="Complete the Pattern" exerciseNumber={8} />
+        <div className="space-y-6">
+          {patternItems.map((item, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-4">
+              <p className="text-sm text-gray-600 mb-3 text-center">What comes next? Draw or write in the box.</p>
+              <div className="flex justify-center items-center gap-3 flex-wrap">
+                {item.sequence.map((seqItem, i) => (
+                  <div key={i} className="w-14 h-14 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                    <WordIconOrImage word={seqItem} size={32} className="text-gray-600" wordImages={wordImages} />
+                  </div>
+                ))}
+                <span className="text-2xl font-bold text-gray-400">→</span>
+                <div className="w-14 h-14 border-2 border-dashed border-gray-500 rounded-lg flex items-center justify-center bg-white">
+                  <span className="text-2xl text-gray-300">?</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );

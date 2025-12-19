@@ -8,9 +8,14 @@ import {
   Bike, Plane, Ship, Train, Truck,
   Camera, Music, Gift, Clock, Key, Lock, Bell, Phone,
   Smile, Frown, Glasses, Crown, Gem, Rat, Bug, Turtle, Snail,
-  Egg, Carrot, Drumstick,
   LucideIcon, ImageIcon
 } from 'lucide-react';
+import { 
+  GoatIcon, ElephantIcon, CowIcon, PigIcon, HorseIcon, 
+  SheepIcon, ChickenIcon, DuckIcon, LionIcon, TigerIcon,
+  MonkeyIcon, BearIcon, FrogIcon 
+} from './icons/AnimalIcons';
+import { ComponentType, SVGProps } from 'react';
 
 export interface WorksheetData {
   type: WorksheetType;
@@ -35,44 +40,65 @@ function safeString(value: unknown): string {
   return String(value);
 }
 
-// Map words to Lucide icons
-function getIconForWord(word: string): LucideIcon {
-  const str = word.toLowerCase().trim();
-  if (!str) return ImageIcon;
-  
-  const iconMap: Record<string, LucideIcon> = {
-    // Animals
-    fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
-    rabbit: Rat, bug: Bug, turtle: Turtle, snail: Snail,
-    goat: Drumstick, // Farm animal representation
-    lion: Cat, tiger: Cat, // Big cats fallback to cat
-    // People
-    father: User, mother: User, girl: Baby, boy: Baby, man: User, woman: User, baby: Baby,
-    // Nature
-    flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
-    leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, fire: Flame,
-    // Fruits
-    apple: Apple, banana: Banana, cherry: Cherry, grape: Grape,
-    // Food
-    cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, milk: Milk,
-    // Transport
-    car: Car, bus: Bus, bike: Bike, plane: Plane, ship: Ship, train: Train, truck: Truck,
-    // Objects
-    book: Book, pencil: Pencil, house: Home, home: Home, umbrella: Umbrella,
-    camera: Camera, music: Music, gift: Gift, clock: Clock, key: Key, lock: Lock,
-    bell: Bell, phone: Phone, shirt: Shirt,
-    // Emotions & misc
-    heart: Heart, smile: Smile, happy: Smile, sad: Frown, glasses: Glasses, crown: Crown, gem: Gem,
-  };
-  
-  return iconMap[str] || ImageIcon;
-}
+// Custom icon type
+type CustomIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
-// Icon component that renders a Lucide icon for a word
-const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: number; className?: string }) => {
-  const IconComponent = getIconForWord(word);
-  return <IconComponent size={size} className={className} strokeWidth={1.5} />;
+// Map for custom SVG icons (animals not in Lucide)
+const customIconMap: Record<string, CustomIcon> = {
+  goat: GoatIcon,
+  elephant: ElephantIcon,
+  cow: CowIcon,
+  pig: PigIcon,
+  horse: HorseIcon,
+  sheep: SheepIcon,
+  chicken: ChickenIcon,
+  duck: DuckIcon,
+  lion: LionIcon,
+  tiger: TigerIcon,
+  monkey: MonkeyIcon,
+  bear: BearIcon,
+  frog: FrogIcon,
 };
+
+// Map words to Lucide icons
+const lucideIconMap: Record<string, LucideIcon> = {
+  // Animals (basic ones in Lucide)
+  fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
+  rabbit: Rat, bug: Bug, turtle: Turtle, snail: Snail,
+  // People
+  father: User, mother: User, girl: Baby, boy: Baby, man: User, woman: User, baby: Baby,
+  // Nature
+  flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
+  leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, fire: Flame,
+  // Fruits
+  apple: Apple, banana: Banana, cherry: Cherry, grape: Grape,
+  // Food
+  cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, milk: Milk,
+  // Transport
+  car: Car, bus: Bus, bike: Bike, plane: Plane, ship: Ship, train: Train, truck: Truck,
+  // Objects
+  book: Book, pencil: Pencil, house: Home, home: Home, umbrella: Umbrella,
+  camera: Camera, music: Music, gift: Gift, clock: Clock, key: Key, lock: Lock,
+  bell: Bell, phone: Phone, shirt: Shirt,
+  // Emotions & misc
+  heart: Heart, smile: Smile, happy: Smile, sad: Frown, glasses: Glasses, crown: Crown, gem: Gem,
+};
+
+// Icon component that renders the appropriate icon for a word
+const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: number; className?: string }) => {
+  const str = word.toLowerCase().trim();
+  
+  // Check custom icons first (for animals not in Lucide)
+  const CustomIconComponent = customIconMap[str];
+  if (CustomIconComponent) {
+    return <CustomIconComponent size={size} className={className} />;
+  }
+  
+  // Fall back to Lucide icons
+  const LucideIconComponent = lucideIconMap[str] || ImageIcon;
+  return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
+};
+
 
 function getColorHex(color: unknown): string {
   const str = safeString(color).toLowerCase();

@@ -1,5 +1,4 @@
 import { WorksheetType } from "./WorksheetTypeSelector";
-import { cn } from "@/lib/utils";
 import { 
   Fish, User, Cat, Dog, Bird, Flower2, Trees, Sun, Moon, Star,
   Car, Bus, Book, Pencil, Home, Apple, Banana, Cherry, Grape,
@@ -29,11 +28,19 @@ export interface WorksheetData {
   instructions?: string;
 }
 
+interface WordImage {
+  word: string;
+  imageUrl: string;
+}
+
 interface WorksheetPreviewProps {
   data?: WorksheetData;
   type?: WorksheetType;
   topic?: string;
   schoolLogo?: string | null;
+  teacherName?: string;
+  className?: string;
+  wordImages?: WordImage[];
 }
 
 function safeString(value: unknown): string {
@@ -70,8 +77,34 @@ const lucideIconMap: Record<string, LucideIcon> = {
   glasses: Glasses, crown: Crown, gem: Gem, diamond: Gem,
 };
 
-const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: number; className?: string }) => {
+// Component to render word icon or custom image
+const WordIconOrImage = ({ 
+  word, 
+  size = 48, 
+  className = "", 
+  wordImages = [] 
+}: { 
+  word: string; 
+  size?: number; 
+  className?: string;
+  wordImages?: WordImage[];
+}) => {
   const str = word.toLowerCase().trim();
+  
+  // Check for custom uploaded image first
+  const customImage = wordImages.find(img => img.word.toLowerCase() === str);
+  if (customImage) {
+    return (
+      <img 
+        src={customImage.imageUrl} 
+        alt={word} 
+        style={{ width: size, height: size }}
+        className={`object-contain ${className}`}
+      />
+    );
+  }
+  
+  // Fallback to icons
   const CustomIconComponent = customIconMap[str];
   if (CustomIconComponent) {
     return <CustomIconComponent size={size} className={className} />;
@@ -80,7 +113,15 @@ const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: nu
   return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
 };
 
-export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: WorksheetPreviewProps) => {
+export const WorksheetPreview = ({ 
+  data, 
+  type, 
+  topic = "Apple", 
+  schoolLogo, 
+  teacherName = "", 
+  className = "",
+  wordImages = []
+}: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
 
@@ -93,7 +134,9 @@ export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: Wo
           <div className="w-12 h-12" />
         )}
         <div className="flex-1 text-center">
-          <p className="text-xs text-gray-500">School: _________________ Teacher: _________________</p>
+          <p className="text-xs text-gray-500">
+            Class: {className || "_________________"} | Teacher: {teacherName || "_________________"}
+          </p>
         </div>
         <div className="w-12 h-12" />
       </div>
@@ -112,7 +155,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: Wo
           {words.map((word, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
-                <WordIcon word={word} size={32} className="text-gray-700" />
+                <WordIconOrImage word={word} size={32} className="text-gray-700" wordImages={wordImages} />
                 <span className="text-lg font-bold text-gray-800">{word}</span>
               </div>
               <div className="bg-gray-50 rounded p-2 mb-2 text-center">
@@ -150,7 +193,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: Wo
         <div className="grid grid-cols-2 gap-4">
           {colorInstructions.map((instruction, idx) => (
             <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
-              <WordIcon word={instruction.item} size={60} className="text-gray-400" />
+              <WordIconOrImage word={instruction.item} size={60} className="text-gray-400" wordImages={wordImages} />
               <span className="text-sm font-medium text-gray-700 mt-2 capitalize">{instruction.item}</span>
               <span className="text-xs text-gray-500">({instruction.color})</span>
             </div>
@@ -171,7 +214,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: Wo
               <div className="flex flex-wrap justify-center gap-2 mb-3">
                 {Array.from({ length: item.count }).map((_, i) => (
                   <div key={i} className="w-10 h-10 flex items-center justify-center">
-                    <WordIcon word={item.item} size={32} className="text-gray-600" />
+                    <WordIconOrImage word={item.item} size={32} className="text-gray-600" wordImages={wordImages} />
                   </div>
                 ))}
               </div>
@@ -199,7 +242,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: Wo
             {matchingPairs.map((pair, idx) => (
               <div key={idx} className="flex items-center gap-2">
                 <div className="w-16 h-16 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
-                  <WordIcon word={pair.image} size={40} className="text-gray-600" />
+                  <WordIconOrImage word={pair.image} size={40} className="text-gray-600" wordImages={wordImages} />
                 </div>
                 <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
               </div>

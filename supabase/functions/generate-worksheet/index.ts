@@ -7,16 +7,17 @@ const corsHeaders = {
 
 interface WorksheetRequest {
   description: string;
-  worksheetTypes: ('trace' | 'color' | 'oddOneOut')[];
+  worksheetTypes: ('trace' | 'color' | 'counting' | 'matching')[];
   imageBase64?: string;
 }
 
 interface WorksheetContent {
-  type: 'trace' | 'color' | 'oddOneOut';
+  type: 'trace' | 'color' | 'counting' | 'matching';
   topic: string;
-  letters?: string[];
   words?: string[];
-  images?: string[];
+  colorInstructions?: { item: string; color: string }[];
+  countingItems?: { item: string; count: number }[];
+  matchingPairs?: { image: string; word: string }[];
   instructions?: string;
 }
 
@@ -35,45 +36,57 @@ serve(async (req) => {
 
     console.log('Generating worksheets for:', { description, worksheetTypes, hasImage: !!imageBase64 });
 
-    const worksheetPrompts = {
-      trace: `Generate a letter tracing worksheet for preschool children.
+    const worksheetPrompts: Record<string, string> = {
+      trace: `Generate a word tracing worksheet for preschool children.
         The user provided these words: "${description}"
         
         IMPORTANT: You MUST use EXACTLY the words provided by the user.
-        Extract the first letter of each word for tracing.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - letters: array of uppercase first letters from each word the user provided (e.g., if "Fish, Father" then ["F"])
-        - words: array containing EXACTLY the words the user provided (e.g., ["Fish", "Father"])
+        - words: array containing EXACTLY the words the user provided (e.g., ["Fish", "Father", "Goat", "Girl"])
         - instructions: a fun instruction in English for kids`,
       
-      color: `Generate a coloring worksheet for preschool children.
+      color: `Generate a coloring worksheet for preschool children with SPECIFIC coloring instructions.
         The user provided these words/objects to color: "${description}"
         
-        IMPORTANT: You MUST create coloring images for EXACTLY the words provided by the user.
+        IMPORTANT: Create specific coloring instructions telling kids which color to use for each item.
         
         Return JSON with:
-        - topic: a fun title for coloring these items
-        - words: array of color names in English kids could use (e.g., ["red", "blue", "green", "yellow"])
-        - images: array containing EXACTLY the words the user provided as objects to color (e.g., if user said "Fish, Goat" then images must be ["fish", "goat"])
-        - instructions: a fun instruction in English for kids`,
+        - topic: a fun title for the worksheet
+        - colorInstructions: array of objects, each with "item" (the object name from user input) and "color" (a simple color like red, blue, green, yellow, orange, purple, pink, brown)
+          Example: [{"item": "fish", "color": "blue"}, {"item": "apple", "color": "red"}]
+        - instructions: a fun instruction telling kids to follow the coloring guide`,
       
-      oddOneOut: `Generate an "odd one out" worksheet for preschool children.
+      counting: `Generate a counting worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Use the words provided to create a puzzle where one doesn't belong.
+        Create counting exercises using the provided words.
         
         Return JSON with:
-        - topic: the category theme
-        - images: array of exactly 4 items based on user's words, where 3 share a category and 1 is different
-        - oddItem: which item is the odd one out
-        - instructions: a fun instruction in English for kids`
+        - topic: a fun title for the worksheet
+        - countingItems: array of objects with "item" (object name from user input) and "count" (number between 1-10)
+          Example: [{"item": "fish", "count": 3}, {"item": "apple", "count": 5}]
+        - instructions: a fun instruction telling kids to count and write the number`,
+      
+      matching: `Generate a matching worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        Create a matching exercise where kids connect pictures to words.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet
+        - matchingPairs: array of objects with "image" (object name) and "word" (the word to match)
+          Example: [{"image": "fish", "word": "Fish"}, {"image": "cat", "word": "Cat"}]
+        - instructions: a fun instruction telling kids to draw lines to match pictures with words`
     };
 
     const worksheets: WorksheetContent[] = [];
 
     for (const type of worksheetTypes) {
+      const prompt = worksheetPrompts[type];
+      if (!prompt) continue;
+
       const messages: any[] = [
         {
           role: 'system',
@@ -88,14 +101,14 @@ serve(async (req) => {
         messages.push({
           role: 'user',
           content: [
-            { type: 'text', text: worksheetPrompts[type] },
+            { type: 'text', text: prompt },
             { type: 'image_url', image_url: { url: imageBase64 } }
           ]
         });
       } else {
         messages.push({
           role: 'user',
-          content: worksheetPrompts[type]
+          content: prompt
         });
       }
 
@@ -141,15 +154,37 @@ serve(async (req) => {
           });
         } catch (parseError) {
           console.error('Failed to parse AI response:', content);
-          // Provide fallback content
-          worksheets.push({
+          // Provide fallback content based on type
+          const fallback: WorksheetContent = {
             type,
             topic: description || 'Learning Fun',
-            letters: type === 'trace' ? ['A', 'B', 'C'] : undefined,
-            words: ['apple', 'ball', 'cat'],
-            images: type === 'oddOneOut' ? ['🍎', '🍎', '🍎', '🍌'] : ['apple', 'sun', 'star'],
             instructions: 'Have fun learning!'
-          });
+          };
+          
+          if (type === 'trace') {
+            fallback.words = description.split(',').map(w => w.trim()).filter(Boolean);
+          } else if (type === 'color') {
+            const items = description.split(',').map(w => w.trim()).filter(Boolean);
+            const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple'];
+            fallback.colorInstructions = items.map((item, i) => ({
+              item: item.toLowerCase(),
+              color: colors[i % colors.length]
+            }));
+          } else if (type === 'counting') {
+            const items = description.split(',').map(w => w.trim()).filter(Boolean);
+            fallback.countingItems = items.map(item => ({
+              item: item.toLowerCase(),
+              count: Math.floor(Math.random() * 8) + 2
+            }));
+          } else if (type === 'matching') {
+            const items = description.split(',').map(w => w.trim()).filter(Boolean);
+            fallback.matchingPairs = items.map(item => ({
+              image: item.toLowerCase(),
+              word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+            }));
+          }
+          
+          worksheets.push(fallback);
         }
       }
     }

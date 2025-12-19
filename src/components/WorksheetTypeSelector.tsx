@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Pencil, Palette, HelpCircle, LucideIcon } from "lucide-react";
+import { Pencil, Palette, Hash, Link2, LucideIcon } from "lucide-react";
 
-export type WorksheetType = "trace" | "color" | "oddOneOut";
+export type WorksheetType = "trace" | "color" | "counting" | "matching";
 
 interface WorksheetTypeSelectorProps {
   selected: WorksheetType[];
@@ -30,17 +30,25 @@ const typeOptions: TypeOption[] = [
     id: "color",
     label: "Coloring",
     icon: Palette,
-    description: "Color simple images",
+    description: "Follow coloring instructions",
     color: "text-coral",
     bgColor: "bg-coral/10 hover:bg-coral/20 border-coral/30",
   },
   {
-    id: "oddOneOut",
-    label: "Odd One Out",
-    icon: HelpCircle,
-    description: "Find the different item",
+    id: "counting",
+    label: "Counting",
+    icon: Hash,
+    description: "Count objects and write numbers",
     color: "text-lavender",
     bgColor: "bg-lavender/10 hover:bg-lavender/20 border-lavender/30",
+  },
+  {
+    id: "matching",
+    label: "Matching",
+    icon: Link2,
+    description: "Match pictures to words",
+    color: "text-mint",
+    bgColor: "bg-mint/10 hover:bg-mint/20 border-mint/30",
   },
 ];
 
@@ -57,7 +65,7 @@ export const WorksheetTypeSelector = ({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {typeOptions.map((option) => {
         const isSelected = selected.includes(option.id);
         const Icon = option.icon;

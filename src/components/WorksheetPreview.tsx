@@ -141,12 +141,11 @@ export const WorksheetPreview = ({
         <div className="w-12 h-12" />
       </div>
       <p className="text-sm text-gray-600 mb-3">Name: _________________ Date: _________</p>
-      <div className="border-2 border-gray-400 rounded-lg p-3 bg-gray-50 inline-block min-w-[80%]">
-        <div className="flex items-center justify-center gap-2 mb-1">
+      <div className="border-2 border-gray-400 rounded-lg p-3 bg-gray-50 inline-block">
+        <div className="flex items-center justify-center gap-2">
           <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
           <h3 className="font-display text-xl font-bold text-gray-800">{title}</h3>
         </div>
-        <p className="text-sm text-gray-600">{safeString(data?.instructions) || worksheetTopic}</p>
       </div>
     </div>
   );

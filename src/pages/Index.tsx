@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2 } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/FileUpload";
@@ -7,7 +7,7 @@ import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetType
 import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { exportToPDF, exportToWord } from "@/lib/exportWorksheet";
+import { exportToPDF, exportToWord, printWorksheets } from "@/lib/exportWorksheet";
 
 const Index = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -125,6 +125,7 @@ const Index = () => {
               <h3 className="font-display text-xl font-bold">Preview</h3>
               {generatedWorksheets.length > 0 && (
                 <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={printWorksheets}><Printer className="w-4 h-4" />Print</Button>
                   <Button variant="outline" size="sm" onClick={handleExportPDF} disabled={isExporting}><Download className="w-4 h-4" />PDF</Button>
                   <Button variant="outline" size="sm" onClick={handleExportWord} disabled={isExporting}><Download className="w-4 h-4" />Word</Button>
                 </div>

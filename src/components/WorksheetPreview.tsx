@@ -160,7 +160,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
-  // COLOR WORKSHEET - 2 pages layout
+  // COLOR WORKSHEET - show all images
   if (worksheetType === "color") {
     const colorInstructions = data?.colorInstructions || [
       { item: "fish", color: "blue" },
@@ -168,60 +168,38 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     ];
     
     return (
-      <div className="space-y-4">
-        {/* Page 1 - Instructions */}
-        <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none print:break-after-page">
-          <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-            <h3 className="font-display text-2xl font-bold text-gray-800">Coloring Activity</h3>
-            <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Follow the instructions!"}</p>
-            <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-          </div>
-          
-          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {colorInstructions.map((instruction, idx) => (
-                <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
-                  <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">
-                    {idx + 1}
-                  </span>
-                  <span className="text-gray-700">
-                    <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {colorInstructions.slice(0, 4).map((instruction, idx) => (
-              <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
-                <WordIcon word={instruction.item} size={60} className="text-gray-400" />
-                <span className="text-sm font-medium text-gray-700 mt-2 capitalize">{instruction.item}</span>
-                <span className="text-xs text-gray-500">({instruction.color})</span>
+      <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+          <h3 className="font-display text-2xl font-bold text-gray-800">Coloring Activity</h3>
+          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Follow the instructions!"}</p>
+          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
+        </div>
+        
+        <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
+          <div className="grid grid-cols-2 gap-2">
+            {colorInstructions.map((instruction, idx) => (
+              <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
+                <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">
+                  {idx + 1}
+                </span>
+                <span className="text-gray-700">
+                  <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong>
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Page 2 - More images */}
-        {colorInstructions.length > 4 && (
-          <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-            <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-              <h3 className="font-display text-2xl font-bold text-gray-800">Coloring Activity (continued)</h3>
+        <div className="grid grid-cols-2 gap-4">
+          {colorInstructions.map((instruction, idx) => (
+            <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
+              <WordIcon word={instruction.item} size={60} className="text-gray-400" />
+              <span className="text-sm font-medium text-gray-700 mt-2 capitalize">{instruction.item}</span>
+              <span className="text-xs text-gray-500">({instruction.color})</span>
             </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {colorInstructions.slice(4, 8).map((instruction, idx) => (
-                <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
-                  <WordIcon word={instruction.item} size={60} className="text-gray-400" />
-                  <span className="text-sm font-medium text-gray-700 mt-2 capitalize">{instruction.item}</span>
-                  <span className="text-xs text-gray-500">({instruction.color})</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     );
   }

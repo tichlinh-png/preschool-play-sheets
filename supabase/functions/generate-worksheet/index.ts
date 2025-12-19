@@ -403,7 +403,14 @@ serve(async (req) => {
 
     console.log('Generated worksheets:', worksheets);
 
-    return new Response(JSON.stringify({ worksheets }), {
+    // Collect all skipped words across the generation process
+    const allUserWords = description.split(',').map(w => w.trim()).filter(Boolean);
+    const skippedWords = allUserWords.filter(w => !hasAvailableIcon(w));
+    
+    return new Response(JSON.stringify({ 
+      worksheets,
+      skippedWords: skippedWords.length > 0 ? skippedWords : undefined
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error: unknown) {

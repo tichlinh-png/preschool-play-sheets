@@ -95,6 +95,15 @@ const Index = () => {
       if (error) throw new Error(error.message);
       if (data?.worksheets) {
         setGeneratedWorksheets(data.worksheets);
+        
+        // Show notification about skipped words if any
+        if (data.skippedWords && data.skippedWords.length > 0) {
+          toast.warning(
+            `Đã bỏ qua ${data.skippedWords.length} từ không có icon: ${data.skippedWords.join(', ')}`,
+            { duration: 6000 }
+          );
+        }
+        
         toast.success("Worksheets created successfully!");
       }
     } catch (err) {

@@ -216,28 +216,62 @@
 
 /* Print styles */
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
   body {
     background: white !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  
-  header, footer, .no-print, button, .gradient-hero {
-    display: none !important;
-  }
-  
-  #worksheets-container {
+    margin: 0 !important;
     padding: 0 !important;
   }
   
-  [data-worksheet-card] {
-    page-break-inside: avoid;
-    page-break-after: always;
+  /* Hide everything except worksheets */
+  body > * {
+    display: none !important;
+  }
+  
+  #worksheets-container,
+  #worksheets-container * {
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  #worksheets-container {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
     margin: 0 !important;
+  }
+  
+  [data-worksheet-card] {
+    display: block !important;
+    page-break-inside: avoid !important;
+    page-break-after: always !important;
+    break-inside: avoid !important;
+    break-after: page !important;
+    margin: 0 !important;
+    padding: 20px !important;
     box-shadow: none !important;
+    border: none !important;
+    background: white !important;
   }
   
   [data-worksheet-card]:last-child {
-    page-break-after: auto;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+  
+  /* Ensure flex/grid children are visible */
+  [data-worksheet-card] div,
+  [data-worksheet-card] span,
+  [data-worksheet-card] p,
+  [data-worksheet-card] img,
+  [data-worksheet-card] svg {
+    visibility: visible !important;
   }
 }

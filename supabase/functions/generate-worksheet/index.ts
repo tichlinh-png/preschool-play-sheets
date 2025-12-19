@@ -89,7 +89,11 @@ serve(async (req) => {
   try {
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+      console.error('LOVABLE_API_KEY is not configured');
+      return new Response(JSON.stringify({ error: 'Service temporarily unavailable. Please try again later.' }), {
+        status: 503,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const { description, worksheetTypes, imageBase64 }: WorksheetRequest = await req.json();
@@ -435,9 +439,11 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error: unknown) {
-    console.error('Error generating worksheets:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    // Log detailed error server-side for debugging
+    console.error('Worksheet generation failed:', error instanceof Error ? error.message : 'Unknown error');
+    
+    // Return generic error message to client
+    return new Response(JSON.stringify({ error: 'Failed to generate worksheet. Please try again.' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

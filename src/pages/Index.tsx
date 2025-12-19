@@ -1,14 +1,22 @@
-import { useState } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { FileUpload } from "@/components/FileUpload";
 import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetTypeSelector";
 import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
 import { LogoUpload } from "@/components/LogoUpload";
+import { WordImageUpload } from "@/components/WordImageUpload";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { exportToPDF, exportToWord, printWorksheets } from "@/lib/exportWorksheet";
+
+interface WordImage {
+  word: string;
+  imageUrl: string;
+}
 
 const Index = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -18,6 +26,34 @@ const Index = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [generatedWorksheets, setGeneratedWorksheets] = useState<WorksheetData[]>([]);
   const [schoolLogo, setSchoolLogo] = useState<string | null>(null);
+  const [teacherName, setTeacherName] = useState("");
+  const [className, setClassName] = useState("");
+  const [wordImages, setWordImages] = useState<WordImage[]>([]);
+
+  // Load saved teacher/class from localStorage
+  useEffect(() => {
+    const savedTeacher = localStorage.getItem('kidssheet_teacher');
+    const savedClass = localStorage.getItem('kidssheet_class');
+    if (savedTeacher) setTeacherName(savedTeacher);
+    if (savedClass) setClassName(savedClass);
+  }, []);
+
+  // Save teacher/class to localStorage
+  useEffect(() => {
+    localStorage.setItem('kidssheet_teacher', teacherName);
+  }, [teacherName]);
+
+  useEffect(() => {
+    localStorage.setItem('kidssheet_class', className);
+  }, [className]);
+
+  // Parse words from description
+  const parsedWords = useMemo(() => {
+    return description
+      .split(/[\n,;]+/)
+      .map(word => word.replace(/[.,;:!?]+/g, '').trim())
+      .filter(word => word.length > 0);
+  }, [description]);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -28,13 +64,12 @@ const Index = () => {
     });
   };
 
-  // Clean input: remove punctuation, normalize spacing
   const cleanDescription = (text: string): string => {
     return text
-      .split(/[\n,;]+/) // Split by newlines, commas, semicolons
-      .map(word => word.replace(/[.,;:!?]+/g, '').trim()) // Remove punctuation
-      .filter(word => word.length > 0) // Remove empty entries
-      .join(', '); // Join with comma and space
+      .split(/[\n,;]+/)
+      .map(word => word.replace(/[.,;:!?]+/g, '').trim())
+      .filter(word => word.length > 0)
+      .join(', ');
   };
 
   const handleGenerate = async () => {
@@ -60,7 +95,7 @@ const Index = () => {
       if (error) throw new Error(error.message);
       if (data?.worksheets) {
         setGeneratedWorksheets(data.worksheets);
-        toast.success("Worksheets created successfully! 🎉");
+        toast.success("Worksheets created successfully!");
       }
     } catch (err) {
       console.error(err);
@@ -74,7 +109,7 @@ const Index = () => {
     setIsExporting(true);
     try {
       await exportToPDF(generatedWorksheets, 'worksheets-container');
-      toast.success("PDF exported! 📄");
+      toast.success("PDF exported!");
     } catch { toast.error("Error exporting PDF"); }
     finally { setIsExporting(false); }
   };
@@ -83,7 +118,7 @@ const Index = () => {
     setIsExporting(true);
     try {
       await exportToWord(generatedWorksheets, 'worksheets-container');
-      toast.success("Word file exported! 📝");
+      toast.success("Word file exported!");
     } catch { toast.error("Error exporting Word"); }
     finally { setIsExporting(false); }
   };
@@ -107,17 +142,99 @@ const Index = () => {
           Create Worksheets for Kids
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
-          Upload an image or describe content - Generate tracing, coloring, and odd one out worksheets
+          Upload an image or describe content - Generate tracing, coloring, counting and matching worksheets
         </p>
       </section>
 
       <main className="container mx-auto px-4 pb-16">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-6">
-            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Image className="w-5 h-5 text-primary" />School Logo</CardTitle></CardHeader><CardContent><LogoUpload onLogoChange={setSchoolLogo} /></CardContent></Card>
-            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><FileText className="w-5 h-5 text-primary" />Upload Files</CardTitle></CardHeader><CardContent><FileUpload onFilesChange={setFiles} /></CardContent></Card>
-            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Wand2 className="w-5 h-5 text-secondary" />Describe Content</CardTitle></CardHeader><CardContent><textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Example: Fish, Father, Goat, Girl..." className="w-full h-32 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none" /></CardContent></Card>
-            <Card variant="playful"><CardHeader><CardTitle>Choose Worksheet Type</CardTitle></CardHeader><CardContent><WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} /></CardContent></Card>
+            {/* Teacher & Class Info */}
+            <Card variant="playful">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5 text-primary" />
+                  Teacher & Class Info
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="teacher">Teacher Name</Label>
+                    <Input
+                      id="teacher"
+                      value={teacherName}
+                      onChange={(e) => setTeacherName(e.target.value)}
+                      placeholder="Ms. Nguyen"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="class">Class Name</Label>
+                    <Input
+                      id="class"
+                      value={className}
+                      onChange={(e) => setClassName(e.target.value)}
+                      placeholder="Sunflower"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* School Logo */}
+            <Card variant="playful">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <School className="w-5 h-5 text-primary" />
+                  School Logo
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LogoUpload onLogoChange={setSchoolLogo} />
+              </CardContent>
+            </Card>
+
+            {/* Describe Content */}
+            <Card variant="playful">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Wand2 className="w-5 h-5 text-secondary" />
+                  Describe Content
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Example: Fish, Father, Goat, Girl..."
+                  className="w-full h-24 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Word Images Upload */}
+            <Card variant="playful">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Image className="w-5 h-5 text-primary" />
+                  Word Images
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <WordImageUpload words={parsedWords} onImagesChange={setWordImages} />
+              </CardContent>
+            </Card>
+
+            {/* Worksheet Type */}
+            <Card variant="playful">
+              <CardHeader>
+                <CardTitle>Choose Worksheet Type</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} />
+              </CardContent>
+            </Card>
+
             <Button variant="accent" size="xl" className="w-full" onClick={handleGenerate} disabled={isGenerating}>
               {isGenerating ? <><RefreshCw className="w-5 h-5 animate-spin" />Generating...</> : <><Sparkles className="w-5 h-5" />Generate Worksheet</>}
             </Button>
@@ -136,11 +253,25 @@ const Index = () => {
             </div>
             <div id="worksheets-container">
               {generatedWorksheets.length > 0 ? (
-                <div className="space-y-6">{generatedWorksheets.map((w, i) => <div key={i} data-worksheet-card><WorksheetPreview data={w} schoolLogo={schoolLogo} /></div>)}</div>
+                <div className="space-y-6">
+                  {generatedWorksheets.map((w, i) => (
+                    <div key={i} data-worksheet-card>
+                      <WorksheetPreview
+                        data={w}
+                        schoolLogo={schoolLogo}
+                        teacherName={teacherName}
+                        className={className}
+                        wordImages={wordImages}
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <Card variant="elevated" className="min-h-[400px] flex items-center justify-center">
                   <CardContent className="text-center py-12">
-                    <div className="w-24 h-24 mx-auto rounded-full bg-muted flex items-center justify-center"><FileText className="w-12 h-12 text-muted-foreground" /></div>
+                    <div className="w-24 h-24 mx-auto rounded-full bg-muted flex items-center justify-center">
+                      <FileText className="w-12 h-12 text-muted-foreground" />
+                    </div>
                     <p className="font-display text-lg font-semibold mt-4">No worksheets yet</p>
                     <p className="text-sm text-muted-foreground mt-1">Enter a description to generate content</p>
                   </CardContent>
@@ -150,7 +281,9 @@ const Index = () => {
           </div>
         </div>
       </main>
-      <footer className="border-t border-border bg-card/50 py-6"><p className="text-center text-sm text-muted-foreground">Made with 💖 for preschool teachers</p></footer>
+      <footer className="border-t border-border bg-card/50 py-6">
+        <p className="text-center text-sm text-muted-foreground">Made with love for preschool teachers</p>
+      </footer>
     </div>
   );
 };

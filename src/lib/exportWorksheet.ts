@@ -53,7 +53,309 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
 };
 
 export const printWorksheets = () => {
-  window.print();
+  const container = document.getElementById('worksheets-container');
+  if (!container) {
+    console.error('Worksheets container not found');
+    return;
+  }
+
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) {
+    // Fallback to regular print if popup blocked
+    window.print();
+    return;
+  }
+
+  const worksheetContent = container.innerHTML;
+  
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Print Worksheets</title>
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Edu+TAS+Beginner:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        body {
+          font-family: 'Nunito', sans-serif;
+          background: white;
+          padding: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+          font-family: 'Fredoka', sans-serif;
+        }
+        [data-worksheet-card] {
+          page-break-inside: avoid;
+          page-break-after: always;
+          margin-bottom: 20px;
+          background: white;
+          border: 2px solid #d1d5db;
+          border-radius: 8px;
+          padding: 24px;
+        }
+        [data-worksheet-card]:last-child {
+          page-break-after: auto;
+        }
+        .space-y-6 > * + * {
+          margin-top: 1.5rem;
+        }
+        .space-y-4 > * + * {
+          margin-top: 1rem;
+        }
+        .space-y-1 > * + * {
+          margin-top: 0.25rem;
+        }
+        .grid {
+          display: grid;
+        }
+        .grid-cols-2 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .gap-4 {
+          gap: 1rem;
+        }
+        .gap-2 {
+          gap: 0.5rem;
+        }
+        .flex {
+          display: flex;
+        }
+        .flex-wrap {
+          flex-wrap: wrap;
+        }
+        .flex-1 {
+          flex: 1;
+        }
+        .items-center {
+          align-items: center;
+        }
+        .justify-center {
+          justify-content: center;
+        }
+        .justify-between {
+          justify-content: space-between;
+        }
+        .justify-end {
+          justify-end: flex-end;
+        }
+        .text-center {
+          text-align: center;
+        }
+        .font-bold {
+          font-weight: 700;
+        }
+        .font-medium {
+          font-weight: 500;
+        }
+        .text-xs {
+          font-size: 0.75rem;
+        }
+        .text-sm {
+          font-size: 0.875rem;
+        }
+        .text-lg {
+          font-size: 1.125rem;
+        }
+        .text-xl {
+          font-size: 1.25rem;
+        }
+        .text-2xl {
+          font-size: 1.5rem;
+        }
+        .capitalize {
+          text-transform: capitalize;
+        }
+        .uppercase {
+          text-transform: uppercase;
+        }
+        .rounded-lg {
+          border-radius: 0.5rem;
+        }
+        .rounded-full {
+          border-radius: 9999px;
+        }
+        .rounded {
+          border-radius: 0.25rem;
+        }
+        .border {
+          border-width: 1px;
+        }
+        .border-2 {
+          border-width: 2px;
+        }
+        .border-dashed {
+          border-style: dashed;
+        }
+        .border-gray-200 {
+          border-color: #e5e7eb;
+        }
+        .border-gray-300 {
+          border-color: #d1d5db;
+        }
+        .border-gray-400 {
+          border-color: #9ca3af;
+        }
+        .border-b {
+          border-bottom-width: 1px;
+        }
+        .border-b-2 {
+          border-bottom-width: 2px;
+        }
+        .border-t-2 {
+          border-top-width: 2px;
+        }
+        .bg-white {
+          background-color: white;
+        }
+        .bg-gray-50 {
+          background-color: #f9fafb;
+        }
+        .bg-gray-800 {
+          background-color: #1f2937;
+        }
+        .text-white {
+          color: white;
+        }
+        .text-gray-400 {
+          color: #9ca3af;
+        }
+        .text-gray-500 {
+          color: #6b7280;
+        }
+        .text-gray-600 {
+          color: #4b5563;
+        }
+        .text-gray-700 {
+          color: #374151;
+        }
+        .text-gray-800 {
+          color: #1f2937;
+        }
+        .p-2 {
+          padding: 0.5rem;
+        }
+        .p-3 {
+          padding: 0.75rem;
+        }
+        .p-4 {
+          padding: 1rem;
+        }
+        .px-2 {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+        .px-3 {
+          padding-left: 0.75rem;
+          padding-right: 0.75rem;
+        }
+        .px-4 {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .py-1 {
+          padding-top: 0.25rem;
+          padding-bottom: 0.25rem;
+        }
+        .py-2 {
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+        }
+        .py-3 {
+          padding-top: 0.75rem;
+          padding-bottom: 0.75rem;
+        }
+        .pb-3 {
+          padding-bottom: 0.75rem;
+        }
+        .mb-1 {
+          margin-bottom: 0.25rem;
+        }
+        .mb-2 {
+          margin-bottom: 0.5rem;
+        }
+        .mb-3 {
+          margin-bottom: 0.75rem;
+        }
+        .mb-4 {
+          margin-bottom: 1rem;
+        }
+        .mt-3 {
+          margin-top: 0.75rem;
+        }
+        .w-6 {
+          width: 1.5rem;
+        }
+        .w-10 {
+          width: 2.5rem;
+        }
+        .w-12 {
+          width: 3rem;
+        }
+        .w-14 {
+          width: 3.5rem;
+        }
+        .w-16 {
+          width: 4rem;
+        }
+        .h-6 {
+          height: 1.5rem;
+        }
+        .h-10 {
+          height: 2.5rem;
+        }
+        .h-12 {
+          height: 3rem;
+        }
+        .h-14 {
+          height: 3.5rem;
+        }
+        .h-16 {
+          height: 4rem;
+        }
+        .min-w-\\[80px\\] {
+          min-width: 80px;
+        }
+        .aspect-square {
+          aspect-ratio: 1/1;
+        }
+        .inline-block {
+          display: inline-block;
+        }
+        .object-contain {
+          object-fit: contain;
+        }
+        @media print {
+          body {
+            padding: 0;
+          }
+          [data-worksheet-card] {
+            border: none;
+            padding: 15mm;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      ${worksheetContent}
+      <script>
+        window.onload = function() {
+          window.print();
+          window.onafterprint = function() {
+            window.close();
+          };
+        };
+      </script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
 };
 
 export const exportToWord = async (worksheets: WorksheetData[], elementId: string = 'worksheets-container'): Promise<void> => {

@@ -133,9 +133,9 @@ serve(async (req) => {
       const data = await response.json();
       const content = data.choices?.[0]?.message?.content;
 
-      // Parse user input words
+      // Parse user input words - this is the source of truth
       const userWords = description.split(',').map(w => w.trim()).filter(Boolean);
-      const wordCount = userWords.length;
+      const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
 
       if (content) {
         try {
@@ -153,34 +153,52 @@ serve(async (req) => {
           
           const parsed = JSON.parse(cleanContent.trim());
           
-          // Limit output to match user input count
-          if (type === 'trace' && parsed.words) {
-            parsed.words = parsed.words.slice(0, wordCount);
-          }
-          if (type === 'color' && parsed.colorInstructions) {
-            parsed.colorInstructions = parsed.colorInstructions.slice(0, wordCount);
-          }
-          if (type === 'counting' && parsed.countingItems) {
-            parsed.countingItems = parsed.countingItems.slice(0, wordCount);
-          }
-          if (type === 'matching' && parsed.matchingPairs) {
-            parsed.matchingPairs = parsed.matchingPairs.slice(0, wordCount);
+          // ALWAYS use exact user words - ignore AI additions
+          const worksheet: WorksheetContent = {
+            type,
+            topic: parsed.topic || description,
+            instructions: parsed.instructions || 'Have fun learning!'
+          };
+          
+          if (type === 'trace') {
+            worksheet.words = userWords;
+          } else if (type === 'color') {
+            // Use AI colors if available, otherwise fallback
+            worksheet.colorInstructions = userWords.map((item, i) => {
+              const aiColor = parsed.colorInstructions?.find((c: any) => 
+                c.item?.toLowerCase() === item.toLowerCase()
+              )?.color;
+              return {
+                item: item.toLowerCase(),
+                color: aiColor || colors[i % colors.length]
+              };
+            });
+          } else if (type === 'counting') {
+            worksheet.countingItems = userWords.map((item, i) => {
+              const aiCount = parsed.countingItems?.find((c: any) => 
+                c.item?.toLowerCase() === item.toLowerCase()
+              )?.count;
+              return {
+                item: item.toLowerCase(),
+                count: aiCount || Math.floor(Math.random() * 8) + 2
+              };
+            });
+          } else if (type === 'matching') {
+            worksheet.matchingPairs = userWords.map(item => ({
+              image: item.toLowerCase(),
+              word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+            }));
           }
           
-          worksheets.push({
-            type,
-            ...parsed
-          });
+          worksheets.push(worksheet);
         } catch (parseError) {
           console.error('Failed to parse AI response:', content);
-          // Provide fallback content based on type - use exact user words
+          // Fallback - use exact user words
           const fallback: WorksheetContent = {
             type,
             topic: description || 'Learning Fun',
             instructions: 'Have fun learning!'
           };
-          
-          const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
           
           if (type === 'trace') {
             fallback.words = userWords;

@@ -33,69 +33,43 @@ interface WorksheetPreviewProps {
   data?: WorksheetData;
   type?: WorksheetType;
   topic?: string;
+  schoolLogo?: string | null;
 }
 
-// Helper to safely convert to string
 function safeString(value: unknown): string {
   if (typeof value === 'string') return value;
   if (value === null || value === undefined) return '';
   return String(value);
 }
 
-// Custom icon type
 type CustomIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
-// Map for custom SVG icons (animals not in Lucide)
 const customIconMap: Record<string, CustomIcon> = {
-  goat: GoatIcon,
-  elephant: ElephantIcon,
-  cow: CowIcon,
-  pig: PigIcon,
-  horse: HorseIcon,
-  pony: HorseIcon,
-  sheep: SheepIcon,
-  lamb: SheepIcon,
-  chicken: ChickenIcon,
-  hen: ChickenIcon,
-  rooster: ChickenIcon,
-  duck: DuckIcon,
-  lion: LionIcon,
-  tiger: TigerIcon,
-  monkey: MonkeyIcon,
-  ape: MonkeyIcon,
-  bear: BearIcon,
-  frog: FrogIcon,
-  toad: FrogIcon,
+  goat: GoatIcon, elephant: ElephantIcon, cow: CowIcon, pig: PigIcon,
+  horse: HorseIcon, pony: HorseIcon, sheep: SheepIcon, lamb: SheepIcon,
+  chicken: ChickenIcon, hen: ChickenIcon, rooster: ChickenIcon, duck: DuckIcon,
+  lion: LionIcon, tiger: TigerIcon, monkey: MonkeyIcon, ape: MonkeyIcon,
+  bear: BearIcon, frog: FrogIcon, toad: FrogIcon,
 };
 
-// Map words to Lucide icons
 const lucideIconMap: Record<string, LucideIcon> = {
-  // Animals
   fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
   rabbit: Rat, mouse: Rat, rat: Rat, bug: Bug, turtle: Turtle, snail: Snail,
-  // People
   father: User, mother: User, dad: User, mom: User, parent: User,
   girl: Baby, boy: Baby, man: User, woman: User, baby: Baby, child: Baby, kid: Baby,
-  // Nature
   flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
   leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, water: Droplets, fire: Flame,
-  // Fruits
   apple: Apple, banana: Banana, cherry: Cherry, grape: Grape, fruit: Apple,
-  // Food
   cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, ice: IceCreamCone, milk: Milk, food: Pizza,
-  // Vehicles
   car: Car, bus: Bus, bike: Bike, bicycle: Bike, plane: Plane, airplane: Plane, 
   ship: Ship, boat: Ship, train: Train, truck: Truck,
-  // Objects
   book: Book, pencil: Pencil, pen: Pencil, house: Home, home: Home, umbrella: Umbrella,
   camera: Camera, music: Music, gift: Gift, present: Gift, clock: Clock, watch: Clock,
   key: Key, lock: Lock, bell: Bell, phone: Phone, telephone: Phone, shirt: Shirt, clothes: Shirt,
-  // Emotions & accessories
   heart: Heart, love: Heart, smile: Smile, happy: Smile, sad: Frown, cry: Frown,
   glasses: Glasses, crown: Crown, gem: Gem, diamond: Gem,
 };
 
-// Icon component
 const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: number; className?: string }) => {
   const str = word.toLowerCase().trim();
   const CustomIconComponent = customIconMap[str];
@@ -106,23 +80,34 @@ const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: nu
   return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
 };
 
-export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPreviewProps) => {
+export const WorksheetPreview = ({ data, type, topic = "Apple", schoolLogo }: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
 
-  // TRACE WORKSHEET - single page
+  const WorksheetHeader = ({ title }: { title: string }) => (
+    <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+      <div className="flex items-center justify-between mb-2">
+        {schoolLogo ? (
+          <img src={schoolLogo} alt="School logo" className="w-12 h-12 object-contain" />
+        ) : (
+          <div className="w-12 h-12" />
+        )}
+        <div className="flex-1 text-center">
+          <p className="text-xs text-gray-500">School: _________________ Teacher: _________________</p>
+        </div>
+        <div className="w-12 h-12" />
+      </div>
+      <h3 className="font-display text-2xl font-bold text-gray-800">{title}</h3>
+      <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
+      <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
+    </div>
+  );
+
   if (worksheetType === "trace") {
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
-    
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
-          <h3 className="font-display text-2xl font-bold text-gray-800">Trace the Words</h3>
-          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
-          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-        </div>
-        
+        <WorksheetHeader title="Trace the Words" />
         <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-3">
@@ -146,38 +131,22 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
-  // COLOR WORKSHEET - show exact number of images as colorInstructions
   if (worksheetType === "color") {
-    const colorInstructions = data?.colorInstructions || [
-      { item: "fish", color: "blue" },
-      { item: "apple", color: "red" },
-    ];
-    
+    const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
-          <h3 className="font-display text-2xl font-bold text-gray-800">Coloring Activity</h3>
-          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Follow the instructions!"}</p>
-          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-        </div>
-        
+        <WorksheetHeader title="Coloring Activity" />
         <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
           <div className="grid grid-cols-2 gap-2">
             {colorInstructions.map((instruction, idx) => (
               <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
-                <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">
-                  {idx + 1}
-                </span>
-                <span className="text-gray-700">
-                  <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong>
-                </span>
+                <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">{idx + 1}</span>
+                <span className="text-gray-700"><strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong></span>
               </div>
             ))}
           </div>
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           {colorInstructions.map((instruction, idx) => (
             <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
@@ -191,22 +160,11 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
-  // COUNTING WORKSHEET - single page
   if (worksheetType === "counting") {
-    const countingItems = data?.countingItems || [
-      { item: "apple", count: 3 },
-      { item: "fish", count: 5 },
-    ];
-    
+    const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
-          <h3 className="font-display text-2xl font-bold text-gray-800">Counting Activity</h3>
-          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Count and write the number!"}</p>
-          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-        </div>
-        
+        <WorksheetHeader title="Counting Activity" />
         <div className="space-y-4">
           {countingItems.map((item, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-4">
@@ -230,24 +188,12 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
-  // MATCHING WORKSHEET - single page
   if (worksheetType === "matching") {
-    const matchingPairs = data?.matchingPairs || [
-      { image: "cat", word: "Cat" },
-      { image: "dog", word: "Dog" },
-    ];
-    
+    const matchingPairs = data?.matchingPairs || [{ image: "cat", word: "Cat" }, { image: "dog", word: "Dog" }];
     const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
-    
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
-          <h3 className="font-display text-2xl font-bold text-gray-800">Matching Activity</h3>
-          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Draw lines to match!"}</p>
-          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-        </div>
-        
+        <WorksheetHeader title="Matching Activity" />
         <div className="flex justify-between items-start gap-6">
           <div className="flex-1 space-y-4">
             {matchingPairs.map((pair, idx) => (
@@ -259,7 +205,6 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
               </div>
             ))}
           </div>
-          
           <div className="flex-1 space-y-4">
             {shuffledWords.map((pair, idx) => (
               <div key={idx} className="flex items-center gap-2 justify-end">

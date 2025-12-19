@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/FileUpload";
 import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetTypeSelector";
 import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
+import { LogoUpload } from "@/components/LogoUpload";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { exportToPDF, exportToWord, printWorksheets } from "@/lib/exportWorksheet";
@@ -16,6 +17,7 @@ const Index = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [generatedWorksheets, setGeneratedWorksheets] = useState<WorksheetData[]>([]);
+  const [schoolLogo, setSchoolLogo] = useState<string | null>(null);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -80,7 +82,7 @@ const Index = () => {
   const handleExportWord = async () => {
     setIsExporting(true);
     try {
-      await exportToWord(generatedWorksheets);
+      await exportToWord(generatedWorksheets, 'worksheets-container');
       toast.success("Word file exported! 📝");
     } catch { toast.error("Error exporting Word"); }
     finally { setIsExporting(false); }
@@ -112,6 +114,7 @@ const Index = () => {
       <main className="container mx-auto px-4 pb-16">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-6">
+            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Image className="w-5 h-5 text-primary" />School Logo</CardTitle></CardHeader><CardContent><LogoUpload onLogoChange={setSchoolLogo} /></CardContent></Card>
             <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><FileText className="w-5 h-5 text-primary" />Upload Files</CardTitle></CardHeader><CardContent><FileUpload onFilesChange={setFiles} /></CardContent></Card>
             <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Wand2 className="w-5 h-5 text-secondary" />Describe Content</CardTitle></CardHeader><CardContent><textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Example: Fish, Father, Goat, Girl..." className="w-full h-32 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none" /></CardContent></Card>
             <Card variant="playful"><CardHeader><CardTitle>Choose Worksheet Type</CardTitle></CardHeader><CardContent><WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} /></CardContent></Card>
@@ -133,7 +136,7 @@ const Index = () => {
             </div>
             <div id="worksheets-container">
               {generatedWorksheets.length > 0 ? (
-                <div className="space-y-6">{generatedWorksheets.map((w, i) => <div key={i} data-worksheet-card><WorksheetPreview data={w} /></div>)}</div>
+                <div className="space-y-6">{generatedWorksheets.map((w, i) => <div key={i} data-worksheet-card><WorksheetPreview data={w} schoolLogo={schoolLogo} /></div>)}</div>
               ) : (
                 <Card variant="elevated" className="min-h-[400px] flex items-center justify-center">
                   <CardContent className="text-center py-12">

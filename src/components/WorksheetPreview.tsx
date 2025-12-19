@@ -66,14 +66,21 @@ const customIconMap: Record<string, CustomIcon> = {
 const lucideIconMap: Record<string, LucideIcon> = {
   fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
   rabbit: Rat, mouse: Rat, rat: Rat, bug: Bug, turtle: Turtle, snail: Snail,
+  // Family members - all use User icon
   father: User, mother: User, dad: User, mom: User, parent: User,
+  brother: User, sister: User, grandma: User, grandpa: User, grandmother: User, grandfather: User,
+  uncle: User, aunt: User, cousin: User, family: User,
   girl: Baby, boy: Baby, man: User, woman: User, baby: Baby, child: Baby, kid: Baby,
+  // Nature
   flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
   leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, water: Droplets, fire: Flame,
+  // Food
   apple: Apple, banana: Banana, cherry: Cherry, grape: Grape, fruit: Apple,
   cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, ice: IceCreamCone, milk: Milk, food: Pizza,
+  // Vehicles
   car: Car, bus: Bus, bike: Bike, bicycle: Bike, plane: Plane, airplane: Plane, 
   ship: Ship, boat: Ship, train: Train, truck: Truck,
+  // Objects
   book: Book, pencil: Pencil, pen: Pencil, house: Home, home: Home, umbrella: Umbrella,
   camera: Camera, music: Music, gift: Gift, present: Gift, clock: Clock, watch: Clock,
   key: Key, lock: Lock, bell: Bell, phone: Phone, telephone: Phone, shirt: Shirt, clothes: Shirt,

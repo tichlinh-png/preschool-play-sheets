@@ -208,17 +208,6 @@ export const WorksheetPreview = ({
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
-        <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
-          <div className="grid grid-cols-2 gap-2">
-            {colorInstructions.map((instruction, idx) => (
-              <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
-                <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">{idx + 1}</span>
-                <span className="text-gray-700"><strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong></span>
-              </div>
-            ))}
-          </div>
-        </div>
         <div className="grid grid-cols-2 gap-4">
           {colorInstructions.map((instruction, idx) => (
             <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-4">
@@ -247,8 +236,7 @@ export const WorksheetPreview = ({
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
+              <div className="flex items-center justify-center">
                 <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
                 </div>
               </div>

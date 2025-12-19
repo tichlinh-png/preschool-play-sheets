@@ -37,11 +37,11 @@ const Index = () => {
 
   const handleGenerate = async () => {
     if (selectedTypes.length === 0) {
-      toast.error("Vui lòng chọn ít nhất một loại worksheet!");
+      toast.error("Please select at least one worksheet type!");
       return;
     }
     if (!description && files.length === 0) {
-      toast.error("Vui lòng nhập mô tả hoặc upload file!");
+      toast.error("Please enter a description or upload a file!");
       return;
     }
     setIsGenerating(true);
@@ -58,11 +58,11 @@ const Index = () => {
       if (error) throw new Error(error.message);
       if (data?.worksheets) {
         setGeneratedWorksheets(data.worksheets);
-        toast.success("Tạo worksheet thành công! 🎉");
+        toast.success("Worksheets created successfully! 🎉");
       }
     } catch (err) {
       console.error(err);
-      toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
+      toast.error("Something went wrong. Please try again!");
     } finally {
       setIsGenerating(false);
     }
@@ -72,8 +72,8 @@ const Index = () => {
     setIsExporting(true);
     try {
       await exportToPDF(generatedWorksheets, 'worksheets-container');
-      toast.success("Đã xuất file PDF! 📄");
-    } catch { toast.error("Lỗi xuất PDF"); }
+      toast.success("PDF exported! 📄");
+    } catch { toast.error("Error exporting PDF"); }
     finally { setIsExporting(false); }
   };
 
@@ -81,8 +81,8 @@ const Index = () => {
     setIsExporting(true);
     try {
       await exportToWord(generatedWorksheets);
-      toast.success("Đã xuất file Word! 📝");
-    } catch { toast.error("Lỗi xuất Word"); }
+      toast.success("Word file exported! 📝");
+    } catch { toast.error("Error exporting Word"); }
     finally { setIsExporting(false); }
   };
 
@@ -102,21 +102,21 @@ const Index = () => {
 
       <section className="container mx-auto px-4 py-8 text-center">
         <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight max-w-3xl mx-auto">
-          Tạo worksheet tiếng Anh <span className="gradient-primary bg-clip-text text-transparent">bằng AI</span> cho bé
+          Create <span className="gradient-primary bg-clip-text text-transparent">Fun Worksheets</span> for Kids
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
-          Upload ảnh hoặc mô tả - AI tạo worksheet trace chữ, tô màu, odd one out
+          Upload an image or describe content - Generate tracing, coloring, and odd one out worksheets
         </p>
       </section>
 
       <main className="container mx-auto px-4 pb-16">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-6">
-            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><FileText className="w-5 h-5 text-primary" />Upload tài liệu</CardTitle></CardHeader><CardContent><FileUpload onFilesChange={setFiles} /></CardContent></Card>
-            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Wand2 className="w-5 h-5 text-secondary" />Mô tả nội dung</CardTitle></CardHeader><CardContent><textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Ví dụ: Chữ cái A với hình Apple..." className="w-full h-32 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none" /></CardContent></Card>
-            <Card variant="playful"><CardHeader><CardTitle>Chọn loại worksheet</CardTitle></CardHeader><CardContent><WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} /></CardContent></Card>
+            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><FileText className="w-5 h-5 text-primary" />Upload Files</CardTitle></CardHeader><CardContent><FileUpload onFilesChange={setFiles} /></CardContent></Card>
+            <Card variant="playful"><CardHeader><CardTitle className="flex items-center gap-2"><Wand2 className="w-5 h-5 text-secondary" />Describe Content</CardTitle></CardHeader><CardContent><textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Example: Fish, Father, Goat, Girl..." className="w-full h-32 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none" /></CardContent></Card>
+            <Card variant="playful"><CardHeader><CardTitle>Choose Worksheet Type</CardTitle></CardHeader><CardContent><WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} /></CardContent></Card>
             <Button variant="accent" size="xl" className="w-full" onClick={handleGenerate} disabled={isGenerating}>
-              {isGenerating ? <><RefreshCw className="w-5 h-5 animate-spin" />Đang tạo...</> : <><Sparkles className="w-5 h-5" />Tạo Worksheet</>}
+              {isGenerating ? <><RefreshCw className="w-5 h-5 animate-spin" />Generating...</> : <><Sparkles className="w-5 h-5" />Generate Worksheet</>}
             </Button>
           </div>
 
@@ -137,8 +137,8 @@ const Index = () => {
                 <Card variant="elevated" className="min-h-[400px] flex items-center justify-center">
                   <CardContent className="text-center py-12">
                     <div className="w-24 h-24 mx-auto rounded-full bg-muted flex items-center justify-center"><FileText className="w-12 h-12 text-muted-foreground" /></div>
-                    <p className="font-display text-lg font-semibold mt-4">Chưa có worksheet</p>
-                    <p className="text-sm text-muted-foreground mt-1">Nhập mô tả để AI tạo nội dung</p>
+                    <p className="font-display text-lg font-semibold mt-4">No worksheets yet</p>
+                    <p className="text-sm text-muted-foreground mt-1">Enter a description to generate content</p>
                   </CardContent>
                 </Card>
               )}

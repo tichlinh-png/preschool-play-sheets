@@ -1,9 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const WorksheetTypeEnum = z.enum([
+  'trace', 'color', 'counting', 'matching', 
+  'fill-blank', 'odd-one-out', 'circle-correct', 'pattern'
+]);
+
+const requestSchema = z.object({
+  description: z.string().min(1, "Description is required").max(2000, "Description too long"),
+  worksheetTypes: z.array(WorksheetTypeEnum).min(1, "At least one worksheet type required").max(8),
+  imageBase64: z.string().max(15 * 1024 * 1024).optional() // 15MB limit for base64
+});
 
 interface WorksheetRequest {
   description: string;
@@ -96,7 +109,20 @@ serve(async (req) => {
       });
     }
 
-    const { description, worksheetTypes, imageBase64 }: WorksheetRequest = await req.json();
+    // Validate request body
+    let validatedBody: z.infer<typeof requestSchema>;
+    try {
+      const rawBody = await req.json();
+      validatedBody = requestSchema.parse(rawBody);
+    } catch (validationError) {
+      console.error('Input validation failed:', validationError instanceof z.ZodError ? validationError.errors : validationError);
+      return new Response(JSON.stringify({ error: 'Invalid request format. Please check your input.' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { description, worksheetTypes, imageBase64 } = validatedBody;
 
     console.log('Generating worksheets for:', { description, worksheetTypes, hasImage: !!imageBase64 });
 

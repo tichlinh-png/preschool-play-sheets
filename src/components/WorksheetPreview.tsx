@@ -7,12 +7,23 @@ import {
   Bike, Plane, Ship, Train, Truck,
   Camera, Music, Gift, Clock, Key, Lock, Bell, Phone,
   Smile, Frown, Glasses, Crown, Gem, Rat, Bug, Turtle, Snail,
+  Egg, Carrot, Scissors, Brush, Palette, Trophy, Medal,
+  Gamepad2, Tv, Radio, Laptop, Smartphone, Tablet, Headphones,
+  Watch, Wallet, Backpack, Briefcase, Luggage, Armchair, Bed,
+  Lamp, Fan, Refrigerator, Bath, Toilet, Wrench, Hammer,
+  Flashlight, Battery, Lightbulb, Plug, Thermometer,
+  Footprints, Hand, Eye, Ear, Brain,
   LucideIcon, ImageIcon
 } from 'lucide-react';
 import { 
   GoatIcon, ElephantIcon, CowIcon, PigIcon, HorseIcon, 
   SheepIcon, ChickenIcon, DuckIcon, LionIcon, TigerIcon,
-  MonkeyIcon, BearIcon, FrogIcon 
+  MonkeyIcon, BearIcon, FrogIcon,
+  GiraffeIcon, ZebraIcon, CrocodileIcon, DolphinIcon, WhaleIcon,
+  PenguinIcon, OwlIcon, ButterflyIcon, BeeIcon, SpiderIcon, SnakeIcon,
+  DeerIcon, FoxIcon, WolfIcon, PandaIcon, KoalaIcon, KangarooIcon,
+  HippoIcon, RhinoIcon, CamelIcon, SealIcon, OctopusIcon, CrabIcon,
+  StarfishIcon, SquirrelIcon, HedgehogIcon
 } from './icons/AnimalIcons';
 import { ComponentType, SVGProps } from 'react';
 
@@ -56,11 +67,21 @@ function safeString(value: unknown): string {
 type CustomIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
 const customIconMap: Record<string, CustomIcon> = {
+  // Farm animals
   goat: GoatIcon, elephant: ElephantIcon, cow: CowIcon, pig: PigIcon,
   horse: HorseIcon, pony: HorseIcon, sheep: SheepIcon, lamb: SheepIcon,
   chicken: ChickenIcon, hen: ChickenIcon, rooster: ChickenIcon, duck: DuckIcon,
+  // Wild animals
   lion: LionIcon, tiger: TigerIcon, monkey: MonkeyIcon, ape: MonkeyIcon,
   bear: BearIcon, frog: FrogIcon, toad: FrogIcon,
+  giraffe: GiraffeIcon, zebra: ZebraIcon, crocodile: CrocodileIcon, alligator: CrocodileIcon,
+  dolphin: DolphinIcon, whale: WhaleIcon, penguin: PenguinIcon, owl: OwlIcon,
+  butterfly: ButterflyIcon, bee: BeeIcon, spider: SpiderIcon, snake: SnakeIcon,
+  deer: DeerIcon, fox: FoxIcon, wolf: WolfIcon, panda: PandaIcon,
+  koala: KoalaIcon, kangaroo: KangarooIcon, hippo: HippoIcon, hippopotamus: HippoIcon,
+  rhino: RhinoIcon, rhinoceros: RhinoIcon, camel: CamelIcon, seal: SealIcon,
+  octopus: OctopusIcon, crab: CrabIcon, starfish: StarfishIcon,
+  squirrel: SquirrelIcon, hedgehog: HedgehogIcon,
 };
 
 const lucideIconMap: Record<string, LucideIcon> = {
@@ -77,15 +98,33 @@ const lucideIconMap: Record<string, LucideIcon> = {
   // Food
   apple: Apple, banana: Banana, cherry: Cherry, grape: Grape, fruit: Apple,
   cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, ice: IceCreamCone, milk: Milk, food: Pizza,
+  egg: Egg, carrot: Carrot,
   // Vehicles
   car: Car, bus: Bus, bike: Bike, bicycle: Bike, plane: Plane, airplane: Plane, 
   ship: Ship, boat: Ship, train: Train, truck: Truck,
   // Objects
   book: Book, pencil: Pencil, pen: Pencil, house: Home, home: Home, umbrella: Umbrella,
-  camera: Camera, music: Music, gift: Gift, present: Gift, clock: Clock, watch: Clock,
+  camera: Camera, music: Music, gift: Gift, present: Gift, clock: Clock, watch: Watch,
   key: Key, lock: Lock, bell: Bell, phone: Phone, telephone: Phone, shirt: Shirt, clothes: Shirt,
   heart: Heart, love: Heart, smile: Smile, happy: Smile, sad: Frown, cry: Frown,
   glasses: Glasses, crown: Crown, gem: Gem, diamond: Gem,
+  // School & Art
+  scissors: Scissors, brush: Brush, palette: Palette,
+  // Sports & Games
+  trophy: Trophy, medal: Medal, gamepad: Gamepad2, game: Gamepad2,
+  // Electronics
+  tv: Tv, television: Tv, radio: Radio, laptop: Laptop, computer: Laptop,
+  smartphone: Smartphone, mobile: Smartphone, tablet: Tablet, headphones: Headphones,
+  // Accessories
+  wallet: Wallet, backpack: Backpack, bag: Backpack, briefcase: Briefcase, luggage: Luggage, suitcase: Luggage,
+  // Furniture
+  chair: Armchair, sofa: Armchair, bed: Bed, lamp: Lamp, fan: Fan,
+  fridge: Refrigerator, refrigerator: Refrigerator, bath: Bath, bathtub: Bath, toilet: Toilet,
+  // Tools
+  wrench: Wrench, hammer: Hammer, flashlight: Flashlight,
+  battery: Battery, lightbulb: Lightbulb, bulb: Lightbulb, plug: Plug, thermometer: Thermometer,
+  // Body parts
+  foot: Footprints, feet: Footprints, hand: Hand, eye: Eye, ear: Ear, brain: Brain,
 };
 
 // Helper function to check if a word has an available icon

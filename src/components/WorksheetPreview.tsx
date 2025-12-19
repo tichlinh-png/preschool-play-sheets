@@ -125,7 +125,7 @@ export const WorksheetPreview = ({
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
 
-  const WorksheetHeader = ({ title }: { title: string }) => (
+  const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
     <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
       <div className="flex items-center justify-between mb-2">
         {schoolLogo ? (
@@ -140,9 +140,14 @@ export const WorksheetPreview = ({
         </div>
         <div className="w-12 h-12" />
       </div>
-      <p className="text-sm text-gray-600 mb-2">Name: _________________ Date: _________</p>
-      <h3 className="font-display text-2xl font-bold text-gray-800">{title}</h3>
-      <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
+      <p className="text-sm text-gray-600 mb-3">Name: _________________ Date: _________</p>
+      <div className="border-2 border-gray-400 rounded-lg p-3 bg-gray-50 inline-block min-w-[80%]">
+        <div className="flex items-center justify-center gap-2 mb-1">
+          <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
+          <h3 className="font-display text-xl font-bold text-gray-800">{title}</h3>
+        </div>
+        <p className="text-sm text-gray-600">{safeString(data?.instructions) || worksheetTopic}</p>
+      </div>
     </div>
   );
 
@@ -150,7 +155,7 @@ export const WorksheetPreview = ({
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <WorksheetHeader title="Trace the Words" />
+        <WorksheetHeader title="Trace the Words" exerciseNumber={1} />
         <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-3">
@@ -202,7 +207,7 @@ export const WorksheetPreview = ({
     const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <WorksheetHeader title="Coloring Activity" />
+        <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
         <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
           <div className="grid grid-cols-2 gap-2">
@@ -231,7 +236,7 @@ export const WorksheetPreview = ({
     const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <WorksheetHeader title="Counting Activity" />
+        <WorksheetHeader title="Counting Activity" exerciseNumber={3} />
         <div className="space-y-4">
           {countingItems.map((item, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-4">
@@ -259,7 +264,7 @@ export const WorksheetPreview = ({
     const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <WorksheetHeader title="Matching Activity" />
+        <WorksheetHeader title="Matching Activity" exerciseNumber={4} />
         <div className="flex justify-between items-start gap-6">
           <div className="flex-1 space-y-4">
             {matchingPairs.map((pair, idx) => (

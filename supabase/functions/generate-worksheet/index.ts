@@ -27,10 +27,16 @@ interface WorksheetContent {
 
 // List of words that have available icons in the frontend
 const availableIconWords = new Set([
-  // Custom animal icons
+  // Custom animal icons - Farm
   'goat', 'elephant', 'cow', 'pig', 'horse', 'pony', 'sheep', 'lamb',
-  'chicken', 'hen', 'rooster', 'duck', 'lion', 'tiger', 'monkey', 'ape',
-  'bear', 'frog', 'toad',
+  'chicken', 'hen', 'rooster', 'duck',
+  // Custom animal icons - Wild
+  'lion', 'tiger', 'monkey', 'ape', 'bear', 'frog', 'toad',
+  'giraffe', 'zebra', 'crocodile', 'alligator', 'dolphin', 'whale',
+  'penguin', 'owl', 'butterfly', 'bee', 'spider', 'snake',
+  'deer', 'fox', 'wolf', 'panda', 'koala', 'kangaroo',
+  'hippo', 'hippopotamus', 'rhino', 'rhinoceros', 'camel', 'seal',
+  'octopus', 'crab', 'starfish', 'squirrel', 'hedgehog',
   // Lucide icons - animals
   'fish', 'cat', 'dog', 'bird', 'rabbit', 'mouse', 'rat', 'bug', 'turtle', 'snail',
   // Family members
@@ -42,12 +48,27 @@ const availableIconWords = new Set([
   'flower', 'tree', 'sun', 'moon', 'star', 'leaf', 'mountain', 'cloud', 'rain', 'water', 'fire',
   // Food
   'apple', 'banana', 'cherry', 'grape', 'fruit', 'cookie', 'cake', 'pizza', 'icecream', 'ice', 'milk', 'food',
+  'egg', 'carrot',
   // Vehicles
   'car', 'bus', 'bike', 'bicycle', 'plane', 'airplane', 'ship', 'boat', 'train', 'truck',
   // Objects
   'book', 'pencil', 'pen', 'house', 'home', 'umbrella', 'camera', 'music', 'gift', 'present',
   'clock', 'watch', 'key', 'lock', 'bell', 'phone', 'telephone', 'shirt', 'clothes',
-  'heart', 'love', 'smile', 'happy', 'sad', 'cry', 'glasses', 'crown', 'gem', 'diamond'
+  'heart', 'love', 'smile', 'happy', 'sad', 'cry', 'glasses', 'crown', 'gem', 'diamond',
+  // School & Art
+  'scissors', 'brush', 'palette',
+  // Sports & Games
+  'trophy', 'medal', 'gamepad', 'game',
+  // Electronics
+  'tv', 'television', 'radio', 'laptop', 'computer', 'smartphone', 'mobile', 'tablet', 'headphones',
+  // Accessories
+  'wallet', 'backpack', 'bag', 'briefcase', 'luggage', 'suitcase',
+  // Furniture
+  'chair', 'sofa', 'bed', 'lamp', 'fan', 'fridge', 'refrigerator', 'bath', 'bathtub', 'toilet',
+  // Tools
+  'wrench', 'hammer', 'flashlight', 'battery', 'lightbulb', 'bulb', 'plug', 'thermometer',
+  // Body parts
+  'foot', 'feet', 'hand', 'eye', 'ear', 'brain'
 ]);
 
 // Helper function to check if a word has an available icon

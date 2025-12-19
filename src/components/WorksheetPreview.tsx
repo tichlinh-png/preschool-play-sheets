@@ -140,9 +140,9 @@ export const WorksheetPreview = ({
         </div>
         <div className="w-12 h-12" />
       </div>
+      <p className="text-sm text-gray-600 mb-2">Name: _________________ Date: _________</p>
       <h3 className="font-display text-2xl font-bold text-gray-800">{title}</h3>
       <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
-      <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
     </div>
   );
 

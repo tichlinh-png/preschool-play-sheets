@@ -54,45 +54,45 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
   const worksheetTopic = safeString(data?.topic) || topic;
 
   if (worksheetType === "trace") {
-    const letters = (data?.letters || ["A"]).map(safeString).filter(Boolean);
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     
     return (
       <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
         <h3 className="font-display text-xl font-bold text-center mb-2 text-foreground">
-          ✏️ Trace the Letter
+          ✏️ Trace the Words
         </h3>
         <p className="text-center text-sm text-muted-foreground mb-6">
           {safeString(data?.instructions) || `Learn about: ${worksheetTopic}`}
         </p>
         <div className="space-y-6">
-          {letters.map((letter, idx) => (
-            <div key={idx} className="space-y-4">
-              <div className="text-center">
-                <span className="text-8xl font-display font-bold text-primary/20 tracking-widest"
-                  style={{ WebkitTextStroke: "3px hsl(var(--primary) / 0.4)" }}>
-                  {letter}
-                </span>
+          {words.map((word, idx) => (
+            <div key={idx} className="space-y-3">
+              {/* Word with emoji */}
+              <div className="flex items-center gap-3 justify-center">
+                <span className="text-4xl">{getEmoji(word)}</span>
+                <span className="text-2xl font-display font-bold text-foreground">{word}</span>
               </div>
-              <div className="flex justify-center gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-14 h-14 border-2 border-dashed border-muted-foreground/30 rounded-xl flex items-center justify-center">
-                    <span className="text-2xl font-display text-muted-foreground/20">{letter}</span>
-                  </div>
-                ))}
+              {/* Traceable word */}
+              <div className="flex justify-center">
+                <div className="px-6 py-4 bg-muted/30 rounded-xl border-2 border-dashed border-primary/30">
+                  <span 
+                    className="text-4xl font-display font-bold tracking-[0.2em]"
+                    style={{ 
+                      color: 'transparent',
+                      WebkitTextStroke: '2px hsl(var(--primary) / 0.4)',
+                      textShadow: 'none'
+                    }}
+                  >
+                    {word}
+                  </span>
+                </div>
+              </div>
+              {/* Practice line */}
+              <div className="h-12 border-b-2 border-dashed border-muted-foreground/30 mx-4">
+                <span className="text-xs text-muted-foreground">Write here:</span>
               </div>
             </div>
           ))}
-          {words.length > 0 && (
-            <div className="mt-4 p-4 bg-muted/50 rounded-xl">
-              <p className="text-center text-sm font-medium text-foreground">
-                Words: <span className="text-primary">{words.join(", ")}</span>
-              </p>
-            </div>
-          )}
-          <div className="h-16 border-b-4 border-dashed border-primary/30 relative mt-6">
-            <div className="absolute -top-2 left-4 text-xs text-muted-foreground">Practice writing here...</div>
-          </div>
         </div>
       </div>
     );

@@ -11,7 +11,7 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
   const pdf = new jsPDF('p', 'mm', 'a4');
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const margin = 15;
+  const margin = 10;
 
   // Get all worksheet cards
   const worksheetCards = element.querySelectorAll('[data-worksheet-card]');
@@ -19,12 +19,13 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
   for (let i = 0; i < worksheetCards.length; i++) {
     const card = worksheetCards[i] as HTMLElement;
     
-    // Create canvas from the card
+    // Create canvas from the card with better settings
     const canvas = await html2canvas(card, {
       scale: 2,
       backgroundColor: '#ffffff',
       logging: false,
       useCORS: true,
+      allowTaint: true,
     });
 
     const imgData = canvas.toDataURL('image/png');
@@ -35,34 +36,28 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
       pdf.addPage();
     }
 
-    // Add title
-    pdf.setFontSize(20);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('KidsSheet - English Worksheet', pageWidth / 2, margin, { align: 'center' });
+    // Add worksheet image - fit to page
+    const maxHeight = pageHeight - (margin * 2);
     
-    // Add worksheet image
-    const yPosition = margin + 15;
-    
-    if (imgHeight > pageHeight - yPosition - margin) {
+    if (imgHeight > maxHeight) {
       // Scale down if too tall
-      const scaledHeight = pageHeight - yPosition - margin - 10;
-      const scaledWidth = (canvas.width * scaledHeight) / canvas.height;
-      pdf.addImage(imgData, 'PNG', (pageWidth - scaledWidth) / 2, yPosition, scaledWidth, scaledHeight);
+      const scaledWidth = (canvas.width * maxHeight) / canvas.height;
+      const xOffset = (pageWidth - scaledWidth) / 2;
+      pdf.addImage(imgData, 'PNG', xOffset, margin, scaledWidth, maxHeight);
     } else {
-      pdf.addImage(imgData, 'PNG', margin, yPosition, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
     }
-
-    // Add footer
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(`Page ${i + 1} of ${worksheetCards.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
   }
 
   pdf.save('kidssheet-worksheets.pdf');
 };
 
+export const printWorksheets = () => {
+  window.print();
+};
+
 export const exportToWord = async (worksheets: WorksheetData[]): Promise<void> => {
-  // Generate HTML content for Word
+  // Generate HTML content for Word with embedded styles
   let htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -70,118 +65,144 @@ export const exportToWord = async (worksheets: WorksheetData[]): Promise<void> =
       <meta charset="utf-8">
       <title>KidsSheet Worksheets</title>
       <style>
-        body { font-family: Arial, sans-serif; padding: 40px; }
-        .worksheet { page-break-after: always; margin-bottom: 40px; }
+        @page { size: A4; margin: 15mm; }
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .worksheet { page-break-after: always; margin-bottom: 30px; border: 2px solid #333; padding: 20px; border-radius: 10px; }
         .worksheet:last-child { page-break-after: avoid; }
-        h1 { text-align: center; color: #333; font-size: 24px; }
-        h2 { text-align: center; color: #333; font-size: 20px; }
-        .topic { text-align: center; font-size: 16px; margin: 20px 0; }
-        .instructions { text-align: center; font-style: italic; color: #666; margin: 15px 0; }
-        .letter-big { text-align: center; font-size: 120px; color: #ccc; font-weight: bold; letter-spacing: 20px; }
-        .practice-boxes { text-align: center; margin: 20px 0; }
-        .box { display: inline-block; width: 60px; height: 60px; border: 2px dashed #999; margin: 5px; }
-        .words { text-align: center; background: #f5f5f5; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 400px; }
-        .practice-line { border-bottom: 3px dashed #999; margin: 40px 20px; height: 60px; }
-        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 30px 0; }
-        .grid-item { width: 100px; height: 100px; border: 2px solid #999; display: flex; align-items: center; justify-content: center; font-size: 48px; border-radius: 10px; }
-        .instruction-list { background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; }
-        .instruction-item { margin: 10px 0; }
-        .answer-box { width: 60px; height: 60px; border: 2px dashed #999; display: inline-block; margin: 10px; }
-        .matching-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
-        .matching-item { padding: 15px 25px; border: 2px solid #999; border-radius: 10px; }
+        .header { text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 15px; margin-bottom: 20px; }
+        .header h2 { margin: 0 0 5px 0; font-size: 24px; }
+        .header p { margin: 5px 0; color: #666; }
+        .name-date { font-size: 12px; color: #999; }
+        .item-box { border: 2px solid #666; border-radius: 8px; padding: 15px; margin: 10px 0; text-align: center; }
+        .trace-word { font-size: 36px; letter-spacing: 8px; color: #ccc; font-weight: bold; border: 2px dashed #999; padding: 15px; margin: 10px 0; text-align: center; }
+        .practice-line { border-bottom: 2px dashed #999; height: 40px; margin: 10px 0; }
+        .grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .grid-item { width: 45%; border: 2px solid #666; border-radius: 8px; padding: 20px; text-align: center; min-height: 120px; }
+        .instruction-box { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .instruction-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+        .number-circle { width: 24px; height: 24px; background: #333; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        .answer-box { width: 50px; height: 50px; border: 2px dashed #666; display: inline-block; margin-left: 10px; }
+        .matching-container { display: flex; justify-content: space-between; }
+        .matching-col { width: 45%; }
+        .matching-item { border: 2px solid #666; border-radius: 8px; padding: 12px 20px; margin: 10px 0; text-align: center; }
+        .icon-placeholder { font-size: 48px; margin-bottom: 10px; }
       </style>
     </head>
     <body>
   `;
 
-  worksheets.forEach((worksheet, index) => {
+  worksheets.forEach((worksheet) => {
     htmlContent += `<div class="worksheet">`;
-    htmlContent += `<h1>KidsSheet - English Worksheet</h1>`;
     
     if (worksheet.type === 'trace') {
-      htmlContent += `<h2>Trace the Words</h2>`;
-      htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
-      if (worksheet.instructions) {
-        htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
-      }
+      htmlContent += `
+        <div class="header">
+          <h2>✏️ Trace the Words</h2>
+          <p>${worksheet.instructions || worksheet.topic}</p>
+          <p class="name-date">Name: _________________ Date: _________</p>
+        </div>
+      `;
       
       if (worksheet.words && worksheet.words.length > 0) {
+        htmlContent += `<div class="grid">`;
         worksheet.words.forEach(word => {
-          htmlContent += `<div style="text-align: center; margin: 30px 0;">`;
-          htmlContent += `<div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">${word}</div>`;
-          htmlContent += `<div style="font-size: 48px; color: #ccc; letter-spacing: 10px; border: 2px dashed #ccc; padding: 20px; display: inline-block;">${word}</div>`;
-          htmlContent += `</div>`;
-          htmlContent += `<div class="practice-line"><small style="color: #999;">Write here:</small></div>`;
+          htmlContent += `
+            <div class="grid-item">
+              <div class="icon-placeholder">📝</div>
+              <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${word}</div>
+              <div class="trace-word">${word}</div>
+              <div class="practice-line"></div>
+              <div class="practice-line"></div>
+            </div>
+          `;
         });
+        htmlContent += `</div>`;
       }
     }
     
     if (worksheet.type === 'color') {
-      htmlContent += `<h2>Coloring Activity</h2>`;
-      htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
-      if (worksheet.instructions) {
-        htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
-      }
+      htmlContent += `
+        <div class="header">
+          <h2>🎨 Coloring Activity</h2>
+          <p>${worksheet.instructions || 'Follow the coloring guide!'}</p>
+          <p class="name-date">Name: _________________ Date: _________</p>
+        </div>
+      `;
       
       if (worksheet.colorInstructions && worksheet.colorInstructions.length > 0) {
-        htmlContent += `<div class="instruction-list">`;
-        htmlContent += `<p><strong>Instructions:</strong></p>`;
+        htmlContent += `<div class="instruction-box"><p style="font-weight: bold; margin-bottom: 10px;">Coloring Guide:</p>`;
         worksheet.colorInstructions.forEach((instruction, idx) => {
-          htmlContent += `<div class="instruction-item">${idx + 1}. Color the <strong>${instruction.item}</strong> → <strong>${instruction.color.toUpperCase()}</strong></div>`;
+          htmlContent += `
+            <div class="instruction-item">
+              <span class="number-circle">${idx + 1}</span>
+              <span><strong style="text-transform: capitalize;">${instruction.item}</strong> → <strong style="text-transform: uppercase;">${instruction.color}</strong></span>
+            </div>
+          `;
         });
         htmlContent += `</div>`;
         
         htmlContent += `<div class="grid">`;
         worksheet.colorInstructions.forEach(instruction => {
-          htmlContent += `<div class="grid-item" style="flex-direction: column;"><div style="font-size: 24px;">🖼️</div><div style="font-size: 14px; margin-top: 5px;">${instruction.item}</div></div>`;
+          htmlContent += `
+            <div class="grid-item">
+              <div class="icon-placeholder">🖼️</div>
+              <div style="font-weight: bold; text-transform: capitalize;">${instruction.item}</div>
+              <div style="font-size: 12px; color: #666;">(${instruction.color})</div>
+            </div>
+          `;
         });
         htmlContent += `</div>`;
       }
     }
     
     if (worksheet.type === 'counting') {
-      htmlContent += `<h2>Counting Activity</h2>`;
-      htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
-      if (worksheet.instructions) {
-        htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
-      }
+      htmlContent += `
+        <div class="header">
+          <h2>🔢 Counting Activity</h2>
+          <p>${worksheet.instructions || 'Count and write the number!'}</p>
+          <p class="name-date">Name: _________________ Date: _________</p>
+        </div>
+      `;
       
       if (worksheet.countingItems && worksheet.countingItems.length > 0) {
         worksheet.countingItems.forEach(item => {
-          htmlContent += `<div style="border: 2px solid #999; border-radius: 10px; padding: 20px; margin: 20px 0;">`;
-          htmlContent += `<div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">`;
+          htmlContent += `
+            <div class="item-box">
+              <div style="margin-bottom: 10px;">`;
           for (let i = 0; i < item.count; i++) {
-            htmlContent += `<span style="font-size: 32px;">⭐</span>`;
+            htmlContent += `<span style="font-size: 32px; margin: 0 5px;">⭐</span>`;
           }
-          htmlContent += `</div>`;
-          htmlContent += `<div style="text-align: center;">How many <strong>${item.item}s</strong>? <span class="answer-box"></span></div>`;
-          htmlContent += `</div>`;
+          htmlContent += `</div>
+              <div>How many <strong style="text-transform: capitalize;">${item.item}s</strong>? <span class="answer-box"></span></div>
+            </div>
+          `;
         });
       }
     }
     
     if (worksheet.type === 'matching') {
-      htmlContent += `<h2>Matching Activity</h2>`;
-      htmlContent += `<div class="topic">Topic: ${worksheet.topic}</div>`;
-      if (worksheet.instructions) {
-        htmlContent += `<div class="instructions">${worksheet.instructions}</div>`;
-      }
+      htmlContent += `
+        <div class="header">
+          <h2>🔗 Matching Activity</h2>
+          <p>${worksheet.instructions || 'Draw lines to match pictures with words!'}</p>
+          <p class="name-date">Name: _________________ Date: _________</p>
+        </div>
+      `;
       
       if (worksheet.matchingPairs && worksheet.matchingPairs.length > 0) {
-        htmlContent += `<div style="display: flex; justify-content: space-around;">`;
-        htmlContent += `<div>`;
-        worksheet.matchingPairs.forEach(pair => {
-          htmlContent += `<div class="matching-item" style="margin: 15px 0;">🖼️ ${pair.image}</div>`;
-        });
-        htmlContent += `</div>`;
-        htmlContent += `<div>`;
         const shuffled = [...worksheet.matchingPairs].sort(() => Math.random() - 0.5);
+        htmlContent += `<div class="matching-container">`;
+        htmlContent += `<div class="matching-col">`;
+        worksheet.matchingPairs.forEach(pair => {
+          htmlContent += `<div class="matching-item"><span style="font-size: 32px;">🖼️</span> ${pair.image}</div>`;
+        });
+        htmlContent += `</div>`;
+        htmlContent += `<div class="matching-col">`;
         shuffled.forEach(pair => {
-          htmlContent += `<div class="matching-item" style="margin: 15px 0;">${pair.word}</div>`;
+          htmlContent += `<div class="matching-item" style="font-weight: bold;">${pair.word}</div>`;
         });
         htmlContent += `</div>`;
         htmlContent += `</div>`;
-        htmlContent += `<div class="instructions">Draw lines to match pictures with words!</div>`;
       }
     }
     

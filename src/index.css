@@ -213,3 +213,31 @@
     transform: rotate(3deg);
   }
 }
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  header, footer, .no-print, button, .gradient-hero {
+    display: none !important;
+  }
+  
+  #worksheets-container {
+    padding: 0 !important;
+  }
+  
+  [data-worksheet-card] {
+    page-break-inside: avoid;
+    page-break-after: always;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+  
+  [data-worksheet-card]:last-child {
+    page-break-after: auto;
+  }
+}

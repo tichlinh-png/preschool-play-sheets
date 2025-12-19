@@ -25,6 +25,41 @@ interface WorksheetContent {
   instructions?: string;
 }
 
+// List of words that have available icons in the frontend
+const availableIconWords = new Set([
+  // Custom animal icons
+  'goat', 'elephant', 'cow', 'pig', 'horse', 'pony', 'sheep', 'lamb',
+  'chicken', 'hen', 'rooster', 'duck', 'lion', 'tiger', 'monkey', 'ape',
+  'bear', 'frog', 'toad',
+  // Lucide icons - animals
+  'fish', 'cat', 'dog', 'bird', 'rabbit', 'mouse', 'rat', 'bug', 'turtle', 'snail',
+  // Family members
+  'father', 'mother', 'dad', 'mom', 'parent', 'brother', 'sister', 
+  'grandma', 'grandpa', 'grandmother', 'grandfather', 'uncle', 'aunt', 'cousin', 'family',
+  // People
+  'girl', 'boy', 'man', 'woman', 'baby', 'child', 'kid',
+  // Nature
+  'flower', 'tree', 'sun', 'moon', 'star', 'leaf', 'mountain', 'cloud', 'rain', 'water', 'fire',
+  // Food
+  'apple', 'banana', 'cherry', 'grape', 'fruit', 'cookie', 'cake', 'pizza', 'icecream', 'ice', 'milk', 'food',
+  // Vehicles
+  'car', 'bus', 'bike', 'bicycle', 'plane', 'airplane', 'ship', 'boat', 'train', 'truck',
+  // Objects
+  'book', 'pencil', 'pen', 'house', 'home', 'umbrella', 'camera', 'music', 'gift', 'present',
+  'clock', 'watch', 'key', 'lock', 'bell', 'phone', 'telephone', 'shirt', 'clothes',
+  'heart', 'love', 'smile', 'happy', 'sad', 'cry', 'glasses', 'crown', 'gem', 'diamond'
+]);
+
+// Helper function to check if a word has an available icon
+const hasAvailableIcon = (word: string): boolean => {
+  return availableIconWords.has(word.toLowerCase().trim());
+};
+
+// Filter function to remove words without icons
+const filterWordsWithIcons = (words: string[]): string[] => {
+  return words.filter(word => hasAvailableIcon(word));
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -182,7 +217,16 @@ serve(async (req) => {
       const content = data.choices?.[0]?.message?.content;
 
       // Parse user input words - this is the source of truth
-      const userWords = description.split(',').map(w => w.trim()).filter(Boolean);
+      // Filter out words that don't have available icons
+      const allUserWords = description.split(',').map(w => w.trim()).filter(Boolean);
+      const userWords = filterWordsWithIcons(allUserWords);
+      
+      // Log which words were filtered out
+      const filteredOutWords = allUserWords.filter(w => !hasAvailableIcon(w));
+      if (filteredOutWords.length > 0) {
+        console.log('Filtered out words without icons:', filteredOutWords);
+      }
+      
       const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
 
       if (content) {
@@ -246,22 +290,54 @@ serve(async (req) => {
               };
             });
           } else if (type === 'odd-one-out') {
-            worksheet.oddOneOutGroups = parsed.oddOneOutGroups || [{
+            // Filter AI generated groups to only include words with available icons
+            const aiGroups = parsed.oddOneOutGroups || [];
+            const filteredGroups = aiGroups.map((group: any) => {
+              const filteredItems = filterWordsWithIcons(group.items || []);
+              return {
+                items: filteredItems.length >= 4 ? filteredItems.slice(0, 4) : filteredItems,
+                oddItem: hasAvailableIcon(group.oddItem) ? group.oddItem : filteredItems[filteredItems.length - 1],
+                reason: group.reason || "different category"
+              };
+            }).filter((group: any) => group.items.length >= 3);
+            
+            worksheet.oddOneOutGroups = filteredGroups.length > 0 ? filteredGroups : (userWords.length >= 3 ? [{
               items: userWords.slice(0, 4),
               oddItem: userWords[userWords.length - 1] || userWords[0],
               reason: "different category"
-            }];
+            }] : []);
           } else if (type === 'circle-correct') {
-            worksheet.circleCorrectItems = parsed.circleCorrectItems || [{
+            // Filter AI generated items to only include words with available icons
+            const aiItems = parsed.circleCorrectItems || [];
+            const filteredItems = aiItems.map((item: any) => {
+              const filteredOptions = filterWordsWithIcons(item.options || []);
+              return {
+                question: item.question,
+                options: filteredOptions.length >= 3 ? filteredOptions.slice(0, 3) : filteredOptions,
+                correctAnswer: hasAvailableIcon(item.correctAnswer) ? item.correctAnswer : filteredOptions[0]
+              };
+            }).filter((item: any) => item.options.length >= 2);
+            
+            worksheet.circleCorrectItems = filteredItems.length > 0 ? filteredItems : (userWords.length >= 2 ? [{
               question: `Which one is a ${userWords[0]}?`,
               options: userWords.slice(0, 3),
               correctAnswer: userWords[0]
-            }];
+            }] : []);
           } else if (type === 'pattern') {
-            worksheet.patternItems = parsed.patternItems || [{
+            // Filter AI generated patterns to only include words with available icons
+            const aiPatterns = parsed.patternItems || [];
+            const filteredPatterns = aiPatterns.map((item: any) => {
+              const filteredSequence = filterWordsWithIcons(item.sequence || []);
+              return {
+                sequence: filteredSequence.length >= 3 ? filteredSequence : filteredSequence,
+                answer: hasAvailableIcon(item.answer) ? item.answer : filteredSequence[filteredSequence.length - 1]
+              };
+            }).filter((item: any) => item.sequence.length >= 3);
+            
+            worksheet.patternItems = filteredPatterns.length > 0 ? filteredPatterns : (userWords.length >= 2 ? [{
               sequence: [userWords[0], userWords[1] || userWords[0], userWords[0], userWords[1] || userWords[0], userWords[0]],
               answer: userWords[1] || userWords[0]
-            }];
+            }] : []);
           }
           
           worksheets.push(worksheet);

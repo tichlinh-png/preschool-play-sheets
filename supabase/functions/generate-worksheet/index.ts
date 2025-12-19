@@ -7,17 +7,21 @@ const corsHeaders = {
 
 interface WorksheetRequest {
   description: string;
-  worksheetTypes: ('trace' | 'color' | 'counting' | 'matching')[];
+  worksheetTypes: ('trace' | 'color' | 'counting' | 'matching' | 'fill-blank' | 'odd-one-out' | 'circle-correct' | 'pattern')[];
   imageBase64?: string;
 }
 
 interface WorksheetContent {
-  type: 'trace' | 'color' | 'counting' | 'matching';
+  type: 'trace' | 'color' | 'counting' | 'matching' | 'fill-blank' | 'odd-one-out' | 'circle-correct' | 'pattern';
   topic: string;
   words?: string[];
   colorInstructions?: { item: string; color: string }[];
   countingItems?: { item: string; count: number }[];
   matchingPairs?: { image: string; word: string }[];
+  fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  oddOneOutGroups?: { items: string[]; oddItem: string; reason: string }[];
+  circleCorrectItems?: { question: string; options: string[]; correctAnswer: string }[];
+  patternItems?: { sequence: string[]; answer: string }[];
   instructions?: string;
 }
 
@@ -78,7 +82,51 @@ serve(async (req) => {
         - topic: a fun title for the worksheet
         - matchingPairs: array with EXACTLY the same number of items as provided, each with "image" (object name) and "word" (the word to match)
           Example: [{"image": "fish", "word": "Fish"}, {"image": "cat", "word": "Cat"}]
-        - instructions: a fun instruction telling kids to draw lines to match pictures with words`
+        - instructions: a fun instruction telling kids to draw lines to match pictures with words`,
+
+      'fill-blank': `Generate a fill-in-the-blank worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        IMPORTANT: Create fill-in-blank exercises for EXACTLY the items provided.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet
+        - fillBlankWords: array where each item has "word" (full word), "blankedWord" (word with ONE letter replaced by _), and "missingLetter" (the removed letter)
+          Example: [{"word": "cat", "blankedWord": "c_t", "missingLetter": "a"}, {"word": "dog", "blankedWord": "d_g", "missingLetter": "o"}]
+        - instructions: a fun instruction telling kids to fill in the missing letter`,
+
+      'odd-one-out': `Generate an odd-one-out worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        Create groups where one item doesn't belong. Use the provided words and add related items to form groups.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet
+        - oddOneOutGroups: array where each item has "items" (array of 4 items), "oddItem" (the different one), and "reason" (why it's different)
+          Example: [{"items": ["cat", "dog", "fish", "apple"], "oddItem": "apple", "reason": "not an animal"}]
+        - instructions: a fun instruction telling kids to find and cross out the odd one`,
+
+      'circle-correct': `Generate a circle-the-correct-answer worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        Create simple questions where kids circle the correct answer from options.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet
+        - circleCorrectItems: array where each item has "question" (simple question), "options" (array of 3 choices), and "correctAnswer" (the right one)
+          Example: [{"question": "Which one can fly?", "options": ["cat", "bird", "fish"], "correctAnswer": "bird"}]
+        - instructions: a fun instruction telling kids to circle the correct answer`,
+
+      pattern: `Generate a pattern completion worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        Create simple repeating patterns using the provided words.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet  
+        - patternItems: array where each item has "sequence" (array of 5 items showing the pattern) and "answer" (what comes next)
+          Example: [{"sequence": ["apple", "banana", "apple", "banana", "apple"], "answer": "banana"}]
+        - instructions: a fun instruction telling kids to complete the pattern`
     };
 
     const worksheets: WorksheetContent[] = [];
@@ -163,7 +211,6 @@ serve(async (req) => {
           if (type === 'trace') {
             worksheet.words = userWords;
           } else if (type === 'color') {
-            // Use AI colors if available, otherwise fallback
             worksheet.colorInstructions = userWords.map((item, i) => {
               const aiColor = parsed.colorInstructions?.find((c: any) => 
                 c.item?.toLowerCase() === item.toLowerCase()
@@ -188,6 +235,33 @@ serve(async (req) => {
               image: item.toLowerCase(),
               word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
             }));
+          } else if (type === 'fill-blank') {
+            worksheet.fillBlankWords = parsed.fillBlankWords || userWords.map(word => {
+              const vowelIndex = word.split('').findIndex(c => 'aeiou'.includes(c.toLowerCase()));
+              const idx = vowelIndex > 0 ? vowelIndex : Math.floor(word.length / 2);
+              return {
+                word: word.toLowerCase(),
+                blankedWord: word.slice(0, idx) + '_' + word.slice(idx + 1),
+                missingLetter: word[idx].toLowerCase()
+              };
+            });
+          } else if (type === 'odd-one-out') {
+            worksheet.oddOneOutGroups = parsed.oddOneOutGroups || [{
+              items: userWords.slice(0, 4),
+              oddItem: userWords[userWords.length - 1] || userWords[0],
+              reason: "different category"
+            }];
+          } else if (type === 'circle-correct') {
+            worksheet.circleCorrectItems = parsed.circleCorrectItems || [{
+              question: `Which one is a ${userWords[0]}?`,
+              options: userWords.slice(0, 3),
+              correctAnswer: userWords[0]
+            }];
+          } else if (type === 'pattern') {
+            worksheet.patternItems = parsed.patternItems || [{
+              sequence: [userWords[0], userWords[1] || userWords[0], userWords[0], userWords[1] || userWords[0], userWords[0]],
+              answer: userWords[1] || userWords[0]
+            }];
           }
           
           worksheets.push(worksheet);
@@ -217,6 +291,33 @@ serve(async (req) => {
               image: item.toLowerCase(),
               word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
             }));
+          } else if (type === 'fill-blank') {
+            fallback.fillBlankWords = userWords.map(word => {
+              const vowelIndex = word.split('').findIndex(c => 'aeiou'.includes(c.toLowerCase()));
+              const idx = vowelIndex > 0 ? vowelIndex : Math.floor(word.length / 2);
+              return {
+                word: word.toLowerCase(),
+                blankedWord: word.slice(0, idx) + '_' + word.slice(idx + 1),
+                missingLetter: word[idx].toLowerCase()
+              };
+            });
+          } else if (type === 'odd-one-out') {
+            fallback.oddOneOutGroups = [{
+              items: userWords.slice(0, 4),
+              oddItem: userWords[userWords.length - 1] || userWords[0],
+              reason: "different category"
+            }];
+          } else if (type === 'circle-correct') {
+            fallback.circleCorrectItems = [{
+              question: `Which one is a ${userWords[0]}?`,
+              options: userWords.slice(0, 3),
+              correctAnswer: userWords[0]
+            }];
+          } else if (type === 'pattern') {
+            fallback.patternItems = [{
+              sequence: [userWords[0], userWords[1] || userWords[0], userWords[0], userWords[1] || userWords[0], userWords[0]],
+              answer: userWords[1] || userWords[0]
+            }];
           }
           
           worksheets.push(fallback);

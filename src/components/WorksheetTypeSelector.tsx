@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Pencil, Palette, Hash, Link2, LucideIcon } from "lucide-react";
+import { Pencil, Palette, Hash, Link2, CircleDot, Shapes, Circle, LayoutList, LucideIcon } from "lucide-react";
 
-export type WorksheetType = "trace" | "color" | "counting" | "matching";
+export type WorksheetType = "trace" | "color" | "counting" | "matching" | "fill-blank" | "odd-one-out" | "circle-correct" | "pattern";
 
 interface WorksheetTypeSelectorProps {
   selected: WorksheetType[];
@@ -50,6 +50,38 @@ const typeOptions: TypeOption[] = [
     color: "text-mint",
     bgColor: "bg-mint/10 hover:bg-mint/20 border-mint/30",
   },
+  {
+    id: "fill-blank",
+    label: "Fill in the Blank",
+    icon: CircleDot,
+    description: "Complete words with missing letters",
+    color: "text-amber-500",
+    bgColor: "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30",
+  },
+  {
+    id: "odd-one-out",
+    label: "Odd One Out",
+    icon: Shapes,
+    description: "Find the different item in group",
+    color: "text-rose-500",
+    bgColor: "bg-rose-500/10 hover:bg-rose-500/20 border-rose-500/30",
+  },
+  {
+    id: "circle-correct",
+    label: "Circle Correct",
+    icon: Circle,
+    description: "Circle the correct answer",
+    color: "text-cyan-500",
+    bgColor: "bg-cyan-500/10 hover:bg-cyan-500/20 border-cyan-500/30",
+  },
+  {
+    id: "pattern",
+    label: "Pattern",
+    icon: LayoutList,
+    description: "Complete the pattern sequence",
+    color: "text-violet-500",
+    bgColor: "bg-violet-500/10 hover:bg-violet-500/20 border-violet-500/30",
+  },
 ];
 
 export const WorksheetTypeSelector = ({
@@ -65,7 +97,7 @@ export const WorksheetTypeSelector = ({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       {typeOptions.map((option) => {
         const isSelected = selected.includes(option.id);
         const Icon = option.icon;

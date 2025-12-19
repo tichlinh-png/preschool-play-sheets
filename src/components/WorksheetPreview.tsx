@@ -110,74 +110,43 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
 
-  // TRACE WORKSHEET - 2 pages layout
+  // TRACE WORKSHEET - single page
   if (worksheetType === "trace") {
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     
     return (
-      <div className="space-y-4">
-        {/* Page 1 */}
-        <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none print:break-after-page">
-          <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-            <h3 className="font-display text-2xl font-bold text-gray-800">Trace the Words</h3>
-            <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
-            <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            {words.slice(0, 4).map((word, idx) => (
-              <div key={idx} className="border border-gray-300 rounded-lg p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <WordIcon word={word} size={32} className="text-gray-700" />
-                  <span className="text-lg font-bold text-gray-800">{word}</span>
-                </div>
-                <div className="bg-gray-50 rounded p-2 mb-2 text-center">
-                  <span className="text-3xl font-bold tracking-widest" style={{ color: 'transparent', WebkitTextStroke: '1.5px #9ca3af' }}>
-                    {word}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                  <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
+          <h3 className="font-display text-2xl font-bold text-gray-800">Trace the Words</h3>
+          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || worksheetTopic}</p>
+          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
         </div>
-
-        {/* Page 2 */}
-        {words.length > 4 && (
-          <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-            <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-              <h3 className="font-display text-2xl font-bold text-gray-800">Trace the Words (continued)</h3>
+        
+        <div className="grid grid-cols-2 gap-4">
+          {words.map((word, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <WordIcon word={word} size={32} className="text-gray-700" />
+                <span className="text-lg font-bold text-gray-800">{word}</span>
+              </div>
+              <div className="bg-gray-50 rounded p-2 mb-2 text-center">
+                <span className="text-3xl font-bold tracking-widest" style={{ color: 'transparent', WebkitTextStroke: '1.5px #9ca3af' }}>
+                  {word}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+              </div>
             </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {words.slice(4, 8).map((word, idx) => (
-                <div key={idx} className="border border-gray-300 rounded-lg p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <WordIcon word={word} size={32} className="text-gray-700" />
-                    <span className="text-lg font-bold text-gray-800">{word}</span>
-                  </div>
-                  <div className="bg-gray-50 rounded p-2 mb-2 text-center">
-                    <span className="text-3xl font-bold tracking-widest" style={{ color: 'transparent', WebkitTextStroke: '1.5px #9ca3af' }}>
-                      {word}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                    <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     );
   }
 
-  // COLOR WORKSHEET - show all images
+  // COLOR WORKSHEET - show exact number of images as colorInstructions
   if (worksheetType === "color") {
     const colorInstructions = data?.colorInstructions || [
       { item: "fish", color: "blue" },
@@ -185,8 +154,9 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     ];
     
     return (
-      <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
         <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
           <h3 className="font-display text-2xl font-bold text-gray-800">Coloring Activity</h3>
           <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Follow the instructions!"}</p>
           <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
@@ -221,7 +191,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     );
   }
 
-  // COUNTING WORKSHEET - 2 pages layout
+  // COUNTING WORKSHEET - single page
   if (worksheetType === "counting") {
     const countingItems = data?.countingItems || [
       { item: "apple", count: 3 },
@@ -229,69 +199,38 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     ];
     
     return (
-      <div className="space-y-4">
-        {/* Page 1 */}
-        <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none print:break-after-page">
-          <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-            <h3 className="font-display text-2xl font-bold text-gray-800">Counting Activity</h3>
-            <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Count and write the number!"}</p>
-            <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
-          </div>
-          
-          <div className="space-y-4">
-            {countingItems.slice(0, 4).map((item, idx) => (
-              <div key={idx} className="border border-gray-300 rounded-lg p-4">
-                <div className="flex flex-wrap justify-center gap-2 mb-3">
-                  {Array.from({ length: item.count }).map((_, i) => (
-                    <div key={i} className="w-10 h-10 flex items-center justify-center">
-                      <WordIcon word={item.item} size={32} className="text-gray-600" />
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-center justify-center gap-3">
-                  <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
-                  <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
-                    <span className="text-gray-300 text-xl">?</span>
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
+          <h3 className="font-display text-2xl font-bold text-gray-800">Counting Activity</h3>
+          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Count and write the number!"}</p>
+          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
+        </div>
+        
+        <div className="space-y-4">
+          {countingItems.map((item, idx) => (
+            <div key={idx} className="border border-gray-300 rounded-lg p-4">
+              <div className="flex flex-wrap justify-center gap-2 mb-3">
+                {Array.from({ length: item.count }).map((_, i) => (
+                  <div key={i} className="w-10 h-10 flex items-center justify-center">
+                    <WordIcon word={item.item} size={32} className="text-gray-600" />
                   </div>
+                ))}
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
+                <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-300 text-xl">?</span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-
-        {/* Page 2 */}
-        {countingItems.length > 4 && (
-          <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-            <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-              <h3 className="font-display text-2xl font-bold text-gray-800">Counting Activity (continued)</h3>
-            </div>
-            
-            <div className="space-y-4">
-              {countingItems.slice(4, 8).map((item, idx) => (
-                <div key={idx} className="border border-gray-300 rounded-lg p-4">
-                  <div className="flex flex-wrap justify-center gap-2 mb-3">
-                    {Array.from({ length: item.count }).map((_, i) => (
-                      <div key={i} className="w-10 h-10 flex items-center justify-center">
-                        <WordIcon word={item.item} size={32} className="text-gray-600" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-center gap-3">
-                    <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
-                    <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
-                      <span className="text-gray-300 text-xl">?</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     );
   }
 
-  // MATCHING WORKSHEET - 2 pages layout
+  // MATCHING WORKSHEET - single page
   if (worksheetType === "matching") {
     const matchingPairs = data?.matchingPairs || [
       { image: "cat", word: "Cat" },
@@ -299,78 +238,39 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
     ];
     
     const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
-    const firstHalf = matchingPairs.slice(0, 4);
-    const secondHalf = matchingPairs.slice(4, 8);
-    const shuffledFirst = [...firstHalf].sort(() => Math.random() - 0.5);
-    const shuffledSecond = [...secondHalf].sort(() => Math.random() - 0.5);
     
     return (
-      <div className="space-y-4">
-        {/* Page 1 */}
-        <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none print:break-after-page">
-          <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-            <h3 className="font-display text-2xl font-bold text-gray-800">Matching Activity</h3>
-            <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Draw lines to match!"}</p>
-            <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
+      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+          <p className="text-xs text-gray-500 mb-1">School: _________________ Teacher: _________________</p>
+          <h3 className="font-display text-2xl font-bold text-gray-800">Matching Activity</h3>
+          <p className="text-sm text-gray-600 mt-1">{safeString(data?.instructions) || "Draw lines to match!"}</p>
+          <p className="text-xs text-gray-400 mt-1">Name: _________________ Date: _________</p>
+        </div>
+        
+        <div className="flex justify-between items-start gap-6">
+          <div className="flex-1 space-y-4">
+            {matchingPairs.map((pair, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <div className="w-16 h-16 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
+                  <WordIcon word={pair.image} size={40} className="text-gray-600" />
+                </div>
+                <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
+              </div>
+            ))}
           </div>
           
-          <div className="flex justify-between items-start gap-6">
-            <div className="flex-1 space-y-4">
-              {firstHalf.map((pair, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <div className="w-16 h-16 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
-                    <WordIcon word={pair.image} size={40} className="text-gray-600" />
-                  </div>
-                  <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
+          <div className="flex-1 space-y-4">
+            {shuffledWords.map((pair, idx) => (
+              <div key={idx} className="flex items-center gap-2 justify-end">
+                <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
+                <div className="px-4 py-3 border-2 border-gray-400 rounded-lg bg-white min-w-[80px] text-center">
+                  <span className="text-lg font-bold text-gray-800 capitalize">{pair.word}</span>
                 </div>
-              ))}
-            </div>
-            
-            <div className="flex-1 space-y-4">
-              {shuffledFirst.map((pair, idx) => (
-                <div key={idx} className="flex items-center gap-2 justify-end">
-                  <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
-                  <div className="px-4 py-3 border-2 border-gray-400 rounded-lg bg-white min-w-[80px] text-center">
-                    <span className="text-lg font-bold text-gray-800 capitalize">{pair.word}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Page 2 */}
-        {secondHalf.length > 0 && (
-          <div className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-            <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-              <h3 className="font-display text-2xl font-bold text-gray-800">Matching Activity (continued)</h3>
-            </div>
-            
-            <div className="flex justify-between items-start gap-6">
-              <div className="flex-1 space-y-4">
-                {secondHalf.map((pair, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <div className="w-16 h-16 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
-                      <WordIcon word={pair.image} size={40} className="text-gray-600" />
-                    </div>
-                    <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex-1 space-y-4">
-                {shuffledSecond.map((pair, idx) => (
-                  <div key={idx} className="flex items-center gap-2 justify-end">
-                    <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
-                    <div className="px-4 py-3 border-2 border-gray-400 rounded-lg bg-white min-w-[80px] text-center">
-                      <span className="text-lg font-bold text-gray-800 capitalize">{pair.word}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   }

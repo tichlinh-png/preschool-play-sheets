@@ -37,48 +37,46 @@ serve(async (req) => {
     console.log('Generating worksheets for:', { description, worksheetTypes, hasImage: !!imageBase64 });
 
     const worksheetPrompts: Record<string, string> = {
-      trace: `Generate a word tracing worksheet for preschool children (2 pages worth of content).
+      trace: `Generate a word tracing worksheet for preschool children.
         The user provided these words: "${description}"
         
-        IMPORTANT: You MUST use EXACTLY the words provided by the user. Include ALL words for tracing practice.
-        For each word, kids will trace the dotted letters.
+        IMPORTANT: Use EXACTLY the words provided by the user, do not add or repeat words.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - words: array containing EXACTLY the words the user provided, repeated if needed to have at least 6-8 words total
+        - words: array containing EXACTLY the words the user provided (no duplicates, no additions)
         - instructions: a fun instruction in English for kids`,
       
-      color: `Generate a coloring worksheet for preschool children (2 pages worth of content).
+      color: `Generate a coloring worksheet for preschool children.
         The user provided these words/objects to color: "${description}"
         
-        IMPORTANT: Create 6-8 specific coloring instructions telling kids which color to use for each item.
-        Use the words provided and repeat or add related items if needed.
+        IMPORTANT: Create coloring instructions for EXACTLY the items provided, do not add extra items.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - colorInstructions: array of 6-8 objects, each with "item" (the object name) and "color" (a simple color like red, blue, green, yellow, orange, purple, pink, brown)
+        - colorInstructions: array with EXACTLY the same number of items as provided, each with "item" (the object name from user input) and "color" (a simple color like red, blue, green, yellow, orange, purple, pink, brown)
           Example: [{"item": "fish", "color": "blue"}, {"item": "apple", "color": "red"}]
         - instructions: a fun instruction telling kids to follow the coloring guide`,
       
-      counting: `Generate a counting worksheet for preschool children (2 pages worth of content).
+      counting: `Generate a counting worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Create 6-8 counting exercises using the provided words.
+        IMPORTANT: Create counting exercises for EXACTLY the items provided, do not add extra items.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - countingItems: array of 6-8 objects with "item" (object name) and "count" (number between 1-10)
+        - countingItems: array with EXACTLY the same number of items as provided, each with "item" (object name) and "count" (number between 1-10)
           Example: [{"item": "fish", "count": 3}, {"item": "apple", "count": 5}]
         - instructions: a fun instruction telling kids to count and write the number`,
       
-      matching: `Generate a matching worksheet for preschool children (2 pages worth of content).
+      matching: `Generate a matching worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Create 6-8 matching pairs where kids connect pictures to words.
+        IMPORTANT: Create matching pairs for EXACTLY the items provided, do not add extra items.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - matchingPairs: array of 6-8 objects with "image" (object name) and "word" (the word to match)
+        - matchingPairs: array with EXACTLY the same number of items as provided, each with "image" (object name) and "word" (the word to match)
           Example: [{"image": "fish", "word": "Fish"}, {"image": "cat", "word": "Cat"}]
         - instructions: a fun instruction telling kids to draw lines to match pictures with words`
     };

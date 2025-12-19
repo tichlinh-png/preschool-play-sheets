@@ -1,5 +1,15 @@
 import { WorksheetType } from "./WorksheetTypeSelector";
 import { cn } from "@/lib/utils";
+import { 
+  Fish, User, Cat, Dog, Bird, Flower2, Trees, Sun, Moon, Star,
+  Car, Bus, Book, Pencil, Home, Apple, Banana, Cherry, Grape,
+  Heart, Baby, Shirt, Cookie, Cake, Pizza, IceCreamCone, Milk,
+  Umbrella, Cloud, Droplets, Flame, Leaf, Mountain,
+  Bike, Plane, Ship, Train, Truck,
+  Camera, Music, Gift, Clock, Key, Lock, Bell, Phone,
+  Smile, Frown, Glasses, Crown, Gem,
+  LucideIcon, ImageIcon
+} from 'lucide-react';
 
 export interface WorksheetData {
   type: WorksheetType;
@@ -24,18 +34,41 @@ function safeString(value: unknown): string {
   return String(value);
 }
 
-function getEmoji(word: unknown): string {
-  const str = safeString(word).toLowerCase();
-  if (!str) return "📷";
+// Map words to Lucide icons
+function getIconForWord(word: string): LucideIcon {
+  const str = word.toLowerCase().trim();
+  if (!str) return ImageIcon;
   
-  const emojiMap: Record<string, string> = {
-    apple: "🍎", banana: "🍌", orange: "🍊", grape: "🍇", strawberry: "🍓",
-    cat: "🐱", dog: "🐶", bird: "🐦", fish: "🐟", rabbit: "🐰", lion: "🦁",
-    sun: "☀️", moon: "🌙", star: "⭐", tree: "🌳", flower: "🌸",
-    car: "🚗", bus: "🚌", ball: "⚽", book: "📚", pencil: "✏️", house: "🏠",
+  const iconMap: Record<string, LucideIcon> = {
+    // Animals
+    fish: Fish, cat: Cat, dog: Dog, bird: Bird, goat: Dog, rabbit: Cat, lion: Cat,
+    // People
+    father: User, mother: User, girl: Baby, boy: Baby, man: User, woman: User, baby: Baby,
+    // Nature
+    flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
+    leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, fire: Flame,
+    // Fruits
+    apple: Apple, banana: Banana, cherry: Cherry, grape: Grape,
+    // Food
+    cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, milk: Milk,
+    // Transport
+    car: Car, bus: Bus, bike: Bike, plane: Plane, ship: Ship, train: Train, truck: Truck,
+    // Objects
+    book: Book, pencil: Pencil, house: Home, home: Home, umbrella: Umbrella,
+    camera: Camera, music: Music, gift: Gift, clock: Clock, key: Key, lock: Lock,
+    bell: Bell, phone: Phone, shirt: Shirt,
+    // Emotions & misc
+    heart: Heart, smile: Smile, happy: Smile, sad: Frown, glasses: Glasses, crown: Crown, gem: Gem,
   };
-  return emojiMap[str] || str.match(/\p{Emoji}/u) ? str : "📷";
+  
+  return iconMap[str] || ImageIcon;
 }
+
+// Icon component that renders a Lucide icon for a word
+const WordIcon = ({ word, size = 48, className = "" }: { word: string; size?: number; className?: string }) => {
+  const IconComponent = getIconForWord(word);
+  return <IconComponent size={size} className={className} strokeWidth={1.5} />;
+};
 
 function getColorHex(color: unknown): string {
   const str = safeString(color).toLowerCase();
@@ -67,9 +100,9 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
         <div className="space-y-6">
           {words.map((word, idx) => (
             <div key={idx} className="space-y-3">
-              {/* Word with emoji */}
+              {/* Word with icon */}
               <div className="flex items-center gap-3 justify-center">
-                <span className="text-4xl">{getEmoji(word)}</span>
+                <WordIcon word={word} size={40} className="text-primary" />
                 <span className="text-2xl font-display font-bold text-foreground">{word}</span>
               </div>
               {/* Traceable word */}
@@ -112,7 +145,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
         </p>
         <div className="flex justify-center">
           <div className="w-48 h-48 border-2 border-foreground/20 rounded-2xl flex items-center justify-center bg-muted/30">
-            <span className="text-6xl">{getEmoji(images[0])}</span>
+            <WordIcon word={images[0]} size={80} className="text-foreground/40" />
           </div>
         </div>
         <div className="flex flex-wrap justify-center gap-2 mt-6">
@@ -127,7 +160,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
           <div className="grid grid-cols-3 gap-3 mt-4">
             {images.slice(1).map((img, idx) => (
               <div key={idx} className="aspect-square border-2 border-dashed border-muted-foreground/30 rounded-xl flex items-center justify-center">
-                <span className="text-3xl">{getEmoji(img)}</span>
+                <WordIcon word={img} size={36} className="text-foreground/40" />
               </div>
             ))}
           </div>
@@ -137,7 +170,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
   }
 
   if (worksheetType === "oddOneOut") {
-    const images = (data?.images || ["🍎", "🍎", "🍎", "🍌"]).map(safeString).filter(Boolean);
+    const images = (data?.images || ["apple", "apple", "apple", "banana"]).map(safeString).filter(Boolean);
     const oddItem = safeString(data?.oddItem);
     
     return (
@@ -151,10 +184,10 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
         <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
           {images.map((img, i) => (
             <div key={i} className={cn(
-              "aspect-square rounded-2xl border-2 border-border flex items-center justify-center text-4xl",
+              "aspect-square rounded-2xl border-2 border-border flex items-center justify-center",
               "hover:border-primary hover:shadow-soft transition-all cursor-pointer bg-muted"
             )}>
-              {img.match(/\p{Emoji}/u) ? img : getEmoji(img)}
+              <WordIcon word={img} size={48} className="text-foreground" />
             </div>
           ))}
         </div>

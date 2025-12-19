@@ -17,13 +17,45 @@ interface WorksheetPreviewProps {
   topic?: string;
 }
 
+// Helper to safely convert to string
+function safeString(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (value === null || value === undefined) return '';
+  return String(value);
+}
+
+function getEmoji(word: unknown): string {
+  const str = safeString(word).toLowerCase();
+  if (!str) return "📷";
+  
+  const emojiMap: Record<string, string> = {
+    apple: "🍎", banana: "🍌", orange: "🍊", grape: "🍇", strawberry: "🍓",
+    cat: "🐱", dog: "🐶", bird: "🐦", fish: "🐟", rabbit: "🐰", lion: "🦁",
+    sun: "☀️", moon: "🌙", star: "⭐", tree: "🌳", flower: "🌸",
+    car: "🚗", bus: "🚌", ball: "⚽", book: "📚", pencil: "✏️", house: "🏠",
+  };
+  return emojiMap[str] || str.match(/\p{Emoji}/u) ? str : "📷";
+}
+
+function getColorHex(color: unknown): string {
+  const str = safeString(color).toLowerCase();
+  if (!str) return "#888888";
+  
+  const colorMap: Record<string, string> = {
+    red: "#FF6B6B", blue: "#4ECDC4", yellow: "#FFE66D", green: "#95E1D3",
+    pink: "#F38181", orange: "#FFA502", purple: "#A855F7", brown: "#8B4513",
+    black: "#1A1A1A", white: "#F5F5F5",
+  };
+  return colorMap[str] || "#888888";
+}
+
 export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
-  const worksheetTopic = data?.topic || topic;
+  const worksheetTopic = safeString(data?.topic) || topic;
 
   if (worksheetType === "trace") {
-    const letters = data?.letters || ["A"];
-    const words = data?.words || ["Apple"];
+    const letters = (data?.letters || ["A"]).map(safeString).filter(Boolean);
+    const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     
     return (
       <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
@@ -31,34 +63,27 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
           ✏️ Trace the Letter
         </h3>
         <p className="text-center text-sm text-muted-foreground mb-6">
-          {data?.instructions || `Learn about: ${worksheetTopic}`}
+          {safeString(data?.instructions) || `Learn about: ${worksheetTopic}`}
         </p>
         <div className="space-y-6">
           {letters.map((letter, idx) => (
             <div key={idx} className="space-y-4">
               <div className="text-center">
-                <span 
-                  className="text-8xl font-display font-bold text-primary/20 tracking-widest"
-                  style={{ 
-                    WebkitTextStroke: "3px hsl(var(--primary) / 0.4)"
-                  }}
-                >
+                <span className="text-8xl font-display font-bold text-primary/20 tracking-widest"
+                  style={{ WebkitTextStroke: "3px hsl(var(--primary) / 0.4)" }}>
                   {letter}
                 </span>
               </div>
               <div className="flex justify-center gap-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-14 h-14 border-2 border-dashed border-muted-foreground/30 rounded-xl flex items-center justify-center"
-                  >
+                  <div key={i} className="w-14 h-14 border-2 border-dashed border-muted-foreground/30 rounded-xl flex items-center justify-center">
                     <span className="text-2xl font-display text-muted-foreground/20">{letter}</span>
                   </div>
                 ))}
               </div>
             </div>
           ))}
-          {words && words.length > 0 && (
+          {words.length > 0 && (
             <div className="mt-4 p-4 bg-muted/50 rounded-xl">
               <p className="text-center text-sm font-medium text-foreground">
                 Words: <span className="text-primary">{words.join(", ")}</span>
@@ -66,9 +91,7 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
             </div>
           )}
           <div className="h-16 border-b-4 border-dashed border-primary/30 relative mt-6">
-            <div className="absolute -top-2 left-4 text-xs text-muted-foreground">
-              Practice writing here...
-            </div>
+            <div className="absolute -top-2 left-4 text-xs text-muted-foreground">Practice writing here...</div>
           </div>
         </div>
       </div>
@@ -76,8 +99,8 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
   }
 
   if (worksheetType === "color") {
-    const images = data?.images || ["apple"];
-    const words = data?.words || ["red", "green", "yellow"];
+    const images = (data?.images || ["apple"]).map(safeString).filter(Boolean);
+    const words = (data?.words || ["red", "green", "yellow"]).map(safeString).filter(Boolean);
     
     return (
       <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
@@ -85,22 +108,17 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
           🎨 Color the {worksheetTopic}
         </h3>
         <p className="text-center text-sm text-muted-foreground mb-6">
-          {data?.instructions || "Color with your favorite colors!"}
+          {safeString(data?.instructions) || "Color with your favorite colors!"}
         </p>
         <div className="flex justify-center">
           <div className="w-48 h-48 border-2 border-foreground/20 rounded-2xl flex items-center justify-center bg-muted/30">
-            <span className="text-6xl">
-              {getEmoji(images[0])}
-            </span>
+            <span className="text-6xl">{getEmoji(images[0])}</span>
           </div>
         </div>
         <div className="flex flex-wrap justify-center gap-2 mt-6">
           {words.map((color, idx) => (
-            <span
-              key={idx}
-              className="px-3 py-1 rounded-full text-sm font-medium"
-              style={{ backgroundColor: getColorHex(color), color: '#fff' }}
-            >
+            <span key={idx} className="px-3 py-1 rounded-full text-sm font-medium"
+              style={{ backgroundColor: getColorHex(color), color: '#fff' }}>
               {color}
             </span>
           ))}
@@ -119,8 +137,8 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
   }
 
   if (worksheetType === "oddOneOut") {
-    const images = data?.images || ["🍎", "🍎", "🍎", "🍌"];
-    const oddItem = data?.oddItem;
+    const images = (data?.images || ["🍎", "🍎", "🍎", "🍌"]).map(safeString).filter(Boolean);
+    const oddItem = safeString(data?.oddItem);
     
     return (
       <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
@@ -128,75 +146,23 @@ export const WorksheetPreview = ({ data, type, topic = "Apple" }: WorksheetPrevi
           🔍 Find the Odd One Out
         </h3>
         <p className="text-center text-sm text-muted-foreground mb-6">
-          {data?.instructions || `Topic: ${worksheetTopic}`}
+          {safeString(data?.instructions) || `Topic: ${worksheetTopic}`}
         </p>
         <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto">
           {images.map((img, i) => (
-            <div
-              key={i}
-              className={cn(
-                "aspect-square rounded-2xl border-2 border-border flex items-center justify-center text-4xl",
-                "hover:border-primary hover:shadow-soft transition-all cursor-pointer",
-                "bg-muted"
-              )}
-            >
-              {typeof img === 'string' && img.match(/\p{Emoji}/u) ? img : getEmoji(img)}
+            <div key={i} className={cn(
+              "aspect-square rounded-2xl border-2 border-border flex items-center justify-center text-4xl",
+              "hover:border-primary hover:shadow-soft transition-all cursor-pointer bg-muted"
+            )}>
+              {img.match(/\p{Emoji}/u) ? img : getEmoji(img)}
             </div>
           ))}
         </div>
-        <p className="text-center text-sm text-muted-foreground mt-4">
-          Circle the one that is different!
-        </p>
-        {oddItem && (
-          <p className="text-center text-xs text-primary mt-2 opacity-50">
-            (Answer: {oddItem})
-          </p>
-        )}
+        <p className="text-center text-sm text-muted-foreground mt-4">Circle the one that is different!</p>
+        {oddItem && <p className="text-center text-xs text-primary mt-2 opacity-50">(Answer: {oddItem})</p>}
       </div>
     );
   }
 
   return null;
 };
-
-function getEmoji(word: string): string {
-  const emojiMap: Record<string, string> = {
-    apple: "🍎",
-    banana: "🍌",
-    orange: "🍊",
-    grape: "🍇",
-    strawberry: "🍓",
-    cat: "🐱",
-    dog: "🐶",
-    bird: "🐦",
-    fish: "🐟",
-    sun: "☀️",
-    moon: "🌙",
-    star: "⭐",
-    tree: "🌳",
-    flower: "🌸",
-    car: "🚗",
-    bus: "🚌",
-    ball: "⚽",
-    book: "📚",
-    pencil: "✏️",
-    house: "🏠",
-  };
-  return emojiMap[word.toLowerCase()] || "📷";
-}
-
-function getColorHex(color: string): string {
-  const colorMap: Record<string, string> = {
-    red: "#FF6B6B",
-    blue: "#4ECDC4",
-    yellow: "#FFE66D",
-    green: "#95E1D3",
-    pink: "#F38181",
-    orange: "#FFA502",
-    purple: "#A855F7",
-    brown: "#8B4513",
-    black: "#1A1A1A",
-    white: "#F5F5F5",
-  };
-  return colorMap[color.toLowerCase()] || "#888888";
-}

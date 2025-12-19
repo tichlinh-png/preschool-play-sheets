@@ -26,6 +26,15 @@ const Index = () => {
     });
   };
 
+  // Clean input: remove punctuation, normalize spacing
+  const cleanDescription = (text: string): string => {
+    return text
+      .split(/[\n,;]+/) // Split by newlines, commas, semicolons
+      .map(word => word.replace(/[.,;:!?]+/g, '').trim()) // Remove punctuation
+      .filter(word => word.length > 0) // Remove empty entries
+      .join(', '); // Join with comma and space
+  };
+
   const handleGenerate = async () => {
     if (selectedTypes.length === 0) {
       toast.error("Vui lòng chọn ít nhất một loại worksheet!");
@@ -42,8 +51,9 @@ const Index = () => {
       if (imageFile) {
         imageBase64 = await fileToBase64(imageFile);
       }
+      const cleanedDescription = cleanDescription(description) || "Fun learning activities";
       const { data, error } = await supabase.functions.invoke('generate-worksheet', {
-        body: { description: description || "Fun learning activities", worksheetTypes: selectedTypes, imageBase64 },
+        body: { description: cleanedDescription, worksheetTypes: selectedTypes, imageBase64 },
       });
       if (error) throw new Error(error.message);
       if (data?.worksheets) {

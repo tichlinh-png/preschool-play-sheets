@@ -36,28 +36,38 @@ serve(async (req) => {
     console.log('Generating worksheets for:', { description, worksheetTypes, hasImage: !!imageBase64 });
 
     const worksheetPrompts = {
-      trace: `Generate a letter tracing worksheet for preschool children. 
-        Based on the topic: "${description}"
+      trace: `Generate a letter tracing worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        IMPORTANT: You MUST use EXACTLY the words provided by the user.
+        Extract the first letter of each word for tracing.
+        
         Return JSON with:
-        - topic: the main subject
-        - letters: array of 1-3 uppercase letters related to the topic
-        - words: array of 1-3 simple English words starting with those letters
+        - topic: a fun title for the worksheet
+        - letters: array of uppercase first letters from each word the user provided (e.g., if "Fish, Father" then ["F"])
+        - words: array containing EXACTLY the words the user provided (e.g., ["Fish", "Father"])
         - instructions: a fun instruction in English for kids`,
       
       color: `Generate a coloring worksheet for preschool children.
-        Based on the topic: "${description}"
+        The user provided these words/objects to color: "${description}"
+        
+        IMPORTANT: You MUST create coloring images for EXACTLY the words provided by the user.
+        
         Return JSON with:
-        - topic: the main subject to color
-        - words: array of color names in English kids should use
-        - images: array of simple objects to color (e.g., "apple", "sun", "cat")
+        - topic: a fun title for coloring these items
+        - words: array of color names in English kids could use (e.g., ["red", "blue", "green", "yellow"])
+        - images: array containing EXACTLY the words the user provided as objects to color (e.g., if user said "Fish, Goat" then images must be ["fish", "goat"])
         - instructions: a fun instruction in English for kids`,
       
       oddOneOut: `Generate an "odd one out" worksheet for preschool children.
-        Based on the topic: "${description}"
+        The user provided these words: "${description}"
+        
+        Use the words provided to create a puzzle where one doesn't belong.
+        
         Return JSON with:
-        - topic: the category (e.g., "fruits", "animals")
-        - images: array of exactly 4 items, where 3 belong to the same category and 1 is different
-        - oddItem: which item is the odd one out (the different one)
+        - topic: the category theme
+        - images: array of exactly 4 items based on user's words, where 3 share a category and 1 is different
+        - oddItem: which item is the odd one out
         - instructions: a fun instruction in English for kids`
     };
 

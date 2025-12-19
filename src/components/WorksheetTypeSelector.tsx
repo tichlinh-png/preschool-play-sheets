@@ -97,7 +97,7 @@ export const WorksheetTypeSelector = ({
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
       {typeOptions.map((option) => {
         const isSelected = selected.includes(option.id);
         const Icon = option.icon;
@@ -107,35 +107,35 @@ export const WorksheetTypeSelector = ({
             key={option.id}
             onClick={() => toggleType(option.id)}
             className={cn(
-              "relative p-5 rounded-2xl border-2 transition-all duration-300 text-left group",
+              "relative p-3 rounded-xl border-2 transition-all duration-300 text-left group",
               option.bgColor,
-              isSelected && "ring-2 ring-offset-2 ring-offset-background scale-[1.02]",
+              isSelected && "ring-2 ring-offset-1 ring-offset-background scale-[1.02]",
               isSelected ? `ring-current ${option.color}` : "border-transparent"
             )}
           >
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col items-center gap-2 text-center">
               <div
                 className={cn(
-                  "w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300",
+                  "w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-300",
                   isSelected ? "scale-110" : "group-hover:scale-105",
                   option.color,
                   option.bgColor.replace("bg-", "bg-").replace("/10", "/20")
                 )}
               >
-                <Icon className="w-6 h-6" />
+                <Icon className="w-5 h-5" />
               </div>
-              <div className="flex-1">
-                <h3 className={cn("font-display font-bold text-lg", option.color)}>
+              <div>
+                <h3 className={cn("font-display font-semibold text-sm leading-tight", option.color)}>
                   {option.label}
                 </h3>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
                   {option.description}
                 </p>
               </div>
             </div>
             {isSelected && (
-              <div className="absolute top-3 right-3 w-6 h-6 rounded-full gradient-primary flex items-center justify-center">
-                <svg className="w-4 h-4 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="absolute top-2 right-2 w-5 h-5 rounded-full gradient-primary flex items-center justify-center">
+                <svg className="w-3 h-3 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </div>

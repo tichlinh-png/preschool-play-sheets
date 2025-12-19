@@ -154,21 +154,26 @@ export const WorksheetPreview = ({
         <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <WordIconOrImage word={word} size={32} className="text-gray-700" wordImages={wordImages} />
-                <span className="text-lg font-bold text-gray-800">{word}</span>
+              <div className="flex items-center gap-2 mb-3">
+                <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
+                <span className="text-xl font-bold text-gray-800">{word}</span>
               </div>
-              <div className="bg-gray-50 rounded p-2 mb-2 text-center">
-                <span className="text-3xl font-bold tracking-widest" style={{ color: 'transparent', WebkitTextStroke: '1.5px #9ca3af' }}>
-                  {word}
-                </span>
-              </div>
-              <div className="space-y-2">
-                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
-                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+              <div className="space-y-3">
+                {/* 5 traced lines for students to trace over */}
+                {[1, 2, 3, 4, 5].map((lineNum) => (
+                  <div key={lineNum} className="bg-gray-50 rounded p-2 border-b-2 border-dashed border-gray-300">
+                    <span 
+                      className="text-2xl font-bold tracking-[0.3em] block text-center"
+                      style={{ 
+                        color: 'transparent', 
+                        WebkitTextStroke: lineNum === 1 ? '1.5px #6b7280' : '1px #d1d5db',
+                        letterSpacing: '0.2em'
+                      }}
+                    >
+                      {word}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

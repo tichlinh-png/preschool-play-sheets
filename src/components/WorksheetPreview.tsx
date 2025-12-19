@@ -151,40 +151,6 @@ export const WorksheetPreview = ({
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Trace the Words" />
-        <style>{`
-          .trace-text {
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            font-size: 1.75rem;
-            letter-spacing: 0.15em;
-            color: transparent;
-            -webkit-text-stroke: 2px #d1d5db;
-            text-stroke: 2px #d1d5db;
-            background: repeating-linear-gradient(
-              90deg,
-              #9ca3af 0px,
-              #9ca3af 4px,
-              transparent 4px,
-              transparent 8px
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-          .trace-text-dark {
-            -webkit-text-stroke: 2px #6b7280;
-            text-stroke: 2px #6b7280;
-            background: repeating-linear-gradient(
-              90deg,
-              #4b5563 0px,
-              #4b5563 4px,
-              transparent 4px,
-              transparent 8px
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-          }
-        `}</style>
         <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-3">
@@ -192,12 +158,35 @@ export const WorksheetPreview = ({
                 <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
                 <span className="text-xl font-bold text-gray-800">{word}</span>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {/* 5 traced lines for students to trace over */}
                 {[1, 2, 3, 4, 5].map((lineNum) => (
-                  <div key={lineNum} className="bg-gray-50 rounded px-2 py-1 border-b border-dashed border-gray-300">
-                    <span className={`trace-text ${lineNum === 1 ? 'trace-text-dark' : ''} block text-center`}>
-                      {word}
+                  <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
+                    <span 
+                      className="block text-center text-2xl tracking-[0.2em]"
+                      style={{ 
+                        fontFamily: '"Edu TAS Beginner", cursive',
+                        fontWeight: 500,
+                        color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
+                        textShadow: lineNum === 1 
+                          ? '0 0 0 transparent'
+                          : 'none',
+                        WebkitTextStroke: '0.5px currentColor',
+                        paintOrder: 'stroke fill',
+                      }}
+                    >
+                      {word.split('').map((char, i) => (
+                        <span 
+                          key={i} 
+                          style={{ 
+                            borderBottom: `2px dotted ${lineNum === 1 ? '#6b7280' : '#d1d5db'}`,
+                            paddingBottom: '2px',
+                            marginRight: '2px'
+                          }}
+                        >
+                          {char}
+                        </span>
+                      ))}
                     </span>
                   </div>
                 ))}

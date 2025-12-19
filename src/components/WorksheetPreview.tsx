@@ -52,30 +52,47 @@ const customIconMap: Record<string, CustomIcon> = {
   cow: CowIcon,
   pig: PigIcon,
   horse: HorseIcon,
+  pony: HorseIcon,
   sheep: SheepIcon,
+  lamb: SheepIcon,
   chicken: ChickenIcon,
+  hen: ChickenIcon,
+  rooster: ChickenIcon,
   duck: DuckIcon,
   lion: LionIcon,
   tiger: TigerIcon,
   monkey: MonkeyIcon,
+  ape: MonkeyIcon,
   bear: BearIcon,
   frog: FrogIcon,
+  toad: FrogIcon,
 };
 
 // Map words to Lucide icons
 const lucideIconMap: Record<string, LucideIcon> = {
+  // Animals
   fish: Fish, cat: Cat, dog: Dog, bird: Bird, 
-  rabbit: Rat, bug: Bug, turtle: Turtle, snail: Snail,
-  father: User, mother: User, girl: Baby, boy: Baby, man: User, woman: User, baby: Baby,
+  rabbit: Rat, mouse: Rat, rat: Rat, bug: Bug, turtle: Turtle, snail: Snail,
+  // People
+  father: User, mother: User, dad: User, mom: User, parent: User,
+  girl: Baby, boy: Baby, man: User, woman: User, baby: Baby, child: Baby, kid: Baby,
+  // Nature
   flower: Flower2, tree: Trees, sun: Sun, moon: Moon, star: Star, 
-  leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, fire: Flame,
-  apple: Apple, banana: Banana, cherry: Cherry, grape: Grape,
-  cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, milk: Milk,
-  car: Car, bus: Bus, bike: Bike, plane: Plane, ship: Ship, train: Train, truck: Truck,
-  book: Book, pencil: Pencil, house: Home, home: Home, umbrella: Umbrella,
-  camera: Camera, music: Music, gift: Gift, clock: Clock, key: Key, lock: Lock,
-  bell: Bell, phone: Phone, shirt: Shirt,
-  heart: Heart, smile: Smile, happy: Smile, sad: Frown, glasses: Glasses, crown: Crown, gem: Gem,
+  leaf: Leaf, mountain: Mountain, cloud: Cloud, rain: Droplets, water: Droplets, fire: Flame,
+  // Fruits
+  apple: Apple, banana: Banana, cherry: Cherry, grape: Grape, fruit: Apple,
+  // Food
+  cookie: Cookie, cake: Cake, pizza: Pizza, icecream: IceCreamCone, ice: IceCreamCone, milk: Milk, food: Pizza,
+  // Vehicles
+  car: Car, bus: Bus, bike: Bike, bicycle: Bike, plane: Plane, airplane: Plane, 
+  ship: Ship, boat: Ship, train: Train, truck: Truck,
+  // Objects
+  book: Book, pencil: Pencil, pen: Pencil, house: Home, home: Home, umbrella: Umbrella,
+  camera: Camera, music: Music, gift: Gift, present: Gift, clock: Clock, watch: Clock,
+  key: Key, lock: Lock, bell: Bell, phone: Phone, telephone: Phone, shirt: Shirt, clothes: Shirt,
+  // Emotions & accessories
+  heart: Heart, love: Heart, smile: Smile, happy: Smile, sad: Frown, cry: Frown,
+  glasses: Glasses, crown: Crown, gem: Gem, diamond: Gem,
 };
 
 // Icon component

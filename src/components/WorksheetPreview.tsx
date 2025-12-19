@@ -166,6 +166,9 @@ export const WorksheetPreview = ({
               <div className="space-y-2">
                 <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
                 <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
+                <div className="h-8 border-b-2 border-dashed border-gray-300"></div>
               </div>
             </div>
           ))}
@@ -192,10 +195,10 @@ export const WorksheetPreview = ({
         </div>
         <div className="grid grid-cols-2 gap-4">
           {colorInstructions.map((instruction, idx) => (
-            <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
-              <WordIconOrImage word={instruction.item} size={60} className="text-gray-400" wordImages={wordImages} />
-              <span className="text-sm font-medium text-gray-700 mt-2 capitalize">{instruction.item}</span>
-              <span className="text-xs text-gray-500">({instruction.color})</span>
+            <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-4">
+              <WordIconOrImage word={instruction.item} size={100} className="text-gray-400" wordImages={wordImages} />
+              <span className="text-base font-medium text-gray-700 mt-3 capitalize">{instruction.item}</span>
+              <span className="text-sm text-gray-500">({instruction.color})</span>
             </div>
           ))}
         </div>
@@ -221,7 +224,6 @@ export const WorksheetPreview = ({
               <div className="flex items-center justify-center gap-3">
                 <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
                 <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-300 text-xl">?</span>
                 </div>
               </div>
             </div>

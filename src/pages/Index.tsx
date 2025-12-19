@@ -4,15 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/FileUpload";
 import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetTypeSelector";
-import { WorksheetPreview } from "@/components/WorksheetPreview";
+import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [description, setDescription] = useState("");
   const [selectedTypes, setSelectedTypes] = useState<WorksheetType[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedWorksheets, setGeneratedWorksheets] = useState<WorksheetType[]>([]);
+  const [generatedWorksheets, setGeneratedWorksheets] = useState<WorksheetData[]>([]);
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleGenerate = async () => {
     if (selectedTypes.length === 0) {
@@ -27,16 +37,44 @@ const Index = () => {
 
     setIsGenerating(true);
     
-    // Simulate generation
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    setGeneratedWorksheets(selectedTypes);
-    setIsGenerating(false);
-    toast.success("Tạo worksheet thành công! 🎉");
+    try {
+      let imageBase64: string | undefined;
+      
+      // Convert first image to base64 if available
+      const imageFile = files.find(f => f.type.startsWith('image/'));
+      if (imageFile) {
+        imageBase64 = await fileToBase64(imageFile);
+      }
+
+      const { data, error } = await supabase.functions.invoke('generate-worksheet', {
+        body: {
+          description: description || "Fun learning activities for preschool children",
+          worksheetTypes: selectedTypes,
+          imageBase64,
+        },
+      });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw new Error(error.message || 'Failed to generate worksheets');
+      }
+
+      if (data?.worksheets) {
+        setGeneratedWorksheets(data.worksheets);
+        toast.success("Tạo worksheet thành công! 🎉");
+      } else {
+        throw new Error('No worksheets returned');
+      }
+    } catch (error) {
+      console.error('Generation error:', error);
+      toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleDownload = () => {
-    toast.success("Đang tải xuống worksheet...");
+    toast.success("Tính năng tải xuống sẽ sớm được cập nhật!");
   };
 
   return (
@@ -53,7 +91,7 @@ const Index = () => {
                 KidsSheet
               </h1>
               <p className="text-sm text-muted-foreground">
-                Worksheet Generator
+                AI Worksheet Generator
               </p>
             </div>
           </div>
@@ -65,12 +103,12 @@ const Index = () => {
         <div className="max-w-3xl mx-auto space-y-4">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
             Tạo worksheet tiếng Anh
-            <span className="gradient-primary bg-clip-text text-transparent"> dễ dàng </span>
+            <span className="gradient-primary bg-clip-text text-transparent"> bằng AI </span>
             cho bé yêu
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload PDF, ảnh hoặc mô tả - hệ thống AI sẽ tự động tạo worksheet 
-            trace chữ, tô màu và odd one out phù hợp với trẻ mầm non.
+            Upload ảnh, PDF hoặc mô tả chủ đề - AI sẽ tự động tạo worksheet 
+            với hình ảnh và từ vựng phù hợp cho trẻ mầm non.
           </p>
         </div>
 
@@ -92,11 +130,14 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-foreground">
                   <FileText className="w-5 h-5 text-primary" />
-                  Upload tài liệu
+                  Upload tài liệu (tùy chọn)
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <FileUpload onFilesChange={setFiles} />
+                <p className="text-xs text-muted-foreground mt-2">
+                  AI sẽ phân tích ảnh để tạo worksheet phù hợp
+                </p>
               </CardContent>
             </Card>
 
@@ -112,9 +153,20 @@ const Index = () => {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Ví dụ: Tạo worksheet về chữ cái A, B, C với hình ảnh con vật..."
+                  placeholder="Ví dụ: Chữ cái A với hình con Apple, Animal, Ant..."
                   className="w-full h-32 p-4 rounded-2xl border-2 border-border bg-card text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none font-body"
                 />
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {["Chữ cái ABC", "Con vật", "Trái cây", "Màu sắc", "Số đếm"].map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => setDescription((prev) => prev ? `${prev}, ${tag}` : tag)}
+                      className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                    >
+                      + {tag}
+                    </button>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
@@ -142,12 +194,12 @@ const Index = () => {
               {isGenerating ? (
                 <>
                   <RefreshCw className="w-5 h-5 animate-spin" />
-                  Đang tạo worksheet...
+                  AI đang tạo worksheet...
                 </>
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  Tạo Worksheet
+                  Tạo Worksheet bằng AI
                 </>
               )}
             </Button>
@@ -169,9 +221,9 @@ const Index = () => {
 
             {generatedWorksheets.length > 0 ? (
               <div className="space-y-6">
-                {generatedWorksheets.map((type) => (
-                  <div key={type} className="animate-scale-in">
-                    <WorksheetPreview type={type} topic="Apple" />
+                {generatedWorksheets.map((worksheet, index) => (
+                  <div key={index} className="animate-scale-in">
+                    <WorksheetPreview data={worksheet} />
                   </div>
                 ))}
               </div>
@@ -186,7 +238,7 @@ const Index = () => {
                       Chưa có worksheet
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Upload file và chọn loại worksheet để bắt đầu
+                      Nhập mô tả và chọn loại worksheet để AI tạo nội dung
                     </p>
                   </div>
                 </CardContent>
@@ -200,7 +252,7 @@ const Index = () => {
       <footer className="border-t border-border bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-6">
           <p className="text-center text-sm text-muted-foreground">
-            Made with 💖 for preschool teachers & parents
+            Made with 💖 for preschool teachers & parents • Powered by AI
           </p>
         </div>
       </footer>

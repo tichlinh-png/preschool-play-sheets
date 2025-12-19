@@ -88,6 +88,28 @@ const lucideIconMap: Record<string, LucideIcon> = {
   glasses: Glasses, crown: Crown, gem: Gem, diamond: Gem,
 };
 
+// Helper function to check if a word has an available icon
+export const hasAvailableIcon = (word: string, wordImages: WordImage[] = []): boolean => {
+  const str = word.toLowerCase().trim();
+  
+  // Check for custom uploaded image
+  if (wordImages.some(img => img.word.toLowerCase() === str)) {
+    return true;
+  }
+  
+  // Check for custom icon
+  if (customIconMap[str]) {
+    return true;
+  }
+  
+  // Check for lucide icon
+  if (lucideIconMap[str]) {
+    return true;
+  }
+  
+  return false;
+};
+
 // Component to render word icon or custom image
 const WordIconOrImage = ({ 
   word, 
@@ -115,13 +137,19 @@ const WordIconOrImage = ({
     );
   }
   
-  // Fallback to icons
+  // Fallback to icons - only render if icon exists
   const CustomIconComponent = customIconMap[str];
   if (CustomIconComponent) {
     return <CustomIconComponent size={size} className={className} />;
   }
-  const LucideIconComponent = lucideIconMap[str] || ImageIcon;
-  return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
+  
+  const LucideIconComponent = lucideIconMap[str];
+  if (LucideIconComponent) {
+    return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
+  }
+  
+  // Return null if no icon available (this shouldn't happen if filtering is done correctly)
+  return null;
 };
 
 export const WorksheetPreview = ({ 

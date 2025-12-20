@@ -53,6 +53,7 @@ interface WorksheetPreviewProps {
   type?: WorksheetType;
   topic?: string;
   schoolLogo?: string | null;
+  schoolName?: string;
   teacherName?: string;
   className?: string;
   wordImages?: WordImage[];
@@ -201,7 +202,8 @@ export const WorksheetPreview = ({
   data, 
   type, 
   topic = "Apple", 
-  schoolLogo, 
+  schoolLogo,
+  schoolName = "",
   teacherName = "", 
   className = "",
   wordImages = []
@@ -218,6 +220,9 @@ export const WorksheetPreview = ({
           <div className="w-12 h-12" />
         )}
         <div className="flex-1 text-center">
+          {schoolName && (
+            <p className="text-sm font-semibold text-gray-700 mb-1">{schoolName}</p>
+          )}
           <p className="text-xs text-gray-500">
             Class: {className || "_________________"} | Teacher: {teacherName || "_________________"}
           </p>

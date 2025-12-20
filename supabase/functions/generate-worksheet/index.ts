@@ -305,12 +305,30 @@ serve(async (req) => {
       // Parse user input words - this is the source of truth
       // Filter out words that don't have available icons
       const allUserWords = description.split(',').map(w => w.trim()).filter(Boolean);
-      const userWords = filterWordsWithIcons(allUserWords);
       
-      // Log which words were filtered out
-      const filteredOutWords = allUserWords.filter(w => !hasAvailableIcon(w));
-      if (filteredOutWords.length > 0) {
-        console.log('Filtered out words without icons:', filteredOutWords);
+      // Check if input is single letters (alphabet learning mode)
+      const isLetterMode = isSingleLetterInput(allUserWords);
+      
+      // For letter mode, find words starting with each letter
+      let userWords: string[];
+      if (isLetterMode) {
+        userWords = [];
+        for (const letter of allUserWords) {
+          const wordsForLetter = getWordsStartingWith(letter);
+          if (wordsForLetter.length > 0) {
+            // Take first word for each letter
+            userWords.push(wordsForLetter[0]);
+          }
+        }
+        console.log('Letter mode - mapped letters to words:', allUserWords, '->', userWords);
+      } else {
+        userWords = filterWordsWithIcons(allUserWords);
+        
+        // Log which words were filtered out
+        const filteredOutWords = allUserWords.filter(w => !hasAvailableIcon(w));
+        if (filteredOutWords.length > 0) {
+          console.log('Filtered out words without icons:', filteredOutWords);
+        }
       }
       
       const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
@@ -362,10 +380,18 @@ serve(async (req) => {
               };
             });
           } else if (type === 'matching') {
-            worksheet.matchingPairs = userWords.map(item => ({
-              image: item.toLowerCase(),
-              word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
-            }));
+            // For letter mode, match images with letter+word format
+            if (isLetterMode) {
+              worksheet.matchingPairs = userWords.map((item, idx) => ({
+                image: item.toLowerCase(),
+                word: `${allUserWords[idx]?.toUpperCase() || item.charAt(0).toUpperCase()} - ${item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()}`
+              }));
+            } else {
+              worksheet.matchingPairs = userWords.map(item => ({
+                image: item.toLowerCase(),
+                word: item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+              }));
+            }
           } else if (type === 'fill-blank') {
             worksheet.fillBlankWords = parsed.fillBlankWords || userWords.map(word => {
               const vowelIndex = word.split('').findIndex(c => 'aeiou'.includes(c.toLowerCase()));

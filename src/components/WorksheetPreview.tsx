@@ -127,6 +127,12 @@ const lucideIconMap: Record<string, LucideIcon> = {
   foot: Footprints, feet: Footprints, hand: Hand, eye: Eye, ear: Ear, brain: Brain,
 };
 
+// List of all available icon words for finding sample words
+const availableIconWords = new Set([
+  ...Object.keys(customIconMap),
+  ...Object.keys(lucideIconMap)
+]);
+
 // Helper function to check if a word has an available icon
 export const hasAvailableIcon = (word: string, wordImages: WordImage[] = []): boolean => {
   const str = word.toLowerCase().trim();
@@ -232,47 +238,168 @@ export const WorksheetPreview = ({
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
     // Check if these are single letters (alphabet tracing)
     const isSingleLetters = words.every(word => word.length === 1);
-    const title = isSingleLetters ? "Trace the Letters" : "Trace the Words";
+    const title = isSingleLetters ? "Letter Tracing Practice" : "Trace the Words";
     
+    // For single letter tracing - use the new design like the reference image
+    if (isSingleLetters) {
+      return (
+        <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+          <WorksheetHeader title={title} exerciseNumber={1} />
+          <div className="space-y-8">
+            {words.map((letter, idx) => {
+              const upperLetter = letter.toUpperCase();
+              const lowerLetter = letter.toLowerCase();
+              // Find a word that starts with this letter and has an icon
+              const sampleWord = Array.from(availableIconWords).find(w => 
+                w.toLowerCase().startsWith(lowerLetter)
+              ) || '';
+              const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
+              
+              return (
+                <div key={idx} className="border-2 border-gray-200 rounded-lg p-4">
+                  {/* Header row: Large letter, small letter with guide, related word image */}
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-gray-200">
+                    <div className="flex items-center gap-6">
+                      {/* Large uppercase letter */}
+                      <div className="w-20 h-20 border-3 border-gray-800 rounded-lg flex items-center justify-center bg-white">
+                        <span 
+                          className="text-6xl font-bold text-gray-800"
+                          style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
+                        >
+                          {upperLetter}
+                        </span>
+                      </div>
+                      {/* Smaller letter with dotted guide */}
+                      <div className="w-16 h-16 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center relative">
+                        <span 
+                          className="text-4xl text-gray-400"
+                          style={{ 
+                            fontFamily: '"Edu TAS Beginner", cursive',
+                            WebkitTextStroke: '1px #9ca3af',
+                            color: 'transparent'
+                          }}
+                        >
+                          {upperLetter}
+                        </span>
+                        {/* Arrow indicator */}
+                        <svg className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 5v14M5 12l7-7 7 7"/>
+                        </svg>
+                      </div>
+                    </div>
+                    {/* Related word with icon */}
+                    {wordHasIcon && sampleWord && (
+                      <div className="flex flex-col items-center">
+                        <WordIconOrImage word={sampleWord} size={48} className="text-gray-700" wordImages={wordImages} />
+                        <span className="text-sm font-medium text-gray-600 capitalize mt-1">{sampleWord}</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Tracing rows - uppercase */}
+                  <div className="space-y-1 mb-4">
+                    <p className="text-xs text-gray-500 mb-1">Uppercase {upperLetter}</p>
+                    {[1, 2, 3].map((rowNum) => (
+                      <div 
+                        key={`upper-${rowNum}`} 
+                        className="relative h-12 flex items-end"
+                        style={{
+                          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 23px, #e5e7eb 23px, #e5e7eb 24px, transparent 24px, transparent 47px, #374151 47px, #374151 48px)'
+                        }}
+                      >
+                        {/* Dashed middle line */}
+                        <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
+                        
+                        {/* Letters to trace */}
+                        <div className="flex items-end h-full w-full px-2">
+                          {[0, 1, 2, 3, 4, 5].map((pos) => (
+                            <span 
+                              key={pos}
+                              className="flex-1 text-center pb-1"
+                              style={{ 
+                                fontFamily: '"Edu TAS Beginner", cursive',
+                                fontSize: '2rem',
+                                fontWeight: pos === 0 ? 600 : 400,
+                                color: pos === 0 ? '#374151' : 'transparent',
+                                WebkitTextStroke: pos === 0 ? 'none' : '1px #9ca3af',
+                              }}
+                            >
+                              {upperLetter}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Tracing rows - lowercase */}
+                  <div className="space-y-1">
+                    <p className="text-xs text-gray-500 mb-1">Lowercase {lowerLetter}</p>
+                    {[1, 2, 3].map((rowNum) => (
+                      <div 
+                        key={`lower-${rowNum}`} 
+                        className="relative h-12 flex items-end"
+                        style={{
+                          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 23px, #e5e7eb 23px, #e5e7eb 24px, transparent 24px, transparent 47px, #374151 47px, #374151 48px)'
+                        }}
+                      >
+                        {/* Dashed middle line */}
+                        <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
+                        
+                        {/* Letters to trace */}
+                        <div className="flex items-end h-full w-full px-2">
+                          {[0, 1, 2, 3, 4, 5].map((pos) => (
+                            <span 
+                              key={pos}
+                              className="flex-1 text-center pb-1"
+                              style={{ 
+                                fontFamily: '"Edu TAS Beginner", cursive',
+                                fontSize: '2rem',
+                                fontWeight: pos === 0 ? 600 : 400,
+                                color: pos === 0 ? '#374151' : 'transparent',
+                                WebkitTextStroke: pos === 0 ? 'none' : '1px #9ca3af',
+                              }}
+                            >
+                              {lowerLetter}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    
+    // For word tracing - keep original design
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title={title} exerciseNumber={1} />
-        <div className={`grid ${isSingleLetters ? 'grid-cols-3' : 'grid-cols-2'} gap-4`}>
+        <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => {
             const wordHasIcon = hasAvailableIcon(word, wordImages);
             
             return (
               <div key={idx} className="border border-gray-300 rounded-lg p-3">
                 <div className="flex items-center justify-center gap-2 mb-3">
-                  {/* Only show icon for words that have icons, not for single letters */}
-                  {wordHasIcon && !isSingleLetters && (
+                  {wordHasIcon && (
                     <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
                   )}
-                  {/* For single letters, show the letter prominently */}
-                  {isSingleLetters ? (
-                    <span 
-                      className="text-4xl font-bold text-gray-800"
-                      style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
-                    >
-                      {word.toUpperCase()}
-                    </span>
-                  ) : (
-                    <span className="text-xl font-bold text-gray-800">{word}</span>
-                  )}
+                  <span className="text-xl font-bold text-gray-800">{word}</span>
                 </div>
                 <div className="space-y-1">
-                  {/* Traced lines for students to trace over */}
                   {[1, 2, 3, 4, 5].map((lineNum) => (
                     <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
                       <span 
-                        className={`block text-center ${isSingleLetters ? 'text-4xl tracking-[0.5em]' : 'text-2xl tracking-[0.2em]'}`}
+                        className="block text-center text-2xl tracking-[0.2em]"
                         style={{ 
                           fontFamily: '"Edu TAS Beginner", cursive',
                           fontWeight: 500,
                           color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
-                          textShadow: lineNum === 1 
-                            ? '0 0 0 transparent'
-                            : 'none',
                           WebkitTextStroke: '0.5px currentColor',
                           paintOrder: 'stroke fill',
                         }}
@@ -283,7 +410,7 @@ export const WorksheetPreview = ({
                             style={{ 
                               borderBottom: `2px dotted ${lineNum === 1 ? '#6b7280' : '#d1d5db'}`,
                               paddingBottom: '2px',
-                              marginRight: isSingleLetters ? '8px' : '2px'
+                              marginRight: '2px'
                             }}
                           >
                             {char}

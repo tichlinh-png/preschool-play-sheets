@@ -143,7 +143,8 @@ serve(async (req) => {
       const rawBody = await req.json();
       validatedBody = requestSchema.parse(rawBody);
     } catch (validationError) {
-      console.error('Input validation failed:', validationError instanceof z.ZodError ? validationError.errors : validationError);
+      // Log validation errors without exposing user input details
+      console.error('Input validation failed');
       return new Response(JSON.stringify({ error: 'Invalid request format. Please check your input.' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -152,7 +153,8 @@ serve(async (req) => {
 
     const { description, worksheetTypes, imageBase64 } = validatedBody;
 
-    console.log('Generating worksheets for:', { description, worksheetTypes, hasImage: !!imageBase64 });
+    // Log request metadata only - no user input content
+    console.log('Processing worksheet request:', { worksheetTypes, hasImage: !!imageBase64 });
 
     const worksheetPrompts: Record<string, string> = {
       trace: `Generate a word tracing worksheet for preschool children.
@@ -294,9 +296,9 @@ serve(async (req) => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('AI Gateway error:', response.status, errorText);
-        throw new Error(`AI Gateway error: ${response.status}`);
+        // Log only status code, not error body content
+        console.error('AI Gateway error:', response.status);
+        throw new Error('AI service temporarily unavailable');
       }
 
       const data = await response.json();
@@ -320,15 +322,10 @@ serve(async (req) => {
             userWords.push(wordsForLetter[0]);
           }
         }
-        console.log('Letter mode - mapped letters to words:', allUserWords, '->', userWords);
+        // Letter mode active
       } else {
         userWords = filterWordsWithIcons(allUserWords);
         
-        // Log which words were filtered out
-        const filteredOutWords = allUserWords.filter(w => !hasAvailableIcon(w));
-        if (filteredOutWords.length > 0) {
-          console.log('Filtered out words without icons:', filteredOutWords);
-        }
       }
       
       const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown'];
@@ -455,7 +452,8 @@ serve(async (req) => {
           
           worksheets.push(worksheet);
         } catch (parseError) {
-          console.error('Failed to parse AI response:', content);
+          // Log parse failure without exposing content
+          console.error('Failed to parse AI response for worksheet type:', type);
           // Fallback - use exact user words
           const fallback: WorksheetContent = {
             type,
@@ -514,7 +512,7 @@ serve(async (req) => {
       }
     }
 
-    console.log('Generated worksheets:', worksheets);
+    console.log('Worksheets generated successfully:', worksheets.length);
 
     // Collect all skipped words across the generation process
     const allUserWords = description.split(',').map(w => w.trim()).filter(Boolean);

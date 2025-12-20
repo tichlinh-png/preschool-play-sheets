@@ -230,51 +230,72 @@ export const WorksheetPreview = ({
 
   if (worksheetType === "trace") {
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
+    // Check if these are single letters (alphabet tracing)
+    const isSingleLetters = words.every(word => word.length === 1);
+    const title = isSingleLetters ? "Trace the Letters" : "Trace the Words";
+    
     return (
       <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
-        <WorksheetHeader title="Trace the Words" exerciseNumber={1} />
-        <div className="grid grid-cols-2 gap-4">
-          {words.map((word, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-3">
-                <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
-                <span className="text-xl font-bold text-gray-800">{word}</span>
-              </div>
-              <div className="space-y-1">
-                {/* 5 traced lines for students to trace over */}
-                {[1, 2, 3, 4, 5].map((lineNum) => (
-                  <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
+        <WorksheetHeader title={title} exerciseNumber={1} />
+        <div className={`grid ${isSingleLetters ? 'grid-cols-3' : 'grid-cols-2'} gap-4`}>
+          {words.map((word, idx) => {
+            const wordHasIcon = hasAvailableIcon(word, wordImages);
+            
+            return (
+              <div key={idx} className="border border-gray-300 rounded-lg p-3">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  {/* Only show icon for words that have icons, not for single letters */}
+                  {wordHasIcon && !isSingleLetters && (
+                    <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
+                  )}
+                  {/* For single letters, show the letter prominently */}
+                  {isSingleLetters ? (
                     <span 
-                      className="block text-center text-2xl tracking-[0.2em]"
-                      style={{ 
-                        fontFamily: '"Edu TAS Beginner", cursive',
-                        fontWeight: 500,
-                        color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
-                        textShadow: lineNum === 1 
-                          ? '0 0 0 transparent'
-                          : 'none',
-                        WebkitTextStroke: '0.5px currentColor',
-                        paintOrder: 'stroke fill',
-                      }}
+                      className="text-4xl font-bold text-gray-800"
+                      style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
                     >
-                      {word.split('').map((char, i) => (
-                        <span 
-                          key={i} 
-                          style={{ 
-                            borderBottom: `2px dotted ${lineNum === 1 ? '#6b7280' : '#d1d5db'}`,
-                            paddingBottom: '2px',
-                            marginRight: '2px'
-                          }}
-                        >
-                          {char}
-                        </span>
-                      ))}
+                      {word.toUpperCase()}
                     </span>
-                  </div>
-                ))}
+                  ) : (
+                    <span className="text-xl font-bold text-gray-800">{word}</span>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  {/* Traced lines for students to trace over */}
+                  {[1, 2, 3, 4, 5].map((lineNum) => (
+                    <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
+                      <span 
+                        className={`block text-center ${isSingleLetters ? 'text-4xl tracking-[0.5em]' : 'text-2xl tracking-[0.2em]'}`}
+                        style={{ 
+                          fontFamily: '"Edu TAS Beginner", cursive',
+                          fontWeight: 500,
+                          color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
+                          textShadow: lineNum === 1 
+                            ? '0 0 0 transparent'
+                            : 'none',
+                          WebkitTextStroke: '0.5px currentColor',
+                          paintOrder: 'stroke fill',
+                        }}
+                      >
+                        {word.split('').map((char, i) => (
+                          <span 
+                            key={i} 
+                            style={{ 
+                              borderBottom: `2px dotted ${lineNum === 1 ? '#6b7280' : '#d1d5db'}`,
+                              paddingBottom: '2px',
+                              marginRight: isSingleLetters ? '8px' : '2px'
+                            }}
+                          >
+                            {char}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );

@@ -303,8 +303,9 @@ serve(async (req) => {
             instructions: parsed.instructions || 'Have fun learning!'
           };
           
-          if (type === 'trace') {
-            worksheet.words = userWords;
+      if (type === 'trace') {
+            // For trace worksheets, use ALL user words (including single letters that don't need icons)
+            worksheet.words = allUserWords;
           } else if (type === 'color') {
             worksheet.colorInstructions = userWords.map((item, i) => {
               const aiColor = parsed.colorInstructions?.find((c: any) => 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle } from "lucide-react";
+import { useVisitorCount } from "@/hooks/useVisitorCount";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ interface WordImage {
 }
 
 const Index = () => {
+  const visitorCount = useVisitorCount();
   const [files, setFiles] = useState<File[]>([]);
   const [description, setDescription] = useState("");
   const [selectedTypes, setSelectedTypes] = useState<WorksheetType[]>([]);
@@ -308,7 +310,30 @@ const Index = () => {
         </div>
       </main>
       <footer className="border-t border-border bg-card/50 py-6">
-        <p className="text-center text-sm text-muted-foreground">Made with love for preschool teachers</p>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">Made with love for preschool teachers</p>
+            
+            <div className="flex items-center gap-6">
+              {/* Visitor count */}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Users className="w-4 h-4 text-primary" />
+                <span>{visitorCount} đang online</span>
+              </div>
+              
+              {/* Contact */}
+              <a 
+                href="https://zalo.me/0862936906" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Zalo: 0862936906</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

@@ -28,17 +28,20 @@ const Index = () => {
   const [schoolLogo, setSchoolLogo] = useState<string | null>(null);
   const [teacherName, setTeacherName] = useState("");
   const [className, setClassName] = useState("");
+  const [schoolName, setSchoolName] = useState("");
   const [wordImages, setWordImages] = useState<WordImage[]>([]);
 
-  // Load saved teacher/class from localStorage
+  // Load saved teacher/class/school from localStorage
   useEffect(() => {
     const savedTeacher = localStorage.getItem('kidssheet_teacher');
     const savedClass = localStorage.getItem('kidssheet_class');
+    const savedSchool = localStorage.getItem('kidssheet_school');
     if (savedTeacher) setTeacherName(savedTeacher);
     if (savedClass) setClassName(savedClass);
+    if (savedSchool) setSchoolName(savedSchool);
   }, []);
 
-  // Save teacher/class to localStorage
+  // Save teacher/class/school to localStorage
   useEffect(() => {
     localStorage.setItem('kidssheet_teacher', teacherName);
   }, [teacherName]);
@@ -46,6 +49,10 @@ const Index = () => {
   useEffect(() => {
     localStorage.setItem('kidssheet_class', className);
   }, [className]);
+
+  useEffect(() => {
+    localStorage.setItem('kidssheet_school', schoolName);
+  }, [schoolName]);
 
   // Parse words from description
   const parsedWords = useMemo(() => {
@@ -167,6 +174,15 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="school">School Name</Label>
+                  <Input
+                    id="school"
+                    value={schoolName}
+                    onChange={(e) => setSchoolName(e.target.value)}
+                    placeholder="Trường Mầm Non ABC"
+                  />
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="teacher">Teacher Name</Label>
@@ -268,6 +284,7 @@ const Index = () => {
                       <WorksheetPreview
                         data={w}
                         schoolLogo={schoolLogo}
+                        schoolName={schoolName}
                         teacherName={teacherName}
                         className={className}
                         wordImages={wordImages}

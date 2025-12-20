@@ -94,6 +94,34 @@ const filterWordsWithIcons = (words: string[]): string[] => {
   return words.filter(word => hasAvailableIcon(word));
 };
 
+// Get words that start with a specific letter
+const getWordsStartingWith = (letter: string): string[] => {
+  const lowerLetter = letter.toLowerCase();
+  return Array.from(availableIconWords).filter(word => 
+    word.toLowerCase().startsWith(lowerLetter)
+  );
+};
+
+// Check if input is single letters
+const isSingleLetterInput = (words: string[]): boolean => {
+  return words.length > 0 && words.every(w => w.length === 1 && /[a-zA-Z]/.test(w));
+};
+
+// Get sample words for letters - returns words that have icons
+const getSampleWordsForLetters = (letters: string[]): string[] => {
+  const result: string[] = [];
+  for (const letter of letters) {
+    const words = getWordsStartingWith(letter);
+    if (words.length > 0) {
+      result.push(words[0]);
+    }
+  }
+  return result;
+};
+
+// Available icon words list as string for prompts
+const availableIconWordsList = Array.from(availableIconWords).join(', ');
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -184,33 +212,40 @@ serve(async (req) => {
       'odd-one-out': `Generate an odd-one-out worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Create groups where one item doesn't belong. Use the provided words and add related items to form groups.
+        CRITICAL: You MUST ONLY use words from this list of available icons: ${availableIconWordsList}
+        
+        Create 2-3 groups where one item doesn't belong. Each group should have 4 items from the available list.
+        Make sure the groups are educational - group by category (animals, food, vehicles, etc.)
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - oddOneOutGroups: array where each item has "items" (array of 4 items), "oddItem" (the different one), and "reason" (why it's different)
-          Example: [{"items": ["cat", "dog", "fish", "apple"], "oddItem": "apple", "reason": "not an animal"}]
-        - instructions: a fun instruction telling kids to find and cross out the odd one`,
+        - oddOneOutGroups: array where each item has "items" (array of 4 items FROM THE AVAILABLE LIST), "oddItem" (the different one), and "reason" (simple reason why it's different)
+          Example: [{"items": ["cat", "dog", "bird", "apple"], "oddItem": "apple", "reason": "apple is food, others are animals"}]
+        - instructions: a fun instruction telling kids to find and circle the odd one`,
 
       'circle-correct': `Generate a circle-the-correct-answer worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Create simple questions where kids circle the correct answer from options.
+        CRITICAL: You MUST ONLY use words from this list of available icons: ${availableIconWordsList}
+        
+        Create 3-4 simple questions where kids circle the correct answer from options.
         
         Return JSON with:
         - topic: a fun title for the worksheet
-        - circleCorrectItems: array where each item has "question" (simple question), "options" (array of 3 choices), and "correctAnswer" (the right one)
+        - circleCorrectItems: array where each item has "question" (simple question for preschoolers), "options" (array of 3 choices FROM THE AVAILABLE LIST), and "correctAnswer" (the right one)
           Example: [{"question": "Which one can fly?", "options": ["cat", "bird", "fish"], "correctAnswer": "bird"}]
         - instructions: a fun instruction telling kids to circle the correct answer`,
 
       pattern: `Generate a pattern completion worksheet for preschool children.
         The user provided these words: "${description}"
         
-        Create simple repeating patterns using the provided words.
+        CRITICAL: You MUST ONLY use words from this list of available icons: ${availableIconWordsList}
+        
+        Create 2-3 simple repeating patterns.
         
         Return JSON with:
         - topic: a fun title for the worksheet  
-        - patternItems: array where each item has "sequence" (array of 5 items showing the pattern) and "answer" (what comes next)
+        - patternItems: array where each item has "sequence" (array of 5 items showing the pattern, FROM THE AVAILABLE LIST) and "answer" (what comes next)
           Example: [{"sequence": ["apple", "banana", "apple", "banana", "apple"], "answer": "banana"}]
         - instructions: a fun instruction telling kids to complete the pattern`
     };

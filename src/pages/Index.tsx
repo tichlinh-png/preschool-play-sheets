@@ -347,12 +347,13 @@ const Index = () => {
               </div>
               
               {/* Signature */}
-              <img 
-                src={signatureImage} 
-                alt="Caitlin signature" 
-                className="h-10 w-auto"
-                style={{ filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.3))' }}
-              />
+              <div className="bg-slate-800/90 rounded-lg px-3 py-1.5">
+                <img 
+                  src={signatureImage} 
+                  alt="Caitlin signature" 
+                  className="h-8 w-auto"
+                />
+              </div>
             </div>
           </div>
         </div>

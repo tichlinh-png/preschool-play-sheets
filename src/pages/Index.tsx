@@ -350,7 +350,8 @@ const Index = () => {
               <img 
                 src={signatureImage} 
                 alt="Caitlin signature" 
-                className="h-8 opacity-80"
+                className="h-10 w-auto"
+                style={{ filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.3))' }}
               />
             </div>
           </div>

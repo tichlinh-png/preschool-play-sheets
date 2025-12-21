@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle } from "lucide-react";
+import signatureImage from "@/assets/signature.png";
 import { useVisitorCount } from "@/hooks/useVisitorCount";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -344,6 +345,13 @@ const Index = () => {
                   <span>Facebook</span>
                 </a>
               </div>
+              
+              {/* Signature */}
+              <img 
+                src={signatureImage} 
+                alt="Caitlin signature" 
+                className="h-8 opacity-80"
+              />
             </div>
           </div>
         </div>

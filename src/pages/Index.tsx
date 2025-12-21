@@ -350,7 +350,7 @@ const Index = () => {
               <img 
                 src={signatureImage} 
                 alt="Caitlin signature" 
-                className="h-14 w-auto"
+                className="h-20 w-auto"
               />
             </div>
           </div>

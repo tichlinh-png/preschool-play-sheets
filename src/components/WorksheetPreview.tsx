@@ -452,7 +452,7 @@ export const WorksheetPreview = ({
         <div className="grid grid-cols-2 gap-4">
           {colorInstructions.map((instruction, idx) => (
             <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-4">
-              <WordIconOrImage word={instruction.item} size={100} className="text-gray-400" wordImages={wordImages} />
+              <WordIconOrImage word={instruction.item} size={140} className="text-gray-400" wordImages={wordImages} />
               <span className="text-base font-medium text-gray-700 mt-3 capitalize">{instruction.item}</span>
               <span className="text-sm text-gray-500">({instruction.color})</span>
             </div>
@@ -470,10 +470,10 @@ export const WorksheetPreview = ({
         <div className="space-y-4">
           {countingItems.map((item, idx) => (
             <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <div className="flex flex-wrap justify-center gap-2 mb-3">
+              <div className="flex flex-wrap justify-center gap-3 mb-3">
                 {Array.from({ length: item.count }).map((_, i) => (
-                  <div key={i} className="w-10 h-10 flex items-center justify-center">
-                    <WordIconOrImage word={item.item} size={32} className="text-gray-600" wordImages={wordImages} />
+                  <div key={i} className="w-14 h-14 flex items-center justify-center">
+                    <WordIconOrImage word={item.item} size={48} className="text-gray-600" wordImages={wordImages} />
                   </div>
                 ))}
               </div>

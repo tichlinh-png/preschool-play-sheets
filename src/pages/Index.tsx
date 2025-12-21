@@ -347,13 +347,11 @@ const Index = () => {
               </div>
               
               {/* Signature */}
-              <div className="bg-slate-800/90 rounded-lg px-3 py-1.5">
-                <img 
-                  src={signatureImage} 
-                  alt="Caitlin signature" 
-                  className="h-8 w-auto"
-                />
-              </div>
+              <img 
+                src={signatureImage} 
+                alt="Caitlin signature" 
+                className="h-12 w-auto brightness-75 contrast-125"
+              />
             </div>
           </div>
         </div>

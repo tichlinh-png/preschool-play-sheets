@@ -310,6 +310,32 @@ const Index = () => {
           </div>
         </div>
       </main>
+      {/* My Projects Section */}
+      <section className="border-t border-border bg-gradient-to-b from-card/30 to-card/60 py-12">
+        <div className="container mx-auto px-4">
+          <h3 className="font-display text-2xl font-bold text-center mb-8 text-foreground">
+            Các Web Khác
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {/* Marble Race */}
+            <a
+              href="https://marble-rush-ai-name-picker-694411017558.us-west1.run.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🏁</span>
+              </div>
+              <h4 className="font-display font-bold text-lg text-foreground mb-2">Đường Đua Bi</h4>
+              <p className="text-sm text-muted-foreground">
+                Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi vui nhộn
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t border-border bg-card/50 py-6">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">

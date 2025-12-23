@@ -335,7 +335,7 @@ const Index = () => {
 
             {/* Edu Sheet */}
             <a
-              href="https://edu-sheet.lovable.app/"
+              href="https://public-edu-sheet-743352123710.us-west1.run.app"
               target="_blank"
               rel="noopener noreferrer"
               className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"

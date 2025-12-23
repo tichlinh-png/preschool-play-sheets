@@ -332,6 +332,22 @@ const Index = () => {
                 Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi vui nhộn
               </p>
             </a>
+
+            {/* Edu Sheet */}
+            <a
+              href="https://edu-sheet.lovable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">📝</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Edu Sheet</h4>
+              <p className="text-sm text-muted-foreground">
+                Professional English Worksheets
+              </p>
+            </a>
           </div>
         </div>
       </section>

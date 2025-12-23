@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Baloo 2', 'Be Vietnam Pro', 'sans-serif'],
+        display: ['Be Vietnam Pro', 'sans-serif'],
         body: ['Be Vietnam Pro', 'sans-serif'],
       },
       colors: {

@@ -327,7 +327,7 @@ const Index = () => {
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">🏁</span>
               </div>
-              <h4 className="font-bold text-lg text-foreground mb-2">Đường Đua Bi</h4>
+              <h4 className="font-bold text-lg text-foreground mb-2">Marble Race</h4>
               <p className="text-sm text-muted-foreground">
                 Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi vui nhộn
               </p>

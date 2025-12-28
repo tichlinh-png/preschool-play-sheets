@@ -428,22 +428,6 @@ const Index = () => {
                 Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi
               </p>
             </a>
-
-            {/* Preschool Play Sheets */}
-            <a
-              href="https://preschool-play-sheets.lovable.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <span className="text-2xl">🎨</span>
-              </div>
-              <h4 className="font-bold text-lg text-foreground mb-2">Preschool Sheets</h4>
-              <p className="text-sm text-muted-foreground">
-                Bài tập mầm non vui nhộn
-              </p>
-            </a>
           </div>
         </div>
       </section>

@@ -316,7 +316,103 @@ const Index = () => {
           <h3 className="text-2xl font-bold text-center mb-8 text-foreground">
             Các Web Khác
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Playful Points Challenge */}
+            <a
+              href="https://playful-points-challenge.lovable.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">⭐</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Playful Points</h4>
+              <p className="text-sm text-muted-foreground">
+                Hệ thống điểm thưởng vui nhộn cho lớp học
+              </p>
+            </a>
+
+            {/* Synthwave Space */}
+            <a
+              href="https://synthwave-space-694411017558.us-west1.run.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🚀</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Synthwave Space</h4>
+              <p className="text-sm text-muted-foreground">
+                Không gian synthwave sáng tạo
+              </p>
+            </a>
+
+            {/* LuminaTales */}
+            <a
+              href="https://luminatales-ai-storybook-architect-694411017558.us-west1.run.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">📚</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">LuminaTales</h4>
+              <p className="text-sm text-muted-foreground">
+                AI Storybook - Tạo truyện tranh AI
+              </p>
+            </a>
+
+            {/* Magic Strike AR */}
+            <a
+              href="https://magic-strike-ar-694411017558.us-west1.run.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-orange-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Magic Strike AR</h4>
+              <p className="text-sm text-muted-foreground">
+                Trò chơi AR tương tác thú vị
+              </p>
+            </a>
+
+            {/* Hand Cannon Showdown */}
+            <a
+              href="https://hand-cannon-showdown.lovable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-slate-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🔫</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Hand Cannon</h4>
+              <p className="text-sm text-muted-foreground">
+                Trò chơi đấu súng tay vui nhộn
+              </p>
+            </a>
+
+            {/* Edu Sheet */}
+            <a
+              href="https://public-edu-sheet-743352123710.us-west1.run.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">📝</span>
+              </div>
+              <h4 className="font-bold text-lg text-foreground mb-2">Edu Sheet</h4>
+              <p className="text-sm text-muted-foreground">
+                Professional English Worksheets
+              </p>
+            </a>
+
             {/* Marble Race */}
             <a
               href="https://marble-rush-ai-name-picker-694411017558.us-west1.run.app/"
@@ -329,23 +425,23 @@ const Index = () => {
               </div>
               <h4 className="font-bold text-lg text-foreground mb-2">Marble Race</h4>
               <p className="text-sm text-muted-foreground">
-                Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi vui nhộn
+                Chọn ngẫu nhiên tên học sinh bằng cuộc đua bi
               </p>
             </a>
 
-            {/* Edu Sheet */}
+            {/* Preschool Play Sheets */}
             <a
-              href="https://public-edu-sheet-743352123710.us-west1.run.app"
+              href="https://preschool-play-sheets.lovable.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="group block p-6 rounded-2xl bg-card border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <span className="text-2xl">📝</span>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🎨</span>
               </div>
-              <h4 className="font-bold text-lg text-foreground mb-2">Edu Sheet</h4>
+              <h4 className="font-bold text-lg text-foreground mb-2">Preschool Sheets</h4>
               <p className="text-sm text-muted-foreground">
-                Professional English Worksheets
+                Bài tập mầm non vui nhộn
               </p>
             </a>
           </div>

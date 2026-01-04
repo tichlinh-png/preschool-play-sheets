@@ -109,61 +109,67 @@ export const printWorksheets = () => {
       <title>KidsSheet - Worksheets</title>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Edu+TAS+Beginner:wght@400;500;600;700&display=swap" rel="stylesheet">
       <style>
-        @page {
-          size: A4;
-          margin: 15mm;
-        }
-        
-        * {
+        /* Reset and base */
+        *, *::before, *::after {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-          color-adjust: exact !important;
+        }
+        
+        @page {
+          size: A4 portrait;
+          margin: 10mm;
         }
         
         html, body {
           width: 100%;
-          height: 100%;
-          background: white;
-        }
-        
-        body {
-          font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+          min-height: 100%;
+          background: white !important;
+          font-family: 'Nunito', Arial, sans-serif;
           font-size: 14px;
           line-height: 1.4;
-          color: #1f2937;
+          color: #000 !important;
         }
         
         h1, h2, h3, h4, h5, h6, .font-display {
-          font-family: 'Fredoka', sans-serif;
+          font-family: 'Fredoka', Arial, sans-serif;
         }
         
-        /* Each worksheet card is a separate page */
+        /* Force grayscale/B&W optimization */
+        img, svg {
+          filter: grayscale(0);
+          max-width: 100%;
+        }
+        
+        /* Worksheet card - each on separate page */
         [data-worksheet-card] {
-          page-break-after: always;
-          page-break-inside: avoid;
-          break-after: page;
-          break-inside: avoid;
+          page-break-after: always !important;
+          page-break-inside: avoid !important;
+          break-after: page !important;
+          break-inside: avoid !important;
           
+          display: block !important;
+          width: 100% !important;
+          max-width: 190mm !important;
+          margin: 0 auto !important;
+          padding: 15px !important;
           background: white !important;
-          border: 2px solid #e5e7eb !important;
-          border-radius: 12px;
-          padding: 24px;
-          margin: 0;
-          min-height: calc(100vh - 30mm);
-          display: flex;
-          flex-direction: column;
+          border: 2px solid #333 !important;
+          border-radius: 8px !important;
+          box-sizing: border-box !important;
         }
         
         [data-worksheet-card]:last-child {
-          page-break-after: auto;
-          break-after: auto;
+          page-break-after: auto !important;
+          break-after: auto !important;
         }
         
-        /* Hide wrapper div margins */
-        .space-y-6 > [data-worksheet-card] {
+        /* Hide any wrapper spacing */
+        .space-y-6 {
+          display: block !important;
+        }
+        
+        .space-y-6 > * {
           margin-top: 0 !important;
         }
         
@@ -175,161 +181,148 @@ export const printWorksheets = () => {
         .space-y-2 > * + * { margin-top: 0.5rem; }
         .space-y-1 > * + * { margin-top: 0.25rem; }
         
-        .grid { display: grid; }
-        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-        .gap-6 { gap: 1.5rem; }
-        .gap-4 { gap: 1rem; }
-        .gap-3 { gap: 0.75rem; }
-        .gap-2 { gap: 0.5rem; }
+        .grid { display: grid !important; }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
+        .gap-6 { gap: 1.5rem !important; }
+        .gap-4 { gap: 1rem !important; }
+        .gap-3 { gap: 0.75rem !important; }
+        .gap-2 { gap: 0.5rem !important; }
         
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .flex-wrap { flex-wrap: wrap; }
-        .flex-1 { flex: 1; }
-        .items-start { align-items: flex-start; }
-        .items-center { align-items: center; }
-        .items-end { align-items: flex-end; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-end { justify-content: flex-end; }
+        .flex { display: flex !important; }
+        .flex-col { flex-direction: column !important; }
+        .flex-wrap { flex-wrap: wrap !important; }
+        .flex-1 { flex: 1 !important; }
+        .items-start { align-items: flex-start !important; }
+        .items-center { align-items: center !important; }
+        .items-end { align-items: flex-end !important; }
+        .justify-center { justify-content: center !important; }
+        .justify-between { justify-content: space-between !important; }
+        .justify-end { justify-content: flex-end !important; }
         
-        .text-center { text-align: center; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-medium { font-weight: 500; }
+        .text-center { text-align: center !important; }
+        .font-bold { font-weight: 700 !important; }
+        .font-semibold { font-weight: 600 !important; }
+        .font-medium { font-weight: 500 !important; }
         
-        .text-xs { font-size: 0.75rem; line-height: 1rem; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .text-base { font-size: 1rem; line-height: 1.5rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-        .text-6xl { font-size: 3.75rem; line-height: 1; }
+        .text-xs { font-size: 0.75rem !important; }
+        .text-sm { font-size: 0.875rem !important; }
+        .text-base { font-size: 1rem !important; }
+        .text-lg { font-size: 1.125rem !important; }
+        .text-xl { font-size: 1.25rem !important; }
+        .text-2xl { font-size: 1.5rem !important; }
+        .text-3xl { font-size: 1.875rem !important; }
+        .text-4xl { font-size: 2.25rem !important; }
+        .text-6xl { font-size: 3.75rem !important; }
         
-        .tracking-widest { letter-spacing: 0.1em; }
-        .tracking-\\[0\\.2em\\] { letter-spacing: 0.2em; }
-        .capitalize { text-transform: capitalize; }
-        .uppercase { text-transform: uppercase; }
+        .tracking-widest { letter-spacing: 0.1em !important; }
+        .capitalize { text-transform: capitalize !important; }
+        .uppercase { text-transform: uppercase !important; }
         
         /* Border utilities */
-        .rounded { border-radius: 0.25rem; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .rounded-xl { border-radius: 0.75rem; }
-        .rounded-2xl { border-radius: 1rem; }
-        .rounded-full { border-radius: 9999px; }
+        .rounded { border-radius: 0.25rem !important; }
+        .rounded-lg { border-radius: 0.5rem !important; }
+        .rounded-xl { border-radius: 0.75rem !important; }
+        .rounded-2xl { border-radius: 1rem !important; }
+        .rounded-full { border-radius: 9999px !important; }
         
-        .border { border-width: 1px; border-style: solid; }
-        .border-2 { border-width: 2px; border-style: solid; }
-        .border-3 { border-width: 3px; border-style: solid; }
-        .border-dashed { border-style: dashed; }
-        .border-dotted { border-style: dotted; }
+        .border { border: 1px solid #333 !important; }
+        .border-2 { border: 2px solid #333 !important; }
+        .border-3 { border: 3px solid #333 !important; }
+        .border-dashed { border-style: dashed !important; }
+        .border-dotted { border-style: dotted !important; }
         
-        .border-gray-200 { border-color: #e5e7eb; }
-        .border-gray-300 { border-color: #d1d5db; }
-        .border-gray-400 { border-color: #9ca3af; }
-        .border-gray-500 { border-color: #6b7280; }
-        .border-gray-800 { border-color: #1f2937; }
+        .border-gray-200, .border-gray-300, .border-gray-400, 
+        .border-gray-500, .border-gray-800 { border-color: #555 !important; }
         
-        .border-b { border-bottom-width: 1px; }
-        .border-b-2 { border-bottom-width: 2px; }
-        .border-t { border-top-width: 1px; }
-        .border-t-2 { border-top-width: 2px; }
+        .border-b { border-bottom: 1px solid #333 !important; }
+        .border-b-2 { border-bottom: 2px solid #333 !important; }
+        .border-t { border-top: 1px solid #333 !important; }
+        .border-t-2 { border-top: 2px solid #333 !important; }
         
-        /* Background utilities */
-        .bg-white { background-color: white !important; }
-        .bg-gray-50 { background-color: #f9fafb !important; }
-        .bg-gray-100 { background-color: #f3f4f6 !important; }
-        .bg-gray-800 { background-color: #1f2937 !important; }
+        /* Background - all white for B&W printing */
+        .bg-white, .bg-gray-50, .bg-gray-100, 
+        [class*="bg-"] { background-color: white !important; }
         
-        /* Text colors */
+        .bg-gray-800 { background-color: #333 !important; }
+        
+        /* Text colors - optimize for B&W */
         .text-white { color: white !important; }
-        .text-gray-300 { color: #d1d5db; }
-        .text-gray-400 { color: #9ca3af; }
-        .text-gray-500 { color: #6b7280; }
-        .text-gray-600 { color: #4b5563; }
-        .text-gray-700 { color: #374151; }
-        .text-gray-800 { color: #1f2937; }
+        .text-gray-300, .text-gray-400, .text-gray-500, 
+        .text-gray-600, .text-gray-700, .text-gray-800,
+        [class*="text-"] { color: #000 !important; }
         
         /* Padding utilities */
-        .p-2 { padding: 0.5rem; }
-        .p-3 { padding: 0.75rem; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .pb-1 { padding-bottom: 0.25rem; }
-        .pb-3 { padding-bottom: 0.75rem; }
+        .p-2 { padding: 0.5rem !important; }
+        .p-3 { padding: 0.75rem !important; }
+        .p-4 { padding: 1rem !important; }
+        .p-6 { padding: 1.5rem !important; }
+        .px-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+        .px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+        .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+        .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+        .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+        .py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+        .pb-1 { padding-bottom: 0.25rem !important; }
+        .pb-3 { padding-bottom: 0.75rem !important; }
         
         /* Margin utilities */
-        .mb-1 { margin-bottom: 0.25rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 0.75rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mt-1 { margin-top: 0.25rem; }
-        .mt-3 { margin-top: 0.75rem; }
-        .mx-1 { margin-left: 0.25rem; margin-right: 0.25rem; }
-        .mr-\\[2px\\] { margin-right: 2px; }
+        .mb-1 { margin-bottom: 0.25rem !important; }
+        .mb-2 { margin-bottom: 0.5rem !important; }
+        .mb-3 { margin-bottom: 0.75rem !important; }
+        .mb-4 { margin-bottom: 1rem !important; }
+        .mt-1 { margin-top: 0.25rem !important; }
+        .mt-3 { margin-top: 0.75rem !important; }
+        .mx-1 { margin-left: 0.25rem !important; margin-right: 0.25rem !important; }
         
         /* Size utilities */
-        .w-6 { width: 1.5rem; }
-        .w-8 { width: 2rem; }
-        .w-10 { width: 2.5rem; }
-        .w-12 { width: 3rem; }
-        .w-14 { width: 3.5rem; }
-        .w-16 { width: 4rem; }
-        .w-20 { width: 5rem; }
-        .w-24 { width: 6rem; }
-        .w-full { width: 100%; }
+        .w-6 { width: 1.5rem !important; }
+        .w-8 { width: 2rem !important; }
+        .w-10 { width: 2.5rem !important; }
+        .w-12 { width: 3rem !important; }
+        .w-14 { width: 3.5rem !important; }
+        .w-16 { width: 4rem !important; }
+        .w-20 { width: 5rem !important; }
+        .w-24 { width: 6rem !important; }
+        .w-full { width: 100% !important; }
         
-        .h-6 { height: 1.5rem; }
-        .h-10 { height: 2.5rem; }
-        .h-12 { height: 3rem; }
-        .h-14 { height: 3.5rem; }
-        .h-16 { height: 4rem; }
-        .h-20 { height: 5rem; }
-        .h-24 { height: 6rem; }
-        .h-full { height: 100%; }
+        .h-6 { height: 1.5rem !important; }
+        .h-10 { height: 2.5rem !important; }
+        .h-12 { height: 3rem !important; }
+        .h-14 { height: 3.5rem !important; }
+        .h-16 { height: 4rem !important; }
+        .h-20 { height: 5rem !important; }
+        .h-24 { height: 6rem !important; }
+        .h-full { height: 100% !important; }
         
-        .min-w-\\[80px\\] { min-width: 80px; }
-        .aspect-square { aspect-ratio: 1/1; }
+        .min-w-\\[80px\\] { min-width: 80px !important; }
+        .aspect-square { aspect-ratio: 1/1 !important; }
         
         /* Display utilities */
-        .inline-block { display: inline-block; }
-        .block { display: block; }
-        .hidden { display: none; }
-        .inline { display: inline; }
+        .inline-block { display: inline-block !important; }
+        .block { display: block !important; }
+        .hidden { display: none !important; }
+        .inline { display: inline !important; }
         
         /* Position utilities */
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .top-1\\/2 { top: 50%; }
-        .left-0 { left: 0; }
-        .right-0 { right: 0; }
-        .left-1\\/2 { left: 50%; }
-        .-top-1 { top: -0.25rem; }
-        .-translate-x-1\\/2 { transform: translateX(-50%); }
+        .relative { position: relative !important; }
+        .absolute { position: absolute !important; }
         
         /* Object utilities */
-        .object-contain { object-fit: contain; }
+        .object-contain { object-fit: contain !important; }
         
-        /* SVG icons - ensure visibility */
+        /* SVG icons */
         svg {
-          display: inline-block;
-          vertical-align: middle;
-          color: inherit;
+          display: inline-block !important;
+          vertical-align: middle !important;
+          color: #000 !important;
+          stroke: currentColor !important;
         }
         
         /* Image handling */
         img {
-          max-width: 100%;
-          height: auto;
-          display: inline-block;
+          max-width: 100% !important;
+          height: auto !important;
+          display: inline-block !important;
         }
         
         /* Special font for tracing */
@@ -337,38 +330,36 @@ export const printWorksheets = () => {
           font-family: 'Edu TAS Beginner', cursive !important;
         }
         
-        /* Print-specific overrides */
+        /* Gradient text fix for B&W */
+        [class*="bg-gradient"], [class*="bg-clip-text"] {
+          background: none !important;
+          -webkit-background-clip: unset !important;
+          background-clip: unset !important;
+          -webkit-text-fill-color: #000 !important;
+          color: #000 !important;
+        }
+        
+        /* Print specific */
         @media print {
           html, body {
-            width: 210mm;
-            height: 297mm;
+            width: 210mm !important;
+            background: white !important;
           }
           
           body {
-            padding: 0;
-            margin: 0;
+            padding: 0 !important;
+            margin: 0 !important;
           }
           
-          /* Force each worksheet to its own page */
           [data-worksheet-card] {
             page-break-after: always !important;
             break-after: page !important;
-            margin: 0 !important;
-            border-radius: 0 !important;
-            border: 1px solid #e5e7eb !important;
-            min-height: auto;
-            height: auto;
+            border: 2px solid #000 !important;
           }
           
           [data-worksheet-card]:last-child {
             page-break-after: auto !important;
             break-after: auto !important;
-          }
-          
-          /* Ensure colors print */
-          * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
           }
         }
       </style>
@@ -377,15 +368,22 @@ export const printWorksheets = () => {
       ${worksheetContent}
       <script>
         // Wait for fonts and images to load
-        window.onload = function() {
-          // Give fonts time to load
+        document.fonts.ready.then(function() {
           setTimeout(function() {
             window.print();
             window.onafterprint = function() {
               window.close();
             };
-          }, 500);
-        };
+          }, 300);
+        }).catch(function() {
+          // Fallback if fonts API not supported
+          setTimeout(function() {
+            window.print();
+            window.onafterprint = function() {
+              window.close();
+            };
+          }, 800);
+        });
       </script>
     </body>
     </html>

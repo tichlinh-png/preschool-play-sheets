@@ -138,22 +138,38 @@ const availableIconWords = new Set([
 export const hasAvailableIcon = (word: string, wordImages: WordImage[] = []): boolean => {
   const str = word.toLowerCase().trim();
   
-  // Check for custom uploaded image
-  if (wordImages.some(img => img.word.toLowerCase() === str)) {
-    return true;
-  }
+  // Check for custom uploaded image - use flexible matching
+  const hasCustomImage = wordImages.some(img => {
+    const imgWord = img.word.toLowerCase().trim();
+    return imgWord === str || imgWord.startsWith(str) || str.startsWith(imgWord);
+  });
+  if (hasCustomImage) return true;
   
   // Check for custom icon
-  if (customIconMap[str]) {
-    return true;
-  }
+  if (customIconMap[str]) return true;
   
   // Check for lucide icon
-  if (lucideIconMap[str]) {
-    return true;
-  }
+  if (lucideIconMap[str]) return true;
   
   return false;
+};
+
+// Helper function to find matching image from wordImages
+const findMatchingImage = (word: string, wordImages: WordImage[] = []): string | null => {
+  const searchWord = word.toLowerCase().trim();
+  
+  // Exact match first
+  const exactMatch = wordImages.find(img => img.word.toLowerCase().trim() === searchWord);
+  if (exactMatch) return exactMatch.imageUrl;
+  
+  // Partial match - check if word starts with the search term or vice versa
+  const partialMatch = wordImages.find(img => {
+    const imgWord = img.word.toLowerCase().trim();
+    return imgWord.startsWith(searchWord) || searchWord.startsWith(imgWord);
+  });
+  if (partialMatch) return partialMatch.imageUrl;
+  
+  return null;
 };
 
 // Component to render word icon or custom image
@@ -170,12 +186,12 @@ const WordIconOrImage = ({
 }) => {
   const str = word.toLowerCase().trim();
   
-  // Check for custom uploaded image first
-  const customImage = wordImages.find(img => img.word.toLowerCase() === str);
-  if (customImage) {
+  // Check for custom uploaded image first - use flexible matching
+  const customImageUrl = findMatchingImage(word, wordImages);
+  if (customImageUrl) {
     return (
       <img 
-        src={customImage.imageUrl} 
+        src={customImageUrl} 
         alt={word} 
         style={{ width: size, height: size }}
         className={`object-contain ${className}`}
@@ -194,8 +210,8 @@ const WordIconOrImage = ({
     return <LucideIconComponent size={size} className={className} strokeWidth={1.5} />;
   }
   
-  // Return null if no icon available (this shouldn't happen if filtering is done correctly)
-  return null;
+  // Return a placeholder image icon if nothing found
+  return <ImageIcon size={size} className={`${className} text-gray-300`} strokeWidth={1} />;
 };
 
 export const WorksheetPreview = ({ 

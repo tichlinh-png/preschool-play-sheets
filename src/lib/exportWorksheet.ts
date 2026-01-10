@@ -16,8 +16,13 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
   const pdf = new jsPDF('p', 'mm', 'a4');
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const contentWidth = pageWidth - (MARGIN_MM * 2);
-  const contentHeight = pageHeight - (MARGIN_MM * 2);
+  
+  // Use smaller margins to maximize content area
+  const marginX = 8;
+  const marginTop = 8;
+  const marginBottom = 12; // Leave space for page number
+  const contentWidth = pageWidth - (marginX * 2);
+  const contentHeight = pageHeight - marginTop - marginBottom;
 
   // Get all worksheet cards
   const worksheetCards = element.querySelectorAll('[data-worksheet-card]');
@@ -28,10 +33,21 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
     // Store original styles
     const originalStyle = card.getAttribute('style') || '';
     
-    // Temporarily set fixed width for consistent rendering
-    card.style.width = '800px';
-    card.style.maxWidth = '800px';
+    // Temporarily set fixed width for consistent rendering - wider for better A4 fit
+    card.style.width = '700px';
+    card.style.maxWidth = '700px';
     card.style.backgroundColor = '#ffffff';
+    card.style.padding = '24px';
+    
+    // Wait for images to load
+    const images = card.querySelectorAll('img');
+    await Promise.all(Array.from(images).map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    }));
     
     // Create canvas from the card with high quality settings
     const canvas = await html2canvas(card, {
@@ -40,7 +56,7 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
       logging: false,
       useCORS: true,
       allowTaint: true,
-      windowWidth: 850,
+      windowWidth: 750,
     });
 
     // Restore original styles
@@ -48,38 +64,38 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
 
     const imgData = canvas.toDataURL('image/png', 1.0);
     
-    // Calculate dimensions to fit A4 while maintaining aspect ratio
+    // Calculate dimensions to FILL A4 page as much as possible
     const imgAspectRatio = canvas.width / canvas.height;
     const pageAspectRatio = contentWidth / contentHeight;
     
     let finalWidth: number;
     let finalHeight: number;
     
-    if (imgAspectRatio > pageAspectRatio) {
-      // Image is wider - fit to width
-      finalWidth = contentWidth;
-      finalHeight = contentWidth / imgAspectRatio;
-    } else {
-      // Image is taller - fit to height
+    // Always try to fill the page width first for worksheets
+    finalWidth = contentWidth;
+    finalHeight = contentWidth / imgAspectRatio;
+    
+    // If height exceeds available space, scale down
+    if (finalHeight > contentHeight) {
       finalHeight = contentHeight;
       finalWidth = contentHeight * imgAspectRatio;
     }
     
-    // Center the image on page
+    // Center horizontally, align to top
     const xOffset = (pageWidth - finalWidth) / 2;
-    const yOffset = (pageHeight - finalHeight) / 2;
+    const yOffset = marginTop;
 
     if (i > 0) {
       pdf.addPage();
     }
 
-    // Add worksheet image centered on page
+    // Add worksheet image
     pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
     
-    // Add page number
-    pdf.setFontSize(10);
+    // Add page number at bottom
+    pdf.setFontSize(9);
     pdf.setTextColor(150, 150, 150);
-    pdf.text(`Page ${i + 1} of ${worksheetCards.length}`, pageWidth / 2, pageHeight - 8, { align: 'center' });
+    pdf.text(`${i + 1} / ${worksheetCards.length}`, pageWidth / 2, pageHeight - 5, { align: 'center' });
   }
 
   pdf.save('kidssheet-worksheets.pdf');
@@ -118,7 +134,7 @@ export const printWorksheets = () => {
         
         @page {
           size: A4 portrait;
-          margin: 10mm;
+          margin: 8mm;
         }
         
         html, body {
@@ -126,7 +142,7 @@ export const printWorksheets = () => {
           min-height: 100%;
           background: white !important;
           font-family: 'Nunito', Arial, sans-serif;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 1.4;
           color: #000 !important;
         }
@@ -135,13 +151,22 @@ export const printWorksheets = () => {
           font-family: 'Fredoka', Arial, sans-serif;
         }
         
-        /* Force grayscale/B&W optimization */
-        img, svg {
-          filter: grayscale(0);
-          max-width: 100%;
+        /* Images - ensure they display properly */
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+          display: inline-block !important;
         }
         
-        /* Worksheet card - each on separate page */
+        svg {
+          max-width: 100%;
+          display: inline-block !important;
+          vertical-align: middle !important;
+          color: #000 !important;
+          stroke: currentColor !important;
+        }
+        
+        /* Worksheet card - each on separate page, FILL the page */
         [data-worksheet-card] {
           page-break-after: always !important;
           page-break-inside: avoid !important;
@@ -150,9 +175,10 @@ export const printWorksheets = () => {
           
           display: block !important;
           width: 100% !important;
-          max-width: 190mm !important;
-          margin: 0 auto !important;
-          padding: 15px !important;
+          min-height: calc(297mm - 20mm) !important;
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 20px !important;
           background: white !important;
           border: 2px solid #333 !important;
           border-radius: 8px !important;

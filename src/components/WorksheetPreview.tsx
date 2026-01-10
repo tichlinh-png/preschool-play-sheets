@@ -139,11 +139,16 @@ export const hasAvailableIcon = (word: string, wordImages: WordImage[] = []): bo
   const str = word.toLowerCase().trim();
   
   // Check for custom uploaded image - use flexible matching
-  const hasCustomImage = wordImages.some(img => {
-    const imgWord = img.word.toLowerCase().trim();
-    return imgWord === str || imgWord.startsWith(str) || str.startsWith(imgWord);
-  });
-  if (hasCustomImage) return true;
+  if (wordImages && wordImages.length > 0) {
+    for (const img of wordImages) {
+      const imgWord = img.word.toLowerCase().trim();
+      if (imgWord === str || 
+          imgWord.includes(str) || str.includes(imgWord) ||
+          imgWord.startsWith(str) || str.startsWith(imgWord)) {
+        return true;
+      }
+    }
+  }
   
   // Check for custom icon
   if (customIconMap[str]) return true;
@@ -156,18 +161,36 @@ export const hasAvailableIcon = (word: string, wordImages: WordImage[] = []): bo
 
 // Helper function to find matching image from wordImages
 const findMatchingImage = (word: string, wordImages: WordImage[] = []): string | null => {
+  if (!word || !wordImages || wordImages.length === 0) return null;
+  
   const searchWord = word.toLowerCase().trim();
   
-  // Exact match first
-  const exactMatch = wordImages.find(img => img.word.toLowerCase().trim() === searchWord);
-  if (exactMatch) return exactMatch.imageUrl;
-  
-  // Partial match - check if word starts with the search term or vice versa
-  const partialMatch = wordImages.find(img => {
+  // Try multiple matching strategies
+  for (const img of wordImages) {
     const imgWord = img.word.toLowerCase().trim();
-    return imgWord.startsWith(searchWord) || searchWord.startsWith(imgWord);
-  });
-  if (partialMatch) return partialMatch.imageUrl;
+    
+    // 1. Exact match
+    if (imgWord === searchWord) {
+      return img.imageUrl;
+    }
+    
+    // 2. One contains the other
+    if (imgWord.includes(searchWord) || searchWord.includes(imgWord)) {
+      return img.imageUrl;
+    }
+    
+    // 3. Starts with match
+    if (imgWord.startsWith(searchWord) || searchWord.startsWith(imgWord)) {
+      return img.imageUrl;
+    }
+    
+    // 4. First word match (e.g., "golden fish" matches "fish")
+    const imgFirstWord = imgWord.split(/\s+/)[0];
+    const searchFirstWord = searchWord.split(/\s+/)[0];
+    if (imgFirstWord === searchFirstWord || imgFirstWord === searchWord || imgWord === searchFirstWord) {
+      return img.imageUrl;
+    }
+  }
   
   return null;
 };
@@ -186,7 +209,7 @@ const WordIconOrImage = ({
 }) => {
   const str = word.toLowerCase().trim();
   
-  // Check for custom uploaded image first - use flexible matching
+  // ALWAYS check for custom uploaded image FIRST - prioritize user images over icons
   const customImageUrl = findMatchingImage(word, wordImages);
   if (customImageUrl) {
     return (
@@ -195,6 +218,7 @@ const WordIconOrImage = ({
         alt={word} 
         style={{ width: size, height: size }}
         className={`object-contain ${className}`}
+        crossOrigin="anonymous"
       />
     );
   }

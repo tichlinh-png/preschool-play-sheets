@@ -252,28 +252,28 @@ export const WorksheetPreview = ({
   const worksheetTopic = safeString(data?.topic) || topic;
 
   const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
-    <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
-      <div className="flex items-center justify-between mb-2">
+    <div className="text-center mb-3 pb-2 border-b-2 border-gray-200">
+      <div className="flex items-center justify-between mb-1">
         {schoolLogo ? (
-          <img src={schoolLogo} alt="School logo" className="w-12 h-12 object-contain" />
+          <img src={schoolLogo} alt="School logo" className="w-10 h-10 object-contain" />
         ) : (
-          <div className="w-12 h-12" />
+          <div className="w-10 h-10" />
         )}
         <div className="flex-1 text-center">
           {schoolName && (
-            <p className="text-sm font-semibold text-gray-700 mb-1">{schoolName}</p>
+            <p className="text-base font-semibold text-gray-700">{schoolName}</p>
           )}
-          <p className="text-xs text-gray-500">
-            Class: {className || "_________________"} | Teacher: {teacherName || "_________________"}
+          <p className="text-sm text-gray-500">
+            Class: {className || "____________"} | Teacher: {teacherName || "____________"}
           </p>
         </div>
-        <div className="w-12 h-12" />
+        <div className="w-10 h-10" />
       </div>
-      <p className="text-sm text-gray-600 mb-3">Name: _________________ Date: _________</p>
-      <div className="border-2 border-gray-400 rounded-lg p-3 bg-gray-50 inline-block">
+      <p className="text-sm text-gray-600 mb-2">Name: _____________ Date: _______</p>
+      <div className="border-2 border-gray-400 rounded-lg px-4 py-2 bg-gray-50 inline-block">
         <div className="flex items-center justify-center gap-2">
-          <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
-          <h3 className="font-display text-xl font-bold text-gray-800">{title}</h3>
+          <span className="bg-gray-800 text-white text-sm font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
+          <h3 className="font-display text-2xl font-bold text-gray-800">{title}</h3>
         </div>
       </div>
     </div>
@@ -476,25 +476,25 @@ export const WorksheetPreview = ({
   if (worksheetType === "color") {
     const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
-        <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <p className="font-bold text-gray-800 mb-3 text-lg">Coloring Guide:</p>
+        <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <p className="font-bold text-gray-800 mb-2 text-xl">Coloring Guide:</p>
           <div className="grid grid-cols-2 gap-2">
             {colorInstructions.map((instruction, idx) => (
               <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
-                <span className="w-6 h-6 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold">{idx + 1}</span>
-                <span className="text-gray-700"><strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong></span>
+                <span className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center text-lg font-bold">{idx + 1}</span>
+                <span className="text-lg text-gray-700"><strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong></span>
               </div>
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 flex-1">
           {colorInstructions.map((instruction, idx) => (
-            <div key={idx} className="aspect-square border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-4">
-              <WordIconOrImage word={instruction.item} size={140} className="text-gray-400" wordImages={wordImages} />
-              <span className="text-base font-medium text-gray-700 mt-3 capitalize">{instruction.item}</span>
-              <span className="text-sm text-gray-500">({instruction.color})</span>
+            <div key={idx} className="border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3" style={{ minHeight: '180px' }}>
+              <WordIconOrImage word={instruction.item} size={160} className="text-gray-400" wordImages={wordImages} />
+              <span className="text-xl font-bold text-gray-700 mt-2 capitalize">{instruction.item}</span>
+              <span className="text-lg text-gray-500">({instruction.color})</span>
             </div>
           ))}
         </div>
@@ -505,21 +505,21 @@ export const WorksheetPreview = ({
   if (worksheetType === "counting") {
     const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Counting Activity" exerciseNumber={3} />
-        <div className="space-y-4">
+        <div className="space-y-5 flex-1">
           {countingItems.map((item, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <div className="flex flex-wrap justify-center gap-3 mb-3">
+            <div key={idx} className="border-2 border-gray-300 rounded-lg p-4">
+              <div className="flex flex-wrap justify-center gap-4 mb-4">
                 {Array.from({ length: item.count }).map((_, i) => (
-                  <div key={i} className="w-14 h-14 flex items-center justify-center">
-                    <WordIconOrImage word={item.item} size={48} className="text-gray-600" wordImages={wordImages} />
+                  <div key={i} className="w-20 h-20 flex items-center justify-center">
+                    <WordIconOrImage word={item.item} size={72} className="text-gray-600" wordImages={wordImages} />
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-gray-700">How many <strong className="capitalize">{item.item}s</strong>?</span>
-                <div className="w-14 h-14 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
+              <div className="flex items-center justify-center gap-4">
+                <span className="text-xl text-gray-700">How many <strong className="capitalize text-2xl">{item.item}s</strong>?</span>
+                <div className="w-20 h-20 border-3 border-dashed border-gray-500 rounded-lg flex items-center justify-center">
                 </div>
               </div>
             </div>
@@ -533,25 +533,25 @@ export const WorksheetPreview = ({
     const matchingPairs = data?.matchingPairs || [{ image: "cat", word: "Cat" }, { image: "dog", word: "Dog" }];
     const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Matching Activity" exerciseNumber={4} />
-        <div className="flex justify-between items-start gap-6">
-          <div className="flex-1 space-y-4">
+        <div className="flex justify-between items-start gap-8 flex-1">
+          <div className="flex-1 space-y-5">
             {matchingPairs.map((pair, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <div className="w-16 h-16 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
-                  <WordIconOrImage word={pair.image} size={40} className="text-gray-600" wordImages={wordImages} />
+              <div key={idx} className="flex items-center gap-3">
+                <div className="w-24 h-24 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-white">
+                  <WordIconOrImage word={pair.image} size={64} className="text-gray-600" wordImages={wordImages} />
                 </div>
-                <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
+                <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
               </div>
             ))}
           </div>
-          <div className="flex-1 space-y-4">
+          <div className="flex-1 space-y-5">
             {shuffledWords.map((pair, idx) => (
-              <div key={idx} className="flex items-center gap-2 justify-end">
-                <div className="flex-1 border-t-2 border-dashed border-gray-300"></div>
-                <div className="px-4 py-3 border-2 border-gray-400 rounded-lg bg-white min-w-[80px] text-center">
-                  <span className="text-lg font-bold text-gray-800 capitalize">{pair.word}</span>
+              <div key={idx} className="flex items-center gap-3 justify-end">
+                <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
+                <div className="px-5 py-4 border-2 border-gray-400 rounded-lg bg-white min-w-[100px] text-center">
+                  <span className="text-2xl font-bold text-gray-800 capitalize">{pair.word}</span>
                 </div>
               </div>
             ))}
@@ -568,20 +568,20 @@ export const WorksheetPreview = ({
       { word: "dog", blankedWord: "d_g", missingLetter: "o" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Fill in the Missing Letter" exerciseNumber={5} />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 flex-1">
           {fillBlankWords.map((item, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <WordIconOrImage word={item.word} size={48} className="text-gray-600" wordImages={wordImages} />
+            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <WordIconOrImage word={item.word} size={80} className="text-gray-600" wordImages={wordImages} />
               </div>
               <div className="text-center">
-                <span className="text-3xl font-bold tracking-widest" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                <span className="text-5xl font-bold tracking-widest" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                   {item.blankedWord.split('').map((char, i) => (
                     <span 
                       key={i} 
-                      className={char === '_' ? 'inline-block w-8 border-b-2 border-gray-800 mx-1' : ''}
+                      className={char === '_' ? 'inline-block w-12 border-b-4 border-gray-800 mx-2' : ''}
                     >
                       {char !== '_' ? char : ''}
                     </span>
@@ -601,17 +601,17 @@ export const WorksheetPreview = ({
       { items: ["cat", "dog", "fish", "apple"], oddItem: "apple", reason: "not an animal" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Find the Odd One Out" exerciseNumber={6} />
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           {oddOneOutGroups.map((group, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-3 text-center">Cross out (X) the one that does not belong:</p>
-              <div className="flex justify-center gap-4 flex-wrap">
+            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
+              <p className="text-xl text-gray-700 mb-4 text-center font-semibold">Cross out (X) the one that does not belong:</p>
+              <div className="flex justify-center gap-6 flex-wrap">
                 {group.items.map((item, i) => (
-                  <div key={i} className="w-20 h-20 border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-2">
-                    <WordIconOrImage word={item} size={36} className="text-gray-600" wordImages={wordImages} />
-                    <span className="text-xs mt-1 capitalize">{item}</span>
+                  <div key={i} className="w-28 h-28 border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
+                    <WordIconOrImage word={item} size={64} className="text-gray-600" wordImages={wordImages} />
+                    <span className="text-lg mt-2 capitalize font-medium">{item}</span>
                   </div>
                 ))}
               </div>
@@ -628,17 +628,17 @@ export const WorksheetPreview = ({
       { question: "Which one can fly?", options: ["cat", "bird", "fish"], correctAnswer: "bird" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Circle the Correct Answer" exerciseNumber={7} />
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           {circleCorrectItems.map((item, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <p className="text-lg font-bold text-gray-800 mb-4 text-center">{item.question}</p>
-              <div className="flex justify-center gap-6 flex-wrap">
+            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
+              <p className="text-2xl font-bold text-gray-800 mb-5 text-center">{item.question}</p>
+              <div className="flex justify-center gap-8 flex-wrap">
                 {item.options.map((option, i) => (
-                  <div key={i} className="w-24 h-24 border-2 border-gray-400 rounded-full flex flex-col items-center justify-center bg-white p-2">
-                    <WordIconOrImage word={option} size={40} className="text-gray-600" wordImages={wordImages} />
-                    <span className="text-xs mt-1 capitalize">{option}</span>
+                  <div key={i} className="w-32 h-32 border-3 border-gray-400 rounded-full flex flex-col items-center justify-center bg-white p-3">
+                    <WordIconOrImage word={option} size={64} className="text-gray-600" wordImages={wordImages} />
+                    <span className="text-lg mt-2 capitalize font-medium">{option}</span>
                   </div>
                 ))}
               </div>
@@ -655,20 +655,20 @@ export const WorksheetPreview = ({
       { sequence: ["apple", "banana", "apple", "banana", "apple"], answer: "banana" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
         <WorksheetHeader title="Complete the Pattern" exerciseNumber={8} />
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           {patternItems.map((item, idx) => (
-            <div key={idx} className="border border-gray-300 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-3 text-center">What comes next? Draw or write in the box.</p>
-              <div className="flex justify-center items-center gap-3 flex-wrap">
+            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
+              <p className="text-xl text-gray-700 mb-4 text-center font-semibold">What comes next? Draw or write in the box.</p>
+              <div className="flex justify-center items-center gap-4 flex-wrap">
                 {item.sequence.map((seqItem, i) => (
-                  <div key={i} className="w-14 h-14 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
-                    <WordIconOrImage word={seqItem} size={32} className="text-gray-600" wordImages={wordImages} />
+                  <div key={i} className="w-20 h-20 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                    <WordIconOrImage word={seqItem} size={56} className="text-gray-600" wordImages={wordImages} />
                   </div>
                 ))}
-                <span className="text-2xl font-bold text-gray-400">→</span>
-                <div className="w-14 h-14 border-2 border-dashed border-gray-500 rounded-lg flex items-center justify-center bg-white">
+                <span className="text-4xl font-bold text-gray-500">→</span>
+                <div className="w-20 h-20 border-3 border-dashed border-gray-500 rounded-lg flex items-center justify-center bg-white">
                 </div>
               </div>
             </div>

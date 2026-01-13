@@ -17,10 +17,10 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   
-  // Use smaller margins to maximize content area
-  const marginX = 8;
-  const marginTop = 8;
-  const marginBottom = 12; // Leave space for page number
+  // Minimal margins for maximum content area - fit for preschoolers
+  const marginX = 5;
+  const marginTop = 5;
+  const marginBottom = 8; // Minimal space for page number
   const contentWidth = pageWidth - (marginX * 2);
   const contentHeight = pageHeight - marginTop - marginBottom;
 
@@ -33,11 +33,11 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
     // Store original styles
     const originalStyle = card.getAttribute('style') || '';
     
-    // Temporarily set fixed width for consistent rendering - wider for better A4 fit
-    card.style.width = '700px';
-    card.style.maxWidth = '700px';
+    // Set optimal width for A4 rendering - slightly wider for better fill
+    card.style.width = '750px';
+    card.style.maxWidth = '750px';
     card.style.backgroundColor = '#ffffff';
-    card.style.padding = '24px';
+    card.style.padding = '16px';
     
     // Wait for images to load
     const images = card.querySelectorAll('img');
@@ -56,7 +56,7 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
       logging: false,
       useCORS: true,
       allowTaint: true,
-      windowWidth: 750,
+      windowWidth: 800,
     });
 
     // Restore original styles
@@ -66,24 +66,23 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
     
     // Calculate dimensions to FILL A4 page as much as possible
     const imgAspectRatio = canvas.width / canvas.height;
-    const pageAspectRatio = contentWidth / contentHeight;
     
     let finalWidth: number;
     let finalHeight: number;
     
-    // Always try to fill the page width first for worksheets
+    // Try to fill the full content area
     finalWidth = contentWidth;
     finalHeight = contentWidth / imgAspectRatio;
     
-    // If height exceeds available space, scale down
+    // If height exceeds available space, scale down to fit
     if (finalHeight > contentHeight) {
       finalHeight = contentHeight;
       finalWidth = contentHeight * imgAspectRatio;
     }
     
-    // Center horizontally, align to top
+    // Center horizontally and vertically for better appearance
     const xOffset = (pageWidth - finalWidth) / 2;
-    const yOffset = marginTop;
+    const yOffset = marginTop + (contentHeight - finalHeight) / 2;
 
     if (i > 0) {
       pdf.addPage();
@@ -92,10 +91,10 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
     // Add worksheet image
     pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
     
-    // Add page number at bottom
-    pdf.setFontSize(9);
+    // Add page number at bottom center
+    pdf.setFontSize(8);
     pdf.setTextColor(150, 150, 150);
-    pdf.text(`${i + 1} / ${worksheetCards.length}`, pageWidth / 2, pageHeight - 5, { align: 'center' });
+    pdf.text(`${i + 1} / ${worksheetCards.length}`, pageWidth / 2, pageHeight - 3, { align: 'center' });
   }
 
   pdf.save('kidssheet-worksheets.pdf');
@@ -134,7 +133,7 @@ export const printWorksheets = () => {
         
         @page {
           size: A4 portrait;
-          margin: 8mm;
+          margin: 5mm;
         }
         
         html, body {
@@ -166,19 +165,20 @@ export const printWorksheets = () => {
           stroke: currentColor !important;
         }
         
-        /* Worksheet card - each on separate page, FILL the page */
+        /* Worksheet card - each on separate page, FILL the page completely */
         [data-worksheet-card] {
           page-break-after: always !important;
           page-break-inside: avoid !important;
           break-after: page !important;
           break-inside: avoid !important;
           
-          display: block !important;
+          display: flex !important;
+          flex-direction: column !important;
           width: 100% !important;
-          min-height: calc(297mm - 20mm) !important;
+          min-height: calc(297mm - 14mm) !important;
           max-width: none !important;
           margin: 0 !important;
-          padding: 20px !important;
+          padding: 16px !important;
           background: white !important;
           border: 2px solid #333 !important;
           border-radius: 8px !important;

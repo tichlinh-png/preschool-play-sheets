@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle, ExternalLink } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle, ExternalLink, Eye } from "lucide-react";
 import signatureImage from "@/assets/signature.png";
 import { useVisitorCount } from "@/hooks/useVisitorCount";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetType
 import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
 import { LogoUpload } from "@/components/LogoUpload";
 import { WordImageUpload } from "@/components/WordImageUpload";
+import { PrintPreviewDialog } from "@/components/PrintPreviewDialog";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { exportToPDF, printWorksheets } from "@/lib/exportWorksheet";
@@ -41,6 +42,7 @@ const Index = () => {
   const [schoolName, setSchoolName] = useState("");
   const [wordImages, setWordImages] = useState<WordImage[]>([]);
   const [showAffiliateDialog, setShowAffiliateDialog] = useState(false);
+  const [showPreviewDialog, setShowPreviewDialog] = useState(false);
   const [pendingAction, setPendingAction] = useState<'pdf' | 'print' | null>(null);
   const [affiliateLinkClicked, setAffiliateLinkClicked] = useState(false);
 
@@ -306,6 +308,9 @@ const Index = () => {
               <h3 className="font-display text-xl font-bold">Preview</h3>
               {generatedWorksheets.length > 0 && (
                 <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setShowPreviewDialog(true)}>
+                    <Eye className="w-4 h-4" />Xem trước
+                  </Button>
                   <Button variant="outline" size="sm" onClick={handlePrint}><Printer className="w-4 h-4" />Print</Button>
                   <Button variant="outline" size="sm" onClick={handleExportPDF} disabled={isExporting}><Download className="w-4 h-4" />PDF</Button>
                 </div>
@@ -510,6 +515,27 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Print Preview Dialog */}
+      <PrintPreviewDialog
+        open={showPreviewDialog}
+        onOpenChange={setShowPreviewDialog}
+        worksheets={generatedWorksheets}
+        schoolLogo={schoolLogo}
+        schoolName={schoolName}
+        teacherName={teacherName}
+        className={className}
+        wordImages={wordImages}
+        onExportPDF={() => {
+          setShowPreviewDialog(false);
+          handleExportPDF();
+        }}
+        onPrint={() => {
+          setShowPreviewDialog(false);
+          handlePrint();
+        }}
+        isExporting={isExporting}
+      />
 
       {/* Affiliate Link Dialog */}
       <Dialog open={showAffiliateDialog} onOpenChange={setShowAffiliateDialog}>

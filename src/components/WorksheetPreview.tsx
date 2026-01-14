@@ -37,9 +37,6 @@ export interface WorksheetData {
   countingItems?: { item: string; count: number }[];
   matchingPairs?: { image: string; word: string }[];
   fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
-  oddOneOutGroups?: { items: string[]; oddItem: string; reason: string }[];
-  circleCorrectItems?: { question: string; options: string[]; correctAnswer: string }[];
-  patternItems?: { sequence: string[]; answer: string }[];
   instructions?: string;
 }
 
@@ -255,32 +252,32 @@ export const WorksheetPreview = ({
   const isFirstPage = pageIndex === 0;
 
   const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
-    <div className="text-center mb-3 pb-2 border-b-2 border-gray-200">
+    <div className="text-center mb-2 pb-1">
       {isFirstPage && (
         <>
           <div className="flex items-center justify-between mb-1">
             {schoolLogo ? (
-              <img src={schoolLogo} alt="School logo" className="w-10 h-10 object-contain" />
+              <img src={schoolLogo} alt="School logo" className="w-8 h-8 object-contain" />
             ) : (
-              <div className="w-10 h-10" />
+              <div className="w-8 h-8" />
             )}
             <div className="flex-1 text-center">
               {schoolName && (
-                <p className="text-base font-semibold text-gray-700">{schoolName}</p>
+                <p className="text-sm font-semibold text-gray-700">{schoolName}</p>
               )}
-              <p className="text-sm text-gray-500">
-                Class: {className || "____________"} | Teacher: {teacherName || "____________"}
+              <p className="text-xs text-gray-500">
+                Class: {className || "______"} | Teacher: {teacherName || "______"}
               </p>
             </div>
-            <div className="w-10 h-10" />
+            <div className="w-8 h-8" />
           </div>
-          <p className="text-sm text-gray-600 mb-2">Name: _____________ Date: _______</p>
+          <p className="text-xs text-gray-600 mb-1">Name: __________ Date: ______</p>
         </>
       )}
-      <div className="border-2 border-gray-400 rounded-lg px-4 py-2 bg-gray-50 inline-block">
+      <div className="inline-block">
         <div className="flex items-center justify-center gap-2">
-          <span className="bg-gray-800 text-white text-sm font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
-          <h3 className="font-display text-2xl font-bold text-gray-800">{title}</h3>
+          <span className="bg-gray-800 text-white text-xs font-bold px-2 py-0.5 rounded">Ex {exerciseNumber}</span>
+          <h3 className="font-display text-xl font-bold text-gray-800">{title}</h3>
         </div>
       </div>
     </div>
@@ -292,12 +289,12 @@ export const WorksheetPreview = ({
     const isSingleLetters = words.every(word => word.length === 1);
     const title = isSingleLetters ? "Letter Tracing Practice" : "Trace the Words";
     
-    // For single letter tracing - use the new design like the reference image
+    // For single letter tracing - optimized layout with more letters per row
     if (isSingleLetters) {
       return (
-        <div data-worksheet-card className="bg-white rounded-lg p-6 print:shadow-none">
+        <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
           <WorksheetHeader title={title} exerciseNumber={1} />
-          <div className="space-y-8">
+          <div className="space-y-6">
             {words.map((letter, idx) => {
               const upperLetter = letter.toUpperCase();
               const lowerLetter = letter.toLowerCase();
@@ -308,72 +305,50 @@ export const WorksheetPreview = ({
               const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
               
               return (
-                <div key={idx} className="border-2 border-gray-200 rounded-lg p-4">
-                  {/* Header row: Large letter, small letter with guide, related word image */}
-                  <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-gray-200">
-                    <div className="flex items-center gap-6">
+                <div key={idx} className="p-3">
+                  {/* Header row: Large letter with related word */}
+                  <div className="flex items-center gap-4 mb-3 pb-2 border-b border-gray-200">
+                    <div className="flex items-center gap-3">
                       {/* Large uppercase letter */}
-                      <div className="w-20 h-20 border-3 border-gray-800 rounded-lg flex items-center justify-center bg-white">
-                        <span 
-                          className="text-6xl font-bold text-gray-800"
-                          style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
-                        >
-                          {upperLetter}
-                        </span>
-                      </div>
-                      {/* Smaller letter with dotted guide */}
-                      <div className="w-16 h-16 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center relative">
-                        <span 
-                          className="text-4xl text-gray-400"
-                          style={{ 
-                            fontFamily: '"Edu TAS Beginner", cursive',
-                            WebkitTextStroke: '1px #9ca3af',
-                            color: 'transparent'
-                          }}
-                        >
-                          {upperLetter}
-                        </span>
-                        {/* Arrow indicator */}
-                        <svg className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M12 5v14M5 12l7-7 7 7"/>
-                        </svg>
-                      </div>
+                      <span 
+                        className="text-5xl font-bold text-gray-800"
+                        style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
+                      >
+                        {upperLetter}{lowerLetter}
+                      </span>
                     </div>
                     {/* Related word with icon */}
                     {wordHasIcon && sampleWord && (
-                      <div className="flex flex-col items-center">
-                        <WordIconOrImage word={sampleWord} size={48} className="text-gray-700" wordImages={wordImages} />
-                        <span className="text-sm font-medium text-gray-600 capitalize mt-1">{sampleWord}</span>
+                      <div className="flex items-center gap-2">
+                        <WordIconOrImage word={sampleWord} size={36} className="text-gray-700" wordImages={wordImages} />
+                        <span className="text-lg font-medium text-gray-600 capitalize">{sampleWord}</span>
                       </div>
                     )}
                   </div>
                   
                   {/* Tracing rows - uppercase */}
-                  <div className="space-y-1 mb-4">
+                  <div className="mb-3">
                     <p className="text-xs text-gray-500 mb-1">Uppercase {upperLetter}</p>
-                    {[1, 2, 3].map((rowNum) => (
+                    {[1, 2, 3, 4].map((rowNum) => (
                       <div 
                         key={`upper-${rowNum}`} 
-                        className="relative h-12 flex items-end"
-                        style={{
-                          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 23px, #e5e7eb 23px, #e5e7eb 24px, transparent 24px, transparent 47px, #374151 47px, #374151 48px)'
-                        }}
+                        className="relative h-14 flex items-end border-b-2 border-gray-700"
                       >
                         {/* Dashed middle line */}
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
                         
-                        {/* Letters to trace */}
-                        <div className="flex items-end h-full w-full px-2">
-                          {[0, 1, 2, 3, 4, 5].map((pos) => (
+                        {/* Letters to trace - more letters per row */}
+                        <div className="flex items-end h-full w-full">
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((pos) => (
                             <span 
                               key={pos}
                               className="flex-1 text-center pb-1"
                               style={{ 
                                 fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2rem',
+                                fontSize: '2.5rem',
                                 fontWeight: pos === 0 ? 600 : 400,
                                 color: pos === 0 ? '#374151' : 'transparent',
-                                WebkitTextStroke: pos === 0 ? 'none' : '1px #9ca3af',
+                                WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
                               }}
                             >
                               {upperLetter}
@@ -385,31 +360,28 @@ export const WorksheetPreview = ({
                   </div>
                   
                   {/* Tracing rows - lowercase */}
-                  <div className="space-y-1">
+                  <div>
                     <p className="text-xs text-gray-500 mb-1">Lowercase {lowerLetter}</p>
-                    {[1, 2, 3].map((rowNum) => (
+                    {[1, 2, 3, 4].map((rowNum) => (
                       <div 
                         key={`lower-${rowNum}`} 
-                        className="relative h-12 flex items-end"
-                        style={{
-                          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 23px, #e5e7eb 23px, #e5e7eb 24px, transparent 24px, transparent 47px, #374151 47px, #374151 48px)'
-                        }}
+                        className="relative h-14 flex items-end border-b-2 border-gray-700"
                       >
                         {/* Dashed middle line */}
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
                         
-                        {/* Letters to trace */}
-                        <div className="flex items-end h-full w-full px-2">
-                          {[0, 1, 2, 3, 4, 5].map((pos) => (
+                        {/* Letters to trace - more letters per row */}
+                        <div className="flex items-end h-full w-full">
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((pos) => (
                             <span 
                               key={pos}
                               className="flex-1 text-center pb-1"
                               style={{ 
                                 fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2rem',
+                                fontSize: '2.5rem',
                                 fontWeight: pos === 0 ? 600 : 400,
                                 color: pos === 0 ? '#374151' : 'transparent',
-                                WebkitTextStroke: pos === 0 ? 'none' : '1px #9ca3af',
+                                WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
                               }}
                             >
                               {lowerLetter}
@@ -594,89 +566,6 @@ export const WorksheetPreview = ({
                     </span>
                   ))}
                 </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Odd one out worksheet
-  if (worksheetType === "odd-one-out") {
-    const oddOneOutGroups = data?.oddOneOutGroups || [
-      { items: ["cat", "dog", "fish", "apple"], oddItem: "apple", reason: "not an animal" }
-    ];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
-        <WorksheetHeader title="Find the Odd One Out" exerciseNumber={6} />
-        <div className="space-y-6 flex-1">
-          {oddOneOutGroups.map((group, idx) => (
-            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
-              <p className="text-xl text-gray-700 mb-4 text-center font-semibold">Cross out (X) the one that does not belong:</p>
-              <div className="flex justify-center gap-6 flex-wrap">
-                {group.items.map((item, i) => (
-                  <div key={i} className="w-28 h-28 border-2 border-gray-400 rounded-lg flex flex-col items-center justify-center bg-white p-3">
-                    <WordIconOrImage word={item} size={64} className="text-gray-600" wordImages={wordImages} />
-                    <span className="text-lg mt-2 capitalize font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Circle the correct answer worksheet
-  if (worksheetType === "circle-correct") {
-    const circleCorrectItems = data?.circleCorrectItems || [
-      { question: "Which one can fly?", options: ["cat", "bird", "fish"], correctAnswer: "bird" }
-    ];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
-        <WorksheetHeader title="Circle the Correct Answer" exerciseNumber={7} />
-        <div className="space-y-6 flex-1">
-          {circleCorrectItems.map((item, idx) => (
-            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
-              <p className="text-2xl font-bold text-gray-800 mb-5 text-center">{item.question}</p>
-              <div className="flex justify-center gap-8 flex-wrap">
-                {item.options.map((option, i) => (
-                  <div key={i} className="w-32 h-32 border-3 border-gray-400 rounded-full flex flex-col items-center justify-center bg-white p-3">
-                    <WordIconOrImage word={option} size={64} className="text-gray-600" wordImages={wordImages} />
-                    <span className="text-lg mt-2 capitalize font-medium">{option}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Pattern completion worksheet
-  if (worksheetType === "pattern") {
-    const patternItems = data?.patternItems || [
-      { sequence: ["apple", "banana", "apple", "banana", "apple"], answer: "banana" }
-    ];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
-        <WorksheetHeader title="Complete the Pattern" exerciseNumber={8} />
-        <div className="space-y-6 flex-1">
-          {patternItems.map((item, idx) => (
-            <div key={idx} className="border-2 border-gray-300 rounded-lg p-5">
-              <p className="text-xl text-gray-700 mb-4 text-center font-semibold">What comes next? Draw or write in the box.</p>
-              <div className="flex justify-center items-center gap-4 flex-wrap">
-                {item.sequence.map((seqItem, i) => (
-                  <div key={i} className="w-20 h-20 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
-                    <WordIconOrImage word={seqItem} size={56} className="text-gray-600" wordImages={wordImages} />
-                  </div>
-                ))}
-                <span className="text-4xl font-bold text-gray-500">→</span>
-                <div className="w-20 h-20 border-3 border-dashed border-gray-500 rounded-lg flex items-center justify-center bg-white">
-                </div>
               </div>
             </div>
           ))}

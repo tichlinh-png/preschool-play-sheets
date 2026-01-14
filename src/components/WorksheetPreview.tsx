@@ -57,6 +57,7 @@ interface WorksheetPreviewProps {
   teacherName?: string;
   className?: string;
   wordImages?: WordImage[];
+  pageIndex?: number; // 0-indexed, used to hide header info from page 2+
 }
 
 function safeString(value: unknown): string {
@@ -246,30 +247,36 @@ export const WorksheetPreview = ({
   schoolName = "",
   teacherName = "", 
   className = "",
-  wordImages = []
+  wordImages = [],
+  pageIndex = 0
 }: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
+  const isFirstPage = pageIndex === 0;
 
   const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
     <div className="text-center mb-3 pb-2 border-b-2 border-gray-200">
-      <div className="flex items-center justify-between mb-1">
-        {schoolLogo ? (
-          <img src={schoolLogo} alt="School logo" className="w-10 h-10 object-contain" />
-        ) : (
-          <div className="w-10 h-10" />
-        )}
-        <div className="flex-1 text-center">
-          {schoolName && (
-            <p className="text-base font-semibold text-gray-700">{schoolName}</p>
-          )}
-          <p className="text-sm text-gray-500">
-            Class: {className || "____________"} | Teacher: {teacherName || "____________"}
-          </p>
-        </div>
-        <div className="w-10 h-10" />
-      </div>
-      <p className="text-sm text-gray-600 mb-2">Name: _____________ Date: _______</p>
+      {isFirstPage && (
+        <>
+          <div className="flex items-center justify-between mb-1">
+            {schoolLogo ? (
+              <img src={schoolLogo} alt="School logo" className="w-10 h-10 object-contain" />
+            ) : (
+              <div className="w-10 h-10" />
+            )}
+            <div className="flex-1 text-center">
+              {schoolName && (
+                <p className="text-base font-semibold text-gray-700">{schoolName}</p>
+              )}
+              <p className="text-sm text-gray-500">
+                Class: {className || "____________"} | Teacher: {teacherName || "____________"}
+              </p>
+            </div>
+            <div className="w-10 h-10" />
+          </div>
+          <p className="text-sm text-gray-600 mb-2">Name: _____________ Date: _______</p>
+        </>
+      )}
       <div className="border-2 border-gray-400 rounded-lg px-4 py-2 bg-gray-50 inline-block">
         <div className="flex items-center justify-center gap-2">
           <span className="bg-gray-800 text-white text-sm font-bold px-2 py-1 rounded">Ex {exerciseNumber}</span>
@@ -288,7 +295,7 @@ export const WorksheetPreview = ({
     // For single letter tracing - use the new design like the reference image
     if (isSingleLetters) {
       return (
-        <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+        <div data-worksheet-card className="bg-white rounded-lg p-6 print:shadow-none">
           <WorksheetHeader title={title} exerciseNumber={1} />
           <div className="space-y-8">
             {words.map((letter, idx) => {
@@ -422,7 +429,7 @@ export const WorksheetPreview = ({
     
     // For word tracing - keep original design
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-6 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-6 print:shadow-none">
         <WorksheetHeader title={title} exerciseNumber={1} />
         <div className="grid grid-cols-2 gap-4">
           {words.map((word, idx) => {
@@ -476,7 +483,7 @@ export const WorksheetPreview = ({
   if (worksheetType === "color") {
     const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
         <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
           <p className="font-bold text-gray-800 mb-2 text-xl">Coloring Guide:</p>
@@ -505,7 +512,7 @@ export const WorksheetPreview = ({
   if (worksheetType === "counting") {
     const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Counting Activity" exerciseNumber={3} />
         <div className="space-y-5 flex-1">
           {countingItems.map((item, idx) => (
@@ -533,7 +540,7 @@ export const WorksheetPreview = ({
     const matchingPairs = data?.matchingPairs || [{ image: "cat", word: "Cat" }, { image: "dog", word: "Dog" }];
     const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Matching Activity" exerciseNumber={4} />
         <div className="flex justify-between items-start gap-8 flex-1">
           <div className="flex-1 space-y-5">
@@ -568,7 +575,7 @@ export const WorksheetPreview = ({
       { word: "dog", blankedWord: "d_g", missingLetter: "o" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Fill in the Missing Letter" exerciseNumber={5} />
         <div className="grid grid-cols-2 gap-4 flex-1">
           {fillBlankWords.map((item, idx) => (
@@ -601,7 +608,7 @@ export const WorksheetPreview = ({
       { items: ["cat", "dog", "fish", "apple"], oddItem: "apple", reason: "not an animal" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Find the Odd One Out" exerciseNumber={6} />
         <div className="space-y-6 flex-1">
           {oddOneOutGroups.map((group, idx) => (
@@ -628,7 +635,7 @@ export const WorksheetPreview = ({
       { question: "Which one can fly?", options: ["cat", "bird", "fish"], correctAnswer: "bird" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Circle the Correct Answer" exerciseNumber={7} />
         <div className="space-y-6 flex-1">
           {circleCorrectItems.map((item, idx) => (
@@ -655,7 +662,7 @@ export const WorksheetPreview = ({
       { sequence: ["apple", "banana", "apple", "banana", "apple"], answer: "banana" }
     ];
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-4 border-2 border-gray-300 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-4 print:shadow-none">
         <WorksheetHeader title="Complete the Pattern" exerciseNumber={8} />
         <div className="space-y-6 flex-1">
           {patternItems.map((item, idx) => (

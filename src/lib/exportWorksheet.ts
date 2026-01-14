@@ -49,9 +49,9 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
       });
     }));
     
-    // Create canvas from the card with high quality settings
+    // Create canvas from the card with optimized settings for speed
     const canvas = await html2canvas(card, {
-      scale: 3, // Higher scale for better quality
+      scale: 2, // Reduced from 3 for faster export while maintaining quality
       backgroundColor: '#ffffff',
       logging: false,
       useCORS: true,
@@ -62,7 +62,7 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
     // Restore original styles
     card.setAttribute('style', originalStyle);
 
-    const imgData = canvas.toDataURL('image/png', 1.0);
+    const imgData = canvas.toDataURL('image/jpeg', 0.92); // JPEG is faster than PNG
     
     // Calculate dimensions to FILL A4 page as much as possible
     const imgAspectRatio = canvas.width / canvas.height;
@@ -88,8 +88,8 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
       pdf.addPage();
     }
 
-    // Add worksheet image
-    pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
+    // Add worksheet image - use JPEG for faster processing
+    pdf.addImage(imgData, 'JPEG', xOffset, yOffset, finalWidth, finalHeight);
     
     // Add page number at bottom center
     pdf.setFontSize(8);

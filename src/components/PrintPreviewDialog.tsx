@@ -125,6 +125,7 @@ export const PrintPreviewDialog = ({
                 teacherName={teacherName}
                 className={className}
                 wordImages={wordImages}
+                pageIndex={currentPage}
               />
             </div>
           </div>

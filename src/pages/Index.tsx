@@ -328,6 +328,7 @@ const Index = () => {
                         teacherName={teacherName}
                         className={className}
                         wordImages={wordImages}
+                        pageIndex={i}
                       />
                     </div>
                   ))}

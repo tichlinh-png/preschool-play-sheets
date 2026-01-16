@@ -21,6 +21,7 @@ interface PrintPreviewDialogProps {
   onExportPDF: () => void;
   onPrint: () => void;
   isExporting?: boolean;
+  traceRows?: number;
 }
 
 export const PrintPreviewDialog = ({
@@ -35,6 +36,7 @@ export const PrintPreviewDialog = ({
   onExportPDF,
   onPrint,
   isExporting = false,
+  traceRows = 4,
 }: PrintPreviewDialogProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = worksheets.length;
@@ -126,6 +128,7 @@ export const PrintPreviewDialog = ({
                 className={className}
                 wordImages={wordImages}
                 pageIndex={currentPage}
+                traceRows={traceRows}
               />
             </div>
           </div>

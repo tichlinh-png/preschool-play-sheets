@@ -45,6 +45,7 @@ const Index = () => {
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
   const [pendingAction, setPendingAction] = useState<'pdf' | 'print' | null>(null);
   const [affiliateLinkClicked, setAffiliateLinkClicked] = useState(false);
+  const [traceRows, setTraceRows] = useState(4);
 
   // Load saved teacher/class/school from localStorage
   useEffect(() => {
@@ -293,8 +294,28 @@ const Index = () => {
               <CardHeader>
                 <CardTitle>Choose Worksheet Type</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <WorksheetTypeSelector selected={selectedTypes} onChange={setSelectedTypes} />
+                
+                {/* Trace rows option */}
+                {selectedTypes.includes('trace') && (
+                  <div className="pt-3 border-t border-border">
+                    <Label className="text-sm font-medium mb-2 block">Số dòng tập viết mỗi chữ</Label>
+                    <div className="flex gap-2">
+                      {[2, 3, 4, 5].map((num) => (
+                        <Button
+                          key={num}
+                          variant={traceRows === num ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setTraceRows(num)}
+                          className="flex-1"
+                        >
+                          {num} dòng
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -329,6 +350,7 @@ const Index = () => {
                         className={className}
                         wordImages={wordImages}
                         pageIndex={i}
+                        traceRows={traceRows}
                       />
                     </div>
                   ))}
@@ -536,6 +558,7 @@ const Index = () => {
           handlePrint();
         }}
         isExporting={isExporting}
+        traceRows={traceRows}
       />
 
       {/* Affiliate Link Dialog */}

@@ -55,6 +55,7 @@ interface WorksheetPreviewProps {
   className?: string;
   wordImages?: WordImage[];
   pageIndex?: number; // 0-indexed, used to hide header info from page 2+
+  traceRows?: number; // Number of tracing rows per letter (2-5)
 }
 
 function safeString(value: unknown): string {
@@ -245,11 +246,13 @@ export const WorksheetPreview = ({
   teacherName = "", 
   className = "",
   wordImages = [],
-  pageIndex = 0
+  pageIndex = 0,
+  traceRows = 4
 }: WorksheetPreviewProps) => {
   const worksheetType = data?.type || type;
   const worksheetTopic = safeString(data?.topic) || topic;
   const isFirstPage = pageIndex === 0;
+  const rowsArray = Array.from({ length: traceRows }, (_, i) => i + 1);
 
   const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
     <div className="text-center mb-2 pb-1">
@@ -305,47 +308,40 @@ export const WorksheetPreview = ({
               const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
               
               return (
-                <div key={idx} className="p-3">
+                <div key={idx} className="py-2">
                   {/* Header row: Large letter with related word */}
-                  <div className="flex items-center gap-4 mb-3 pb-2 border-b border-gray-200">
-                    <div className="flex items-center gap-3">
-                      {/* Large uppercase letter */}
-                      <span 
-                        className="text-5xl font-bold text-gray-800"
-                        style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
-                      >
-                        {upperLetter}{lowerLetter}
-                      </span>
-                    </div>
-                    {/* Related word with icon */}
+                  <div className="flex items-center gap-4 mb-2 pb-1 border-b border-gray-200">
+                    <span 
+                      className="text-4xl font-bold text-gray-800"
+                      style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
+                    >
+                      {upperLetter}{lowerLetter}
+                    </span>
                     {wordHasIcon && sampleWord && (
                       <div className="flex items-center gap-2">
-                        <WordIconOrImage word={sampleWord} size={36} className="text-gray-700" wordImages={wordImages} />
-                        <span className="text-lg font-medium text-gray-600 capitalize">{sampleWord}</span>
+                        <WordIconOrImage word={sampleWord} size={32} className="text-gray-700" wordImages={wordImages} />
+                        <span className="text-base font-medium text-gray-600 capitalize">{sampleWord}</span>
                       </div>
                     )}
                   </div>
                   
                   {/* Tracing rows - uppercase */}
-                  <div className="mb-3">
-                    <p className="text-xs text-gray-500 mb-1">Uppercase {upperLetter}</p>
-                    {[1, 2, 3, 4].map((rowNum) => (
+                  <div className="mb-2">
+                    <p className="text-xs text-gray-500 mb-0.5">Uppercase {upperLetter}</p>
+                    {rowsArray.map((rowNum) => (
                       <div 
                         key={`upper-${rowNum}`} 
-                        className="relative h-14 flex items-end border-b-2 border-gray-700"
+                        className="relative h-12 flex items-end border-b-2 border-gray-700"
                       >
-                        {/* Dashed middle line */}
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
-                        
-                        {/* Letters to trace - more letters per row */}
                         <div className="flex items-end h-full w-full">
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((pos) => (
+                          {Array.from({ length: 14 }, (_, pos) => (
                             <span 
                               key={pos}
-                              className="flex-1 text-center pb-1"
+                              className="flex-1 text-center pb-0.5"
                               style={{ 
                                 fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.5rem',
+                                fontSize: '2.25rem',
                                 fontWeight: pos === 0 ? 600 : 400,
                                 color: pos === 0 ? '#374151' : 'transparent',
                                 WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
@@ -361,24 +357,21 @@ export const WorksheetPreview = ({
                   
                   {/* Tracing rows - lowercase */}
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Lowercase {lowerLetter}</p>
-                    {[1, 2, 3, 4].map((rowNum) => (
+                    <p className="text-xs text-gray-500 mb-0.5">Lowercase {lowerLetter}</p>
+                    {rowsArray.map((rowNum) => (
                       <div 
                         key={`lower-${rowNum}`} 
-                        className="relative h-14 flex items-end border-b-2 border-gray-700"
+                        className="relative h-12 flex items-end border-b-2 border-gray-700"
                       >
-                        {/* Dashed middle line */}
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
-                        
-                        {/* Letters to trace - more letters per row */}
                         <div className="flex items-end h-full w-full">
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((pos) => (
+                          {Array.from({ length: 14 }, (_, pos) => (
                             <span 
                               key={pos}
-                              className="flex-1 text-center pb-1"
+                              className="flex-1 text-center pb-0.5"
                               style={{ 
                                 fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.5rem',
+                                fontSize: '2.25rem',
                                 fontWeight: pos === 0 ? 600 : 400,
                                 color: pos === 0 ? '#374151' : 'transparent',
                                 WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
@@ -408,15 +401,15 @@ export const WorksheetPreview = ({
             const wordHasIcon = hasAvailableIcon(word, wordImages);
             
             return (
-              <div key={idx} className="border border-gray-300 rounded-lg p-3">
+              <div key={idx} className="p-2">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   {wordHasIcon && (
                     <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
                   )}
                   <span className="text-xl font-bold text-gray-800">{word}</span>
                 </div>
-                <div className="space-y-1">
-                  {[1, 2, 3, 4, 5].map((lineNum) => (
+                <div className="space-y-0.5">
+                  {rowsArray.map((lineNum) => (
                     <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
                       <span 
                         className="block text-center text-2xl tracking-[0.2em]"

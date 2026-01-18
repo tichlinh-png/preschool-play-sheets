@@ -329,9 +329,6 @@ const Index = () => {
               <h3 className="font-display text-xl font-bold">Preview</h3>
               {generatedWorksheets.length > 0 && (
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setShowPreviewDialog(true)}>
-                    <Eye className="w-4 h-4" />Xem trước
-                  </Button>
                   <Button variant="outline" size="sm" onClick={handlePrint}><Printer className="w-4 h-4" />Print</Button>
                   <Button variant="outline" size="sm" onClick={handleExportPDF} disabled={isExporting}><Download className="w-4 h-4" />PDF</Button>
                 </div>

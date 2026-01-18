@@ -17,10 +17,10 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   
-  // Minimal margins for maximum content area - fit for preschoolers
-  const marginX = 5;
-  const marginTop = 5;
-  const marginBottom = 8; // Minimal space for page number
+  // Minimal margins for maximum content area - no page numbers
+  const marginX = 2;
+  const marginTop = 2;
+  const marginBottom = 2;
   const contentWidth = pageWidth - (marginX * 2);
   const contentHeight = pageHeight - marginTop - marginBottom;
 
@@ -90,11 +90,6 @@ export const exportToPDF = async (worksheets: WorksheetData[], elementId: string
 
     // Add worksheet image - use JPEG for faster processing
     pdf.addImage(imgData, 'JPEG', xOffset, yOffset, finalWidth, finalHeight);
-    
-    // Add page number at bottom center
-    pdf.setFontSize(8);
-    pdf.setTextColor(150, 150, 150);
-    pdf.text(`${i + 1} / ${worksheetCards.length}`, pageWidth / 2, pageHeight - 3, { align: 'center' });
   }
 
   pdf.save('kidssheet-worksheets.pdf');
@@ -133,7 +128,7 @@ export const printWorksheets = () => {
         
         @page {
           size: A4 portrait;
-          margin: 5mm;
+          margin: 2mm;
         }
         
         html, body {
@@ -175,13 +170,13 @@ export const printWorksheets = () => {
           display: flex !important;
           flex-direction: column !important;
           width: 100% !important;
-          min-height: calc(297mm - 14mm) !important;
+          min-height: calc(297mm - 4mm) !important;
           max-width: none !important;
           margin: 0 !important;
-          padding: 16px !important;
+          padding: 8px !important;
           background: white !important;
-          border: 2px solid #333 !important;
-          border-radius: 8px !important;
+          border: none !important;
+          border-radius: 0 !important;
           box-sizing: border-box !important;
         }
         
@@ -380,7 +375,7 @@ export const printWorksheets = () => {
           [data-worksheet-card] {
             page-break-after: always !important;
             break-after: page !important;
-            border: 2px solid #000 !important;
+            border: none !important;
           }
           
           [data-worksheet-card]:last-child {

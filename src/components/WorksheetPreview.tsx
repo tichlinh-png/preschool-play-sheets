@@ -23,7 +23,29 @@ import {
   PenguinIcon, OwlIcon, ButterflyIcon, BeeIcon, SpiderIcon, SnakeIcon,
   DeerIcon, FoxIcon, WolfIcon, PandaIcon, KoalaIcon, KangarooIcon,
   HippoIcon, RhinoIcon, CamelIcon, SealIcon, OctopusIcon, CrabIcon,
-  StarfishIcon, SquirrelIcon, HedgehogIcon
+  StarfishIcon, SquirrelIcon, HedgehogIcon,
+  // Food icons
+  BreadIcon, RiceIcon, NoodleIcon, CheeseIcon, HamburgerIcon, HotdogIcon,
+  SandwichIcon, SoupIcon, FriesIcon, DonutIcon, CandyIcon, ChocolateIcon,
+  LollipopIcon, WatermelonIcon, OrangeIcon, StrawberryIcon, PearIcon,
+  LemonIcon, PineappleIcon, CornIcon, TomatoIcon, PotatoIcon, OnionIcon, MushroomIcon,
+  // Clothing icons
+  PantsIcon, DressIcon, SkirtIcon, SocksIcon, ShoesIcon, BootsIcon,
+  HatIcon, CapIcon, ScarfIcon, GlovesIcon, JacketIcon, CoatIcon,
+  // Room & Furniture icons
+  KitchenIcon, BathroomIcon, BedroomIcon, LivingroomIcon, TableIcon, DeskIcon,
+  DoorIcon, WindowIcon, MirrorIcon, CurtainIcon, CarpetIcon,
+  // Body parts icons
+  HeadIcon, NoseIcon, MouthIcon, ToothIcon, HairIcon, LegIcon, ArmIcon, FingerIcon, ToeIcon,
+  // Action/Verb icons
+  RunIcon, WalkIcon, JumpIcon, SwimIcon, SleepIcon, EatIcon, DrinkIcon,
+  ReadIcon, WriteIcon, SingIcon, DanceIcon, PlayIcon, CookIcon, CleanIcon, WashIcon,
+  // Weather icons
+  SunnyIcon, CloudyIcon, RainyIcon, SnowyIcon, WindyIcon, StormyIcon, RainbowIcon,
+  // School items icons
+  CrayonIcon, RulerIcon, EraserIcon, GlueIcon, NotebookIcon, BlackboardIcon, ChalkIcon, GlobeIcon,
+  // Toy icons
+  BallIcon, DollIcon, TeddyBearIcon, BlocksIcon, KiteIcon, PuzzleIcon, RobotIcon, DrumIcon
 } from './icons/AnimalIcons';
 import { ComponentType, SVGProps } from 'react';
 
@@ -82,6 +104,43 @@ const customIconMap: Record<string, CustomIcon> = {
   rhino: RhinoIcon, rhinoceros: RhinoIcon, camel: CamelIcon, seal: SealIcon,
   octopus: OctopusIcon, crab: CrabIcon, starfish: StarfishIcon,
   squirrel: SquirrelIcon, hedgehog: HedgehogIcon,
+  // Food
+  bread: BreadIcon, rice: RiceIcon, noodle: NoodleIcon, noodles: NoodleIcon, pasta: NoodleIcon,
+  cheese: CheeseIcon, hamburger: HamburgerIcon, burger: HamburgerIcon, hotdog: HotdogIcon,
+  sandwich: SandwichIcon, soup: SoupIcon, fries: FriesIcon, donut: DonutIcon, doughnut: DonutIcon,
+  candy: CandyIcon, chocolate: ChocolateIcon, lollipop: LollipopIcon,
+  watermelon: WatermelonIcon, orange: OrangeIcon, strawberry: StrawberryIcon,
+  pear: PearIcon, lemon: LemonIcon, pineapple: PineappleIcon, corn: CornIcon,
+  tomato: TomatoIcon, potato: PotatoIcon, onion: OnionIcon, mushroom: MushroomIcon,
+  // Clothing
+  pants: PantsIcon, trousers: PantsIcon, jeans: PantsIcon, dress: DressIcon,
+  skirt: SkirtIcon, socks: SocksIcon, sock: SocksIcon, shoes: ShoesIcon, shoe: ShoesIcon,
+  boots: BootsIcon, boot: BootsIcon, hat: HatIcon, cap: CapIcon,
+  scarf: ScarfIcon, gloves: GlovesIcon, glove: GlovesIcon, jacket: JacketIcon, coat: CoatIcon,
+  // Rooms & Furniture
+  kitchen: KitchenIcon, bathroom: BathroomIcon, bedroom: BedroomIcon, livingroom: LivingroomIcon,
+  table: TableIcon, desk: DeskIcon, door: DoorIcon, window: WindowIcon,
+  mirror: MirrorIcon, curtain: CurtainIcon, carpet: CarpetIcon, rug: CarpetIcon,
+  // Body parts
+  head: HeadIcon, nose: NoseIcon, mouth: MouthIcon, tooth: ToothIcon, teeth: ToothIcon,
+  hair: HairIcon, leg: LegIcon, arm: ArmIcon, finger: FingerIcon, toe: ToeIcon,
+  // Actions/Verbs
+  run: RunIcon, running: RunIcon, walk: WalkIcon, walking: WalkIcon,
+  jump: JumpIcon, jumping: JumpIcon, swim: SwimIcon, swimming: SwimIcon,
+  sleep: SleepIcon, sleeping: SleepIcon, eat: EatIcon, eating: EatIcon,
+  drink: DrinkIcon, drinking: DrinkIcon, read: ReadIcon, reading: ReadIcon,
+  write: WriteIcon, writing: WriteIcon, sing: SingIcon, singing: SingIcon,
+  dance: DanceIcon, dancing: DanceIcon, play: PlayIcon, playing: PlayIcon,
+  cook: CookIcon, cooking: CookIcon, clean: CleanIcon, cleaning: CleanIcon, wash: WashIcon, washing: WashIcon,
+  // Weather
+  sunny: SunnyIcon, cloudy: CloudyIcon, rainy: RainyIcon, snowy: SnowyIcon,
+  windy: WindyIcon, stormy: StormyIcon, rainbow: RainbowIcon,
+  // School items
+  crayon: CrayonIcon, ruler: RulerIcon, eraser: EraserIcon, glue: GlueIcon,
+  notebook: NotebookIcon, blackboard: BlackboardIcon, chalk: ChalkIcon, globe: GlobeIcon,
+  // Toys
+  ball: BallIcon, doll: DollIcon, teddy: TeddyBearIcon, teddybear: TeddyBearIcon,
+  blocks: BlocksIcon, block: BlocksIcon, kite: KiteIcon, puzzle: PuzzleIcon, robot: RobotIcon, drum: DrumIcon,
 };
 
 const lucideIconMap: Record<string, LucideIcon> = {

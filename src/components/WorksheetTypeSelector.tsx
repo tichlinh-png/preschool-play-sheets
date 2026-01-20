@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Pencil, Palette, Hash, Link2, CircleDot, LucideIcon } from "lucide-react";
+import { Pencil, Palette, Hash, CircleDot, LucideIcon } from "lucide-react";
 
-export type WorksheetType = "trace" | "color" | "counting" | "matching" | "fill-blank";
+export type WorksheetType = "trace" | "color" | "counting" | "fill-blank";
 
 interface WorksheetTypeSelectorProps {
   selected: WorksheetType[];
@@ -41,14 +41,6 @@ const typeOptions: TypeOption[] = [
     description: "Count objects and write numbers",
     color: "text-lavender",
     bgColor: "bg-lavender/10 hover:bg-lavender/20 border-lavender/30",
-  },
-  {
-    id: "matching",
-    label: "Matching",
-    icon: Link2,
-    description: "Match pictures to words",
-    color: "text-mint",
-    bgColor: "bg-mint/10 hover:bg-mint/20 border-mint/30",
   },
   {
     id: "fill-blank",

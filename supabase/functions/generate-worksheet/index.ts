@@ -50,6 +50,14 @@ const availableIconWords = new Set([
   'deer', 'fox', 'wolf', 'panda', 'koala', 'kangaroo',
   'hippo', 'hippopotamus', 'rhino', 'rhinoceros', 'camel', 'seal',
   'octopus', 'crab', 'starfish', 'squirrel', 'hedgehog',
+  // More insects
+  'ant', 'ladybug', 'grasshopper', 'dragonfly', 'caterpillar',
+  // More sea creatures
+  'jellyfish', 'shrimp', 'lobster', 'clownfish',
+  // More birds
+  'parrot', 'flamingo', 'peacock', 'eagle', 'pelican',
+  // More animals
+  'bat', 'moose', 'gorilla', 'llama',
   // Lucide icons - animals
   'fish', 'cat', 'dog', 'bird', 'rabbit', 'mouse', 'rat', 'bug', 'turtle', 'snail',
   // Family members
@@ -59,29 +67,65 @@ const availableIconWords = new Set([
   'girl', 'boy', 'man', 'woman', 'baby', 'child', 'kid',
   // Nature
   'flower', 'tree', 'sun', 'moon', 'star', 'leaf', 'mountain', 'cloud', 'rain', 'water', 'fire',
-  // Food
+  // Food - Basic
   'apple', 'banana', 'cherry', 'grape', 'fruit', 'cookie', 'cake', 'pizza', 'icecream', 'ice', 'milk', 'food',
   'egg', 'carrot',
+  // Food - Extended
+  'bread', 'rice', 'noodle', 'noodles', 'pasta', 'cheese', 'hamburger', 'burger', 'hotdog',
+  'sandwich', 'soup', 'fries', 'donut', 'doughnut', 'candy', 'chocolate', 'lollipop',
+  'watermelon', 'strawberry', 'pear', 'lemon', 'pineapple', 'corn',
+  'tomato', 'potato', 'onion', 'mushroom', 'mango', 'kiwi', 'coconut', 'avocado', 'broccoli', 'pepper',
   // Vehicles
   'car', 'bus', 'bike', 'bicycle', 'plane', 'airplane', 'ship', 'boat', 'train', 'truck',
   // Objects
   'book', 'pencil', 'pen', 'house', 'home', 'umbrella', 'camera', 'music', 'gift', 'present',
   'clock', 'watch', 'key', 'lock', 'bell', 'phone', 'telephone', 'shirt', 'clothes',
-  'heart', 'love', 'smile', 'happy', 'sad', 'cry', 'glasses', 'crown', 'gem', 'diamond',
-  // School & Art
+  'heart', 'love', 'smile', 'glasses', 'crown', 'gem', 'diamond',
+  // Clothing
+  'pants', 'trousers', 'jeans', 'dress', 'skirt', 'socks', 'sock', 'shoes', 'shoe',
+  'boots', 'boot', 'hat', 'cap', 'scarf', 'gloves', 'glove', 'jacket', 'coat',
+  // Rooms & Furniture
+  'kitchen', 'bathroom', 'bedroom', 'livingroom', 'table', 'desk', 'door', 'window',
+  'mirror', 'curtain', 'carpet', 'rug', 'chair', 'sofa', 'bed', 'lamp', 'fan',
+  'fridge', 'refrigerator', 'bath', 'bathtub', 'toilet',
+  // Body parts
+  'head', 'nose', 'mouth', 'tooth', 'teeth', 'hair', 'leg', 'arm', 'finger', 'toe',
+  'foot', 'feet', 'hand', 'eye', 'ear', 'brain',
+  // Actions/Verbs
+  'run', 'running', 'walk', 'walking', 'jump', 'jumping', 'swim', 'swimming',
+  'sleep', 'sleeping', 'eat', 'eating', 'drink', 'drinking', 'read', 'reading',
+  'write', 'writing', 'sing', 'singing', 'dance', 'dancing', 'play', 'playing',
+  'cook', 'cooking', 'clean', 'cleaning', 'wash', 'washing',
+  // Weather
+  'sunny', 'cloudy', 'rainy', 'snowy', 'windy', 'stormy', 'rainbow',
+  // School items
+  'crayon', 'ruler', 'eraser', 'glue', 'notebook', 'blackboard', 'chalk', 'globe',
   'scissors', 'brush', 'palette',
-  // Sports & Games
+  // Toys
+  'ball', 'doll', 'teddy', 'teddybear', 'blocks', 'block', 'kite', 'puzzle', 'robot', 'drum',
+  // Numbers
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+  // Colors
+  'red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'black', 'white', 'gray', 'grey',
+  // Shapes
+  'circle', 'square', 'triangle', 'rectangle', 'oval', 'diamond', 'star', 'heart',
+  'pentagon', 'hexagon', 'crescent', 'cross', 'arrow',
+  // Sports
+  'soccer', 'football', 'basketball', 'tennis', 'baseball',
   'trophy', 'medal', 'gamepad', 'game',
+  // Musical instruments
+  'guitar', 'piano', 'violin', 'trumpet',
+  // Buildings
+  'castle', 'lighthouse', 'windmill', 'barn',
+  // Emotions
+  'happy', 'sad', 'angry', 'surprised', 'scared', 'sleepy', 'cry',
   // Electronics
   'tv', 'television', 'radio', 'laptop', 'computer', 'smartphone', 'mobile', 'tablet', 'headphones',
   // Accessories
   'wallet', 'backpack', 'bag', 'briefcase', 'luggage', 'suitcase',
-  // Furniture
-  'chair', 'sofa', 'bed', 'lamp', 'fan', 'fridge', 'refrigerator', 'bath', 'bathtub', 'toilet',
   // Tools
-  'wrench', 'hammer', 'flashlight', 'battery', 'lightbulb', 'bulb', 'plug', 'thermometer',
-  // Body parts
-  'foot', 'feet', 'hand', 'eye', 'ear', 'brain'
+  'wrench', 'hammer', 'flashlight', 'battery', 'lightbulb', 'bulb', 'plug', 'thermometer'
 ]);
 
 // Helper function to check if a word has an available icon

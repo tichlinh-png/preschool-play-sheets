@@ -45,7 +45,34 @@ import {
   // School items icons
   CrayonIcon, RulerIcon, EraserIcon, GlueIcon, NotebookIcon, BlackboardIcon, ChalkIcon, GlobeIcon,
   // Toy icons
-  BallIcon, DollIcon, TeddyBearIcon, BlocksIcon, KiteIcon, PuzzleIcon, RobotIcon, DrumIcon
+  BallIcon, DollIcon, TeddyBearIcon, BlocksIcon, KiteIcon, PuzzleIcon, RobotIcon, DrumIcon,
+  // Number icons
+  OneIcon, TwoIcon, ThreeIcon, FourIcon, FiveIcon, SixIcon, SevenIcon, EightIcon, NineIcon, TenIcon, ZeroIcon,
+  // Color icons
+  RedColorIcon, BlueColorIcon, YellowColorIcon, GreenColorIcon, OrangeColorIcon,
+  PurpleColorIcon, PinkColorIcon, BrownColorIcon, BlackColorIcon, WhiteColorIcon, GrayColorIcon,
+  // Shape icons
+  CircleShapeIcon, SquareShapeIcon, TriangleShapeIcon, RectangleShapeIcon, OvalShapeIcon,
+  DiamondShapeIcon, StarShapeIcon, HeartShapeIcon, PentagonShapeIcon, HexagonShapeIcon,
+  CrescentShapeIcon, CrossShapeIcon, ArrowShapeIcon,
+  // More insects
+  AntIcon, LadybugIcon, GrasshopperIcon, DragonFlyIcon, CaterpillarIcon,
+  // More sea creatures
+  JellyfishIcon, ShrimpIcon, LobsterIcon, ClownfishIcon,
+  // More birds
+  ParrotIcon, FlamingoIcon, PeacockIcon, EagleIcon,
+  // More animals
+  BatIcon, MooseIcon, GorillaIcon, LlamaIcon, PelicanIcon,
+  // Sports
+  SoccerIcon, BasketballIcon, TennisIcon, BaseballIcon,
+  // Musical instruments
+  GuitarIcon, PianoIcon, ViolinIcon, TrumpetIcon,
+  // More fruits/vegetables
+  MangoIcon, KiwiIcon, CoconutIcon, AvocadoIcon, BroccoliIcon, PepperIcon,
+  // Buildings
+  CastleIcon, LighthouseIcon, WindmillIcon, BarnIcon,
+  // Emotions
+  HappyIcon, SadIcon, AngryIcon, SurprisedIcon, ScaredIcon, SleepyIcon
 } from './icons/AnimalIcons';
 import { ComponentType, SVGProps } from 'react';
 
@@ -104,14 +131,24 @@ const customIconMap: Record<string, CustomIcon> = {
   rhino: RhinoIcon, rhinoceros: RhinoIcon, camel: CamelIcon, seal: SealIcon,
   octopus: OctopusIcon, crab: CrabIcon, starfish: StarfishIcon,
   squirrel: SquirrelIcon, hedgehog: HedgehogIcon,
+  // More insects
+  ant: AntIcon, ladybug: LadybugIcon, grasshopper: GrasshopperIcon, dragonfly: DragonFlyIcon, caterpillar: CaterpillarIcon,
+  // More sea creatures
+  jellyfish: JellyfishIcon, shrimp: ShrimpIcon, lobster: LobsterIcon, clownfish: ClownfishIcon,
+  // More birds
+  parrot: ParrotIcon, flamingo: FlamingoIcon, peacock: PeacockIcon, eagle: EagleIcon, pelican: PelicanIcon,
+  // More animals
+  bat: BatIcon, moose: MooseIcon, gorilla: GorillaIcon, llama: LlamaIcon,
   // Food
   bread: BreadIcon, rice: RiceIcon, noodle: NoodleIcon, noodles: NoodleIcon, pasta: NoodleIcon,
   cheese: CheeseIcon, hamburger: HamburgerIcon, burger: HamburgerIcon, hotdog: HotdogIcon,
   sandwich: SandwichIcon, soup: SoupIcon, fries: FriesIcon, donut: DonutIcon, doughnut: DonutIcon,
   candy: CandyIcon, chocolate: ChocolateIcon, lollipop: LollipopIcon,
-  watermelon: WatermelonIcon, orange: OrangeIcon, strawberry: StrawberryIcon,
+  watermelon: WatermelonIcon, strawberry: StrawberryIcon,
   pear: PearIcon, lemon: LemonIcon, pineapple: PineappleIcon, corn: CornIcon,
   tomato: TomatoIcon, potato: PotatoIcon, onion: OnionIcon, mushroom: MushroomIcon,
+  mango: MangoIcon, kiwi: KiwiIcon, coconut: CoconutIcon, avocado: AvocadoIcon,
+  broccoli: BroccoliIcon, pepper: PepperIcon,
   // Clothing
   pants: PantsIcon, trousers: PantsIcon, jeans: PantsIcon, dress: DressIcon,
   skirt: SkirtIcon, socks: SocksIcon, sock: SocksIcon, shoes: ShoesIcon, shoe: ShoesIcon,
@@ -141,6 +178,28 @@ const customIconMap: Record<string, CustomIcon> = {
   // Toys
   ball: BallIcon, doll: DollIcon, teddy: TeddyBearIcon, teddybear: TeddyBearIcon,
   blocks: BlocksIcon, block: BlocksIcon, kite: KiteIcon, puzzle: PuzzleIcon, robot: RobotIcon, drum: DrumIcon,
+  // Numbers (1-10)
+  one: OneIcon, "1": OneIcon, two: TwoIcon, "2": TwoIcon, three: ThreeIcon, "3": ThreeIcon,
+  four: FourIcon, "4": FourIcon, five: FiveIcon, "5": FiveIcon, six: SixIcon, "6": SixIcon,
+  seven: SevenIcon, "7": SevenIcon, eight: EightIcon, "8": EightIcon, nine: NineIcon, "9": NineIcon,
+  ten: TenIcon, "10": TenIcon, zero: ZeroIcon, "0": ZeroIcon,
+  // Colors
+  red: RedColorIcon, blue: BlueColorIcon, yellow: YellowColorIcon, green: GreenColorIcon,
+  orange: OrangeColorIcon, purple: PurpleColorIcon, pink: PinkColorIcon, brown: BrownColorIcon,
+  black: BlackColorIcon, white: WhiteColorIcon, gray: GrayColorIcon, grey: GrayColorIcon,
+  // Shapes
+  circle: CircleShapeIcon, square: SquareShapeIcon, triangle: TriangleShapeIcon,
+  rectangle: RectangleShapeIcon, oval: OvalShapeIcon, diamond: DiamondShapeIcon,
+  star: StarShapeIcon, heart: HeartShapeIcon, pentagon: PentagonShapeIcon,
+  hexagon: HexagonShapeIcon, crescent: CrescentShapeIcon, cross: CrossShapeIcon, arrow: ArrowShapeIcon,
+  // Sports
+  soccer: SoccerIcon, football: SoccerIcon, basketball: BasketballIcon, tennis: TennisIcon, baseball: BaseballIcon,
+  // Musical instruments
+  guitar: GuitarIcon, piano: PianoIcon, violin: ViolinIcon, trumpet: TrumpetIcon,
+  // Buildings
+  castle: CastleIcon, lighthouse: LighthouseIcon, windmill: WindmillIcon, barn: BarnIcon,
+  // Emotions
+  happy: HappyIcon, sad: SadIcon, angry: AngryIcon, surprised: SurprisedIcon, scared: ScaredIcon, sleepy: SleepyIcon,
 };
 
 const lucideIconMap: Record<string, LucideIcon> = {

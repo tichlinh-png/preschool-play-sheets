@@ -353,18 +353,17 @@ const Index = () => {
               {generatedWorksheets.length > 0 ? (
                 <div className="space-y-6">
                   {generatedWorksheets.map((w, i) => (
-                    <div key={i} data-worksheet-card>
-                      <WorksheetPreview
-                        data={w}
-                        schoolLogo={schoolLogo}
-                        schoolName={schoolName}
-                        teacherName={teacherName}
-                        className={className}
-                        wordImages={wordImages}
-                        pageIndex={i}
-                        traceRows={traceRows}
-                      />
-                    </div>
+                    <WorksheetPreview
+                      key={i}
+                      data={w}
+                      schoolLogo={schoolLogo}
+                      schoolName={schoolName}
+                      teacherName={teacherName}
+                      className={className}
+                      wordImages={wordImages}
+                      pageIndex={i}
+                      traceRows={traceRows}
+                    />
                   ))}
                 </div>
               ) : (

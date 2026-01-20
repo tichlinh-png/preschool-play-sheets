@@ -614,38 +614,6 @@ export const WorksheetPreview = ({
     );
   }
 
-  if (worksheetType === "matching") {
-    const matchingPairs = data?.matchingPairs || [{ image: "cat", word: "Cat" }, { image: "dog", word: "Dog" }];
-    const shuffledWords = [...matchingPairs].sort(() => Math.random() - 0.5);
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Matching Activity" exerciseNumber={4} />
-        <div className="flex justify-between items-start gap-4 flex-1">
-          <div className="flex-1 space-y-3">
-            {matchingPairs.map((pair, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <div className="w-20 h-20 flex items-center justify-center">
-                  <WordIconOrImage word={pair.image} size={72} className="text-gray-600" wordImages={wordImages} />
-                </div>
-                <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
-              </div>
-            ))}
-          </div>
-          <div className="flex-1 space-y-3">
-            {shuffledWords.map((pair, idx) => (
-              <div key={idx} className="flex items-center gap-2 justify-end">
-                <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
-                <div className="px-3 py-2 bg-gray-100 rounded min-w-[80px] text-center">
-                  <span className="text-xl font-bold text-gray-800 capitalize">{pair.word}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // Fill in the blank worksheet
   if (worksheetType === "fill-blank") {
     const allFillBlankWords = data?.fillBlankWords || [

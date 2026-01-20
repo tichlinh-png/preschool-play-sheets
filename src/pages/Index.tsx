@@ -12,6 +12,7 @@ import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
 import { LogoUpload } from "@/components/LogoUpload";
 import { WordImageUpload } from "@/components/WordImageUpload";
 import { PrintPreviewDialog } from "@/components/PrintPreviewDialog";
+import { ContentSuggestions } from "@/components/ContentSuggestions";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { exportToPDF, printWorksheets } from "@/lib/exportWorksheet";
@@ -272,6 +273,20 @@ const Index = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Example: Fish, Father, Goat, Girl..."
                   className="w-full h-24 p-4 rounded-2xl border-2 border-border bg-card text-foreground focus:border-primary outline-none resize-none"
+                />
+                <ContentSuggestions 
+                  currentContent={description}
+                  onWordClick={(word) => {
+                    setDescription(prev => {
+                      const trimmed = prev.trim();
+                      if (!trimmed) return word;
+                      // Add comma separator if not ending with separator
+                      if (trimmed.endsWith(',') || trimmed.endsWith(';') || trimmed.endsWith('\n')) {
+                        return trimmed + ' ' + word;
+                      }
+                      return trimmed + ', ' + word;
+                    });
+                  }}
                 />
               </CardContent>
             </Card>

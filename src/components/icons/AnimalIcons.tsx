@@ -1881,3 +1881,718 @@ export const DrumIcon = ({ size = 24, ...props }: IconProps) => (
     <path d="M22 4l-6 6" />
   </svg>
 );
+
+// ==================== NUMBER ICONS (1-10) ====================
+
+export const OneIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 4v16" />
+    <path d="M8 8l4-4" />
+    <path d="M8 20h8" />
+  </svg>
+);
+
+export const TwoIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M7 8c0-2 2-4 5-4s5 2 5 4c0 3-10 6-10 12h10" />
+  </svg>
+);
+
+export const ThreeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M7 4h8l-4 6c3 0 5 2 5 5s-2 5-5 5c-2 0-4-1-5-3" />
+  </svg>
+);
+
+export const FourIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 4v16" />
+    <path d="M15 14H5l8-10" />
+  </svg>
+);
+
+export const FiveIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M17 4H9v6h6c2 0 4 2 4 5s-2 5-5 5c-2 0-4-1-5-3" />
+  </svg>
+);
+
+export const SixIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M16 6c-2-2-4-2-6 0-4 4-4 10 0 12 2 1 5 1 6-1 2-2 2-5 0-7s-5-2-6 1" />
+  </svg>
+);
+
+export const SevenIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M6 4h12l-8 16" />
+  </svg>
+);
+
+export const EightIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="8" r="4" />
+    <circle cx="12" cy="16" r="4" />
+  </svg>
+);
+
+export const NineIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M8 18c2 2 4 2 6 0 4-4 4-10 0-12-2-1-5-1-6 1-2 2-2 5 0 7s5 2 6-1" />
+  </svg>
+);
+
+export const TenIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 4v16" />
+    <path d="M3 6l2-2" />
+    <circle cx="16" cy="12" r="5" />
+  </svg>
+);
+
+export const ZeroIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="6" ry="8" />
+  </svg>
+);
+
+// ==================== COLOR ICONS ====================
+
+export const RedColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#ef4444" stroke="#dc2626" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const BlueColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#3b82f6" stroke="#2563eb" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const YellowColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#facc15" stroke="#eab308" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const GreenColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#22c55e" stroke="#16a34a" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const OrangeColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#f97316" stroke="#ea580c" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const PurpleColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#a855f7" stroke="#9333ea" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const PinkColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#ec4899" stroke="#db2777" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const BrownColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#a16207" stroke="#854d0e" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const BlackColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#171717" stroke="#0a0a0a" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+export const WhiteColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#fafafa" stroke="#d4d4d4" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="#a3a3a3" strokeWidth="1" />
+  </svg>
+);
+
+export const GrayColorIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" fill="#6b7280" stroke="#4b5563" />
+    <path d="M12 3c0 2-2 4-2 6s2 4 2 6" stroke="white" strokeWidth="1" />
+  </svg>
+);
+
+// ==================== SHAPE ICONS ====================
+
+export const CircleShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+  </svg>
+);
+
+export const SquareShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="4" y="4" width="16" height="16" />
+  </svg>
+);
+
+export const TriangleShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 3L22 21H2z" />
+  </svg>
+);
+
+export const RectangleShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="2" y="6" width="20" height="12" />
+  </svg>
+);
+
+export const OvalShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="9" ry="6" />
+  </svg>
+);
+
+export const DiamondShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2L22 12L12 22L2 12z" />
+  </svg>
+);
+
+export const StarShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2l2.5 7h7l-5.5 4.5 2 7-6-4.5-6 4.5 2-7L2.5 9h7z" />
+  </svg>
+);
+
+export const HeartShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 21c-5-4-9-8-9-12 0-3 2-5 5-5 2 0 3 1 4 3 1-2 2-3 4-3 3 0 5 2 5 5 0 4-4 8-9 12z" />
+  </svg>
+);
+
+export const PentagonShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2l9 7-3 9H6l-3-9z" />
+  </svg>
+);
+
+export const HexagonShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2l8 5v10l-8 5-8-5V7z" />
+  </svg>
+);
+
+export const CrescentShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 3a9 9 0 1 0 0 18 7 7 0 1 1 0-18z" />
+  </svg>
+);
+
+export const CrossShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 3v18M3 12h18" />
+  </svg>
+);
+
+export const ArrowShapeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+);
+
+// ==================== MORE DIVERSE ICONS ====================
+
+// Insects
+export const AntIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="6" cy="12" r="3" />
+    <ellipse cx="12" cy="12" rx="3" ry="2" />
+    <ellipse cx="18" cy="12" rx="2" ry="3" />
+    <path d="M3 8l-1-3" />
+    <path d="M3 16l-1 3" />
+    <path d="M9 9l-2-4" />
+    <path d="M9 15l-2 4" />
+    <path d="M15 9l2-4" />
+    <path d="M15 15l2 4" />
+  </svg>
+);
+
+export const LadybugIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="14" rx="8" ry="6" />
+    <circle cx="12" cy="6" r="3" />
+    <path d="M12 8v12" />
+    <circle cx="8" cy="12" r="1" fill="currentColor" />
+    <circle cx="16" cy="12" r="1" fill="currentColor" />
+    <circle cx="9" cy="16" r="1" fill="currentColor" />
+    <circle cx="15" cy="16" r="1" fill="currentColor" />
+    <path d="M10 3l-2-2" />
+    <path d="M14 3l2-2" />
+  </svg>
+);
+
+export const GrasshopperIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="16" cy="12" rx="6" ry="3" />
+    <circle cx="6" cy="10" r="3" />
+    <circle cx="5" cy="9" r="0.5" fill="currentColor" />
+    <path d="M3 7l-1-3" />
+    <path d="M18 15l3 5" />
+    <path d="M14 15l-2 5" />
+    <path d="M16 9l4-5" />
+  </svg>
+);
+
+export const DragonFlyIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="8" cy="12" rx="4" ry="2" />
+    <path d="M12 12h10" />
+    <ellipse cx="6" cy="6" rx="4" ry="2" transform="rotate(-30 6 6)" />
+    <ellipse cx="6" cy="18" rx="4" ry="2" transform="rotate(30 6 18)" />
+    <circle cx="5" cy="11" r="1" fill="currentColor" />
+    <circle cx="5" cy="13" r="1" fill="currentColor" />
+  </svg>
+);
+
+export const CaterpillarIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="4" cy="12" r="2" />
+    <circle cx="8" cy="13" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="16" cy="13" r="2" />
+    <circle cx="20" cy="12" r="2" />
+    <circle cx="19" cy="11" r="0.5" fill="currentColor" />
+    <path d="M21 9l1-2" />
+    <path d="M22 10l1-1" />
+  </svg>
+);
+
+// Sea creatures
+export const JellyfishIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 10c0-4 4-7 8-7s8 3 8 7" />
+    <ellipse cx="12" cy="10" rx="8" ry="3" />
+    <path d="M6 13c0 3 1 6 0 9" />
+    <path d="M10 13c0 4 0 6 1 9" />
+    <path d="M14 13c0 4 0 6-1 9" />
+    <path d="M18 13c0 3-1 6 0 9" />
+  </svg>
+);
+
+export const ShrimpIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M20 8c-2-2-6-2-8 0s-4 6-8 8" />
+    <ellipse cx="18" cy="8" rx="3" ry="4" />
+    <circle cx="19" cy="6" r="0.5" fill="currentColor" />
+    <path d="M21 4l2-2" />
+    <path d="M22 5l1-1" />
+    <path d="M4 16l-2 2" />
+    <path d="M6 18l-2 2" />
+  </svg>
+);
+
+export const LobsterIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="14" rx="5" ry="6" />
+    <path d="M7 14l-4-2c-1-1-1-3 1-3l3 2" />
+    <path d="M17 14l4-2c1-1 1-3-1-3l-3 2" />
+    <circle cx="10" cy="12" r="1" fill="currentColor" />
+    <circle cx="14" cy="12" r="1" fill="currentColor" />
+    <path d="M10 8l-1-4" />
+    <path d="M14 8l1-4" />
+    <path d="M12 20l0 2" />
+  </svg>
+);
+
+export const ClownfishIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="9" ry="6" />
+    <path d="M8 8v8" />
+    <path d="M12 7v10" />
+    <path d="M16 8v8" />
+    <circle cx="6" cy="11" r="1" fill="currentColor" />
+    <path d="M21 12l2 2-2 2" />
+    <path d="M3 10c-1 0-2 1-2 2s1 2 2 2" />
+  </svg>
+);
+
+// Birds
+export const ParrotIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="5" ry="8" />
+    <circle cx="12" cy="6" r="4" />
+    <circle cx="11" cy="5" r="1" fill="currentColor" />
+    <path d="M8 7c-2 0-4 1-4 2" />
+    <path d="M10 20v2l-1 1" />
+    <path d="M14 20v2l1 1" />
+    <path d="M16 10c2-2 4-2 5 0" />
+    <path d="M17 12c2 0 3 1 3 2" />
+  </svg>
+);
+
+export const FlamingoIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="14" cy="8" rx="5" ry="4" />
+    <circle cx="13" cy="7" r="0.5" fill="currentColor" />
+    <path d="M9 8c-2 0-4 1-4 2l2 0" />
+    <path d="M14 12c-2 6-2 8 0 10" />
+    <path d="M14 22h-2" />
+    <path d="M16 12c0 4 1 8 0 10" />
+    <path d="M16 22h2" />
+  </svg>
+);
+
+export const PeacockIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="16" cy="16" rx="4" ry="5" />
+    <circle cx="17" cy="14" r="0.5" fill="currentColor" />
+    <path d="M13 16l-1 4" />
+    <path d="M19 16l1 4" />
+    <path d="M8 4c-2 4-4 8-4 12" />
+    <path d="M12 3c0 4-2 8-3 12" />
+    <path d="M16 4c2 4 4 8 4 10" />
+    <circle cx="5" cy="6" r="1" />
+    <circle cx="11" cy="4" r="1" />
+    <circle cx="19" cy="6" r="1" />
+  </svg>
+);
+
+export const EagleIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="8" ry="5" />
+    <path d="M20 12c2-1 3-3 2-4" />
+    <path d="M4 12c-2-1-3-3-2-4" />
+    <circle cx="8" cy="10" r="3" />
+    <circle cx="9" cy="9" r="1" fill="currentColor" />
+    <path d="M4 11l-2 2" />
+    <path d="M10 17v3l-1 1" />
+    <path d="M14 17v3l1 1" />
+  </svg>
+);
+
+// More animals
+export const BatIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="10" r="4" />
+    <path d="M8 8l-6 4c0 2 2 4 6 2" />
+    <path d="M16 8l6 4c0 2-2 4-6 2" />
+    <path d="M10 3l-1-2" />
+    <path d="M14 3l1-2" />
+    <circle cx="10" cy="9" r="0.5" fill="currentColor" />
+    <circle cx="14" cy="9" r="0.5" fill="currentColor" />
+    <path d="M4 12l-2 2 2 2" />
+    <path d="M20 12l2 2-2 2" />
+  </svg>
+);
+
+export const MooseIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="14" rx="5" ry="4" />
+    <circle cx="12" cy="9" r="3" />
+    <circle cx="11" cy="8" r="0.5" fill="currentColor" />
+    <circle cx="13" cy="8" r="0.5" fill="currentColor" />
+    <path d="M7 4c-2-1-4-1-5 1l3 2" />
+    <path d="M17 4c2-1 4-1 5 1l-3 2" />
+    <path d="M4 3l-1-1M3 4l-1 0" />
+    <path d="M20 3l1-1M21 4l1 0" />
+    <path d="M9 18v3" />
+    <path d="M15 18v3" />
+  </svg>
+);
+
+export const GorillaIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="14" rx="7" ry="6" />
+    <circle cx="12" cy="8" r="5" />
+    <circle cx="10" cy="7" r="1" fill="currentColor" />
+    <circle cx="14" cy="7" r="1" fill="currentColor" />
+    <ellipse cx="12" cy="10" rx="2" ry="1.5" />
+    <path d="M5 12c-2 0-3 2-3 4" />
+    <path d="M19 12c2 0 3 2 3 4" />
+  </svg>
+);
+
+export const LlamaIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="16" rx="5" ry="4" />
+    <path d="M12 12V6" />
+    <ellipse cx="12" cy="5" rx="2" ry="3" />
+    <path d="M10 3l-2-2" />
+    <path d="M14 3l2-2" />
+    <circle cx="11" cy="4" r="0.5" fill="currentColor" />
+    <circle cx="13" cy="4" r="0.5" fill="currentColor" />
+    <path d="M8 20v2" />
+    <path d="M16 20v2" />
+  </svg>
+);
+
+export const PelicanIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="14" cy="14" rx="6" ry="5" />
+    <circle cx="8" cy="8" r="4" />
+    <circle cx="7" cy="7" r="0.5" fill="currentColor" />
+    <path d="M4 9l-2 6c0 2 3 2 4 0" />
+    <path d="M11 19v3" />
+    <path d="M17 19v3" />
+    <path d="M18 10c2-2 4-1 4 1" />
+  </svg>
+);
+
+// Sports & activities
+export const SoccerIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 3l2 4h5l-3 4 2 4h-4l-2 5-2-5H6l2-4-3-4h5z" />
+  </svg>
+);
+
+export const BasketballIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 3v18" />
+    <path d="M3 12h18" />
+    <path d="M5 5c4 2 4 12 0 14" />
+    <path d="M19 5c-4 2-4 12 0 14" />
+  </svg>
+);
+
+export const TennisIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M4 6c5 1 8 5 8 12" />
+    <path d="M20 6c-5 1-8 5-8 12" />
+  </svg>
+);
+
+export const BaseballIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M5 5c1 2 1 4 0 6s-1 4 0 6" />
+    <path d="M19 5c-1 2-1 4 0 6s1 4 0 6" />
+  </svg>
+);
+
+// Musical instruments  
+export const GuitarIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="10" cy="16" rx="6" ry="5" />
+    <circle cx="10" cy="16" r="2" />
+    <path d="M16 11l4-7" />
+    <path d="M20 4l2-2" />
+    <path d="M20 4l-2 0" />
+    <path d="M20 4l0 2" />
+  </svg>
+);
+
+export const PianoIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="2" y="6" width="20" height="12" rx="1" />
+    <path d="M6 6v8" />
+    <path d="M10 6v8" />
+    <path d="M14 6v8" />
+    <path d="M18 6v8" />
+    <rect x="5" y="6" width="2" height="5" fill="currentColor" />
+    <rect x="9" y="6" width="2" height="5" fill="currentColor" />
+    <rect x="13" y="6" width="2" height="5" fill="currentColor" />
+    <rect x="17" y="6" width="2" height="5" fill="currentColor" />
+  </svg>
+);
+
+export const ViolinIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="10" cy="17" rx="4" ry="4" />
+    <ellipse cx="10" cy="9" rx="3" ry="3" />
+    <path d="M10 12v2" />
+    <path d="M10 6V2" />
+    <path d="M8 2h4" />
+    <path d="M14 14l6 6" />
+  </svg>
+);
+
+export const TrumpetIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 10h12c4 0 6 2 6 4v2H4z" />
+    <path d="M4 10v6" />
+    <circle cx="8" cy="14" r="1" />
+    <circle cx="12" cy="14" r="1" />
+    <circle cx="16" cy="14" r="1" />
+    <path d="M22 12c2-1 2-4 0-4" />
+  </svg>
+);
+
+// More fruits/vegetables
+export const MangoIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 4c-5 0-8 4-8 9s3 7 8 7 8-2 8-7-3-9-8-9z" />
+    <path d="M12 4c0-2 1-3 2-3" />
+    <path d="M10 4c-1-1-1-2 0-3" />
+  </svg>
+);
+
+export const KiwiIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <ellipse cx="12" cy="12" rx="8" ry="6" />
+    <ellipse cx="12" cy="12" rx="5" ry="4" />
+    <circle cx="10" cy="10" r="0.5" fill="currentColor" />
+    <circle cx="14" cy="10" r="0.5" fill="currentColor" />
+    <circle cx="12" cy="13" r="0.5" fill="currentColor" />
+    <circle cx="9" cy="13" r="0.5" fill="currentColor" />
+    <circle cx="15" cy="13" r="0.5" fill="currentColor" />
+  </svg>
+);
+
+export const CoconutIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="14" r="7" />
+    <circle cx="9" cy="12" r="1" />
+    <circle cx="15" cy="12" r="1" />
+    <circle cx="12" cy="16" r="1" />
+    <path d="M8 7c2-3 6-3 8 0" />
+  </svg>
+);
+
+export const AvocadoIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2c-4 0-7 5-7 11s3 9 7 9 7-3 7-9-3-11-7-11z" />
+    <ellipse cx="12" cy="14" rx="3" ry="4" />
+  </svg>
+);
+
+export const BroccoliIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="8" cy="8" r="4" />
+    <circle cx="16" cy="8" r="4" />
+    <circle cx="12" cy="6" r="4" />
+    <path d="M10 12v8c0 1 1 2 2 2s2-1 2-2v-8" />
+  </svg>
+);
+
+export const PepperIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 4c-4 0-6 4-6 9s2 7 6 7 6-2 6-7-2-9-6-9z" />
+    <path d="M12 4c0-2 0-3 0-3" />
+    <path d="M10 4l-1-2" />
+    <path d="M14 4l1-2" />
+  </svg>
+);
+
+// Buildings/Places
+export const CastleIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 22V10l2-2V4h2v2h2V4h2v2h2V4h2v2h2V4h2v4l2 2v12z" />
+    <path d="M4 10h16" />
+    <rect x="9" y="14" width="6" height="8" />
+    <path d="M12 14v-2" />
+  </svg>
+);
+
+export const LighthouseIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M8 22l2-14h4l2 14z" />
+    <rect x="10" y="4" width="4" height="4" />
+    <path d="M12 4V2" />
+    <path d="M6 6h4" />
+    <path d="M14 6h4" />
+    <path d="M9 12h6" />
+    <path d="M9 16h6" />
+  </svg>
+);
+
+export const WindmillIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M9 22l1-12h4l1 12z" />
+    <circle cx="12" cy="8" r="2" />
+    <path d="M12 6V2" />
+    <path d="M14 8l4 2" />
+    <path d="M10 8l-4 2" />
+    <path d="M14 8l2-4" />
+    <path d="M10 8l-2-4" />
+  </svg>
+);
+
+export const BarnIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 12l9-8 9 8" />
+    <path d="M4 12v10h16V12" />
+    <rect x="9" y="14" width="6" height="8" />
+    <path d="M4 12h16" />
+    <path d="M12 4v4" />
+  </svg>
+);
+
+// Emotions/Expressions
+export const HappyIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="8" cy="10" r="1" fill="currentColor" />
+    <circle cx="16" cy="10" r="1" fill="currentColor" />
+    <path d="M8 15c2 2 6 2 8 0" />
+  </svg>
+);
+
+export const SadIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="8" cy="10" r="1" fill="currentColor" />
+    <circle cx="16" cy="10" r="1" fill="currentColor" />
+    <path d="M8 17c2-2 6-2 8 0" />
+  </svg>
+);
+
+export const AngryIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="8" cy="11" r="1" fill="currentColor" />
+    <circle cx="16" cy="11" r="1" fill="currentColor" />
+    <path d="M6 8l4 2" />
+    <path d="M18 8l-4 2" />
+    <path d="M8 17c2-2 6-2 8 0" />
+  </svg>
+);
+
+export const SurprisedIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="8" cy="10" r="1.5" />
+    <circle cx="16" cy="10" r="1.5" />
+    <ellipse cx="12" cy="16" rx="2" ry="3" />
+  </svg>
+);
+
+export const ScaredIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <ellipse cx="8" cy="10" rx="1.5" ry="2" />
+    <ellipse cx="16" cy="10" rx="1.5" ry="2" />
+    <path d="M8 16h8" />
+    <path d="M10 16v1" />
+    <path d="M12 16v1" />
+    <path d="M14 16v1" />
+  </svg>
+);
+
+export const SleepyIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M7 10c1-1 3-1 4 0" />
+    <path d="M13 10c1-1 3-1 4 0" />
+    <ellipse cx="12" cy="16" rx="2" ry="1" />
+    <path d="M18 4h2l-2 2h2" />
+    <path d="M20 2h2l-2 2h2" />
+  </svg>
+);

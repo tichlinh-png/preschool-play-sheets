@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { FileUpload } from "@/components/FileUpload";
 import { WorksheetTypeSelector, WorksheetType } from "@/components/WorksheetTypeSelector";
 import { WorksheetPreview, WorksheetData } from "@/components/WorksheetPreview";
-import { CombinedWorksheet } from "@/components/CombinedWorksheet";
 import { LogoUpload } from "@/components/LogoUpload";
 import { WordImageUpload } from "@/components/WordImageUpload";
 import { PrintPreviewDialog } from "@/components/PrintPreviewDialog";
@@ -352,35 +351,20 @@ const Index = () => {
             </div>
             <div id="worksheets-container">
               {generatedWorksheets.length > 0 ? (
-                <div className="space-y-4">
-                  {/* Page 1: Trace worksheet */}
-                  {generatedWorksheets.find(w => w.type === 'trace') && (
+                <div className="space-y-6">
+                  {generatedWorksheets.map((w, i) => (
                     <WorksheetPreview
-                      data={generatedWorksheets.find(w => w.type === 'trace')}
+                      key={i}
+                      data={w}
                       schoolLogo={schoolLogo}
                       schoolName={schoolName}
                       teacherName={teacherName}
                       className={className}
                       wordImages={wordImages}
-                      pageIndex={0}
+                      pageIndex={i}
                       traceRows={traceRows}
                     />
-                  )}
-                  {/* Page 2: Combined worksheet (coloring, counting, fill-blank) */}
-                  {(generatedWorksheets.some(w => w.type === 'color') || 
-                    generatedWorksheets.some(w => w.type === 'counting') || 
-                    generatedWorksheets.some(w => w.type === 'fill-blank')) && (
-                    <CombinedWorksheet
-                      colorData={generatedWorksheets.find(w => w.type === 'color')}
-                      countingData={generatedWorksheets.find(w => w.type === 'counting')}
-                      fillBlankData={generatedWorksheets.find(w => w.type === 'fill-blank')}
-                      schoolLogo={schoolLogo}
-                      schoolName={schoolName}
-                      teacherName={teacherName}
-                      className={className}
-                      wordImages={wordImages}
-                    />
-                  )}
+                  ))}
                 </div>
               ) : (
                 <Card variant="elevated" className="min-h-[400px] flex items-center justify-center">

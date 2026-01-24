@@ -373,31 +373,31 @@ export const WorksheetPreview = ({
   const rowsArray = Array.from({ length: traceRows }, (_, i) => i + 1);
 
   const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
-    <div className="text-center mb-1">
+    <div className="text-center mb-0.5">
       {isFirstPage && (
         <>
           <div className="flex items-center justify-between">
             {schoolLogo ? (
-              <img src={schoolLogo} alt="School logo" className="w-7 h-7 object-contain" />
+              <img src={schoolLogo} alt="School logo" className="w-6 h-6 object-contain" />
             ) : (
-              <div className="w-7 h-7" />
+              <div className="w-6 h-6" />
             )}
             <div className="flex-1 text-center">
               {schoolName && (
-                <p className="text-xs font-semibold text-gray-700">{schoolName}</p>
+                <p className="text-[9px] font-semibold text-gray-700">{schoolName}</p>
               )}
-              <p className="text-[10px] text-gray-500">
+              <p className="text-[8px] text-gray-500">
                 Class: {className || "______"} | Teacher: {teacherName || "______"}
               </p>
             </div>
-            <div className="w-7 h-7" />
+            <div className="w-6 h-6" />
           </div>
-          <p className="text-[10px] text-gray-600">Name: __________ Date: ______</p>
+          <p className="text-[8px] text-gray-600">Name: __________ Date: ______</p>
         </>
       )}
       <div className="flex items-center justify-center gap-1">
-        <span className="bg-gray-800 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Ex {exerciseNumber}</span>
-        <h3 className="font-display text-lg font-bold text-gray-800">{title}</h3>
+        <span className="bg-gray-800 text-white text-[8px] font-bold px-1 py-0.5 rounded">Ex {exerciseNumber}</span>
+        <h3 className="font-display text-base font-bold text-gray-800">{title}</h3>
       </div>
     </div>
   );
@@ -411,9 +411,9 @@ export const WorksheetPreview = ({
     // For single letter tracing - optimized layout with more letters per row
     if (isSingleLetters) {
       return (
-        <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
+        <div data-worksheet-card className="bg-white rounded-lg p-1 print:shadow-none">
           <WorksheetHeader title={title} exerciseNumber={1} />
-          <div className="space-y-6">
+          <div className="space-y-4">
             {words.map((letter, idx) => {
               const upperLetter = letter.toUpperCase();
               const lowerLetter = letter.toLowerCase();
@@ -424,41 +424,39 @@ export const WorksheetPreview = ({
               const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
               
               return (
-                <div key={idx} className="py-2">
+                <div key={idx} className="py-1">
                   {/* Header row: Large letter with related word */}
-                  <div className="flex items-center gap-4 mb-2 pb-1 border-b border-gray-200">
+                  <div className="flex items-center gap-3 mb-1 pb-0.5 border-b border-gray-200">
                     <span 
-                      className="text-4xl font-bold text-gray-800"
-                      style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
+                      className="text-3xl font-medium text-gray-800 font-trace"
                     >
                       {upperLetter}{lowerLetter}
                     </span>
                     {wordHasIcon && sampleWord && (
-                      <div className="flex items-center gap-2">
-                        <WordIconOrImage word={sampleWord} size={32} className="text-gray-700" wordImages={wordImages} />
-                        <span className="text-base font-medium text-gray-600 capitalize">{sampleWord}</span>
+                      <div className="flex items-center gap-1">
+                        <WordIconOrImage word={sampleWord} size={28} className="text-gray-700" wordImages={wordImages} />
+                        <span className="text-sm font-medium text-gray-600 capitalize">{sampleWord}</span>
                       </div>
                     )}
                   </div>
                   
                   {/* Tracing rows - uppercase */}
-                  <div className="mb-2">
-                    <p className="text-xs text-gray-500 mb-0.5">Uppercase {upperLetter}</p>
+                  <div className="mb-1">
+                    <p className="text-[9px] text-gray-500 mb-0">Uppercase {upperLetter}</p>
                     {rowsArray.map((rowNum) => (
                       <div 
                         key={`upper-${rowNum}`} 
-                        className="relative h-12 flex items-end border-b-2 border-gray-700"
+                        className="relative h-10 flex items-end border-b-2 border-gray-700"
                       >
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
                         <div className="flex items-end h-full w-full">
-                          {Array.from({ length: 14 }, (_, pos) => (
+                          {Array.from({ length: 16 }, (_, pos) => (
                             <span 
                               key={pos}
-                              className="flex-1 text-center pb-0.5"
+                              className="flex-1 text-center pb-0 font-trace"
                               style={{ 
-                                fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.25rem',
-                                fontWeight: pos === 0 ? 600 : 400,
+                                fontSize: '2rem',
+                                fontWeight: pos === 0 ? 400 : 300,
                                 color: pos === 0 ? '#374151' : 'transparent',
                                 WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
                               }}
@@ -473,22 +471,21 @@ export const WorksheetPreview = ({
                   
                   {/* Tracing rows - lowercase */}
                   <div>
-                    <p className="text-xs text-gray-500 mb-0.5">Lowercase {lowerLetter}</p>
+                    <p className="text-[9px] text-gray-500 mb-0">Lowercase {lowerLetter}</p>
                     {rowsArray.map((rowNum) => (
                       <div 
                         key={`lower-${rowNum}`} 
-                        className="relative h-12 flex items-end border-b-2 border-gray-700"
+                        className="relative h-10 flex items-end border-b-2 border-gray-700"
                       >
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
                         <div className="flex items-end h-full w-full">
-                          {Array.from({ length: 14 }, (_, pos) => (
+                          {Array.from({ length: 16 }, (_, pos) => (
                             <span 
                               key={pos}
-                              className="flex-1 text-center pb-0.5"
+                              className="flex-1 text-center pb-0 font-trace"
                               style={{ 
-                                fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.25rem',
-                                fontWeight: pos === 0 ? 600 : 400,
+                                fontSize: '2rem',
+                                fontWeight: pos === 0 ? 400 : 300,
                                 color: pos === 0 ? '#374151' : 'transparent',
                                 WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
                               }}
@@ -510,28 +507,27 @@ export const WorksheetPreview = ({
     
     // For word tracing - keep original design
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
+      <div data-worksheet-card className="bg-white rounded-lg p-1 print:shadow-none">
         <WorksheetHeader title={title} exerciseNumber={1} />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2">
           {words.map((word, idx) => {
             const wordHasIcon = hasAvailableIcon(word, wordImages);
             
             return (
-              <div key={idx} className="p-2">
-                <div className="flex items-center justify-center gap-2 mb-3">
+              <div key={idx} className="p-1">
+                <div className="flex items-center justify-center gap-1 mb-1">
                   {wordHasIcon && (
-                    <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
+                    <WordIconOrImage word={word} size={28} className="text-gray-700" wordImages={wordImages} />
                   )}
-                  <span className="text-xl font-bold text-gray-800">{word}</span>
+                  <span className="text-lg font-bold text-gray-800">{word}</span>
                 </div>
-                <div className="space-y-0.5">
+                <div className="space-y-0">
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
+                    <div key={lineNum} className="bg-gray-50 rounded px-2 py-1 border-b border-dashed border-gray-300">
                       <span 
-                        className="block text-center text-2xl tracking-[0.2em]"
+                        className="block text-center text-xl tracking-[0.15em] font-trace"
                         style={{ 
-                          fontFamily: '"Edu TAS Beginner", cursive',
-                          fontWeight: 500,
+                          fontWeight: 300,
                           color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
                           WebkitTextStroke: '0.5px currentColor',
                           paintOrder: 'stroke fill',
@@ -561,95 +557,6 @@ export const WorksheetPreview = ({
     );
   }
 
-  if (worksheetType === "color") {
-    const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
-        <div className="mb-2 px-2 py-1 bg-gray-50 rounded">
-          <div className="flex flex-wrap gap-x-4 gap-y-1 justify-center">
-            {colorInstructions.map((instruction, idx) => (
-              <span key={idx} className="text-sm text-gray-700">
-                <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong>
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-2 flex-1">
-          {colorInstructions.map((instruction, idx) => (
-            <div key={idx} className="flex flex-col items-center justify-center bg-white p-1">
-              <WordIconOrImage word={instruction.item} size={200} className="text-gray-400" wordImages={wordImages} />
-              <span className="text-base font-medium text-gray-600 capitalize">{instruction.item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (worksheetType === "counting") {
-    const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Counting Activity" exerciseNumber={3} />
-        <div className="space-y-3 flex-1">
-          {countingItems.map((item, idx) => (
-            <div key={idx} className="py-2">
-              <div className="flex flex-wrap justify-center gap-3 mb-2">
-                {Array.from({ length: item.count }).map((_, i) => (
-                  <div key={i} className="flex items-center justify-center">
-                    <WordIconOrImage word={item.item} size={90} className="text-gray-600" wordImages={wordImages} />
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-lg text-gray-700">How many <strong className="capitalize text-xl">{item.item}s</strong>?</span>
-                <div className="w-16 h-16 border-2 border-dashed border-gray-500 rounded flex items-center justify-center">
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Fill in the blank worksheet
-  if (worksheetType === "fill-blank") {
-    const allFillBlankWords = data?.fillBlankWords || [
-      { word: "cat", blankedWord: "c_t", missingLetter: "a" },
-      { word: "dog", blankedWord: "d_g", missingLetter: "o" }
-    ];
-    // Filter out words that don't have icons
-    const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
-    
-    if (fillBlankWords.length === 0) return null;
-    
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Fill in the Missing Letter" exerciseNumber={5} />
-        <div className="grid grid-cols-2 gap-2 flex-1">
-          {fillBlankWords.map((item, idx) => (
-            <div key={idx} className="flex flex-col items-center justify-center py-2">
-              <WordIconOrImage word={item.word} size={100} className="text-gray-600" wordImages={wordImages} />
-              <div className="text-center mt-1">
-                <span className="text-4xl font-bold tracking-widest" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
-                  {item.blankedWord.split('').map((char, i) => (
-                    <span 
-                      key={i} 
-                      className={char === '_' ? 'inline-block w-10 border-b-4 border-gray-800 mx-1' : ''}
-                    >
-                      {char !== '_' ? char : ''}
-                    </span>
-                  ))}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+  // Color, counting, fill-blank are now rendered by CombinedWorksheet
   return null;
 };

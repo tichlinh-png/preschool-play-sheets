@@ -197,34 +197,15 @@ export const CombinedWorksheet = ({
   let exerciseNumber = 1;
 
   return (
-    <div data-worksheet-card className="bg-white rounded-lg p-1 print:shadow-none">
-      {/* Header */}
-      <div className="text-center mb-0.5">
-        <div className="flex items-center justify-between">
-          {schoolLogo ? (
-            <img src={schoolLogo} alt="School logo" className="w-6 h-6 object-contain" />
-          ) : (
-            <div className="w-6 h-6" />
-          )}
-          <div className="flex-1 text-center">
-            {schoolName && <p className="text-[9px] font-semibold text-gray-700">{schoolName}</p>}
-            <p className="text-[8px] text-gray-500">
-              Class: {className || "______"} | Teacher: {teacherName || "______"}
-            </p>
-          </div>
-          <div className="w-6 h-6" />
-        </div>
-        <p className="text-[8px] text-gray-600">Name: __________ Date: ______</p>
-      </div>
-
+    <div data-worksheet-card className="bg-white p-1 print:shadow-none">
       {/* Coloring Section */}
       {hasColoring && (
-        <div className="mb-1">
+        <div className="mb-2">
           <div className="flex items-center gap-1 mb-0.5">
-            <span className="bg-gray-800 text-white text-[8px] font-bold px-1 py-0.5 rounded">Ex {exerciseNumber++}</span>
+            <span className="text-[9px] font-bold text-gray-800">Ex {exerciseNumber++}.</span>
             <h3 className="font-display text-sm font-bold text-gray-800">Coloring</h3>
           </div>
-          <div className="px-1 py-0.5 bg-gray-50 rounded text-[8px] mb-0.5">
+          <div className="text-[8px] mb-0.5">
             <div className="flex flex-wrap gap-x-2 justify-center">
               {colorInstructions.map((ins, idx) => (
                 <span key={idx}><strong className="capitalize">{ins.item}</strong>→<strong className="uppercase">{ins.color}</strong></span>
@@ -244,9 +225,9 @@ export const CombinedWorksheet = ({
 
       {/* Counting Section */}
       {hasCounting && (
-        <div className="mb-1">
+        <div className="mb-2">
           <div className="flex items-center gap-1 mb-0.5">
-            <span className="bg-gray-800 text-white text-[8px] font-bold px-1 py-0.5 rounded">Ex {exerciseNumber++}</span>
+            <span className="text-[9px] font-bold text-gray-800">Ex {exerciseNumber++}.</span>
             <h3 className="font-display text-sm font-bold text-gray-800">Counting</h3>
           </div>
           <div className="space-y-1">
@@ -259,7 +240,7 @@ export const CombinedWorksheet = ({
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-gray-700">= </span>
-                  <div className="w-8 h-8 border-2 border-dashed border-gray-500 rounded flex items-center justify-center" />
+                  <div className="w-8 h-8 border-b-2 border-gray-500 flex items-center justify-center" />
                 </div>
               </div>
             ))}
@@ -271,7 +252,7 @@ export const CombinedWorksheet = ({
       {hasFillBlank && (
         <div>
           <div className="flex items-center gap-1 mb-0.5">
-            <span className="bg-gray-800 text-white text-[8px] font-bold px-1 py-0.5 rounded">Ex {exerciseNumber++}</span>
+            <span className="text-[9px] font-bold text-gray-800">Ex {exerciseNumber++}.</span>
             <h3 className="font-display text-sm font-bold text-gray-800">Fill in the Blank</h3>
           </div>
           <div className="grid grid-cols-4 gap-1">

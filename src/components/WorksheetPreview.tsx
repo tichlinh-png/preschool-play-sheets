@@ -396,7 +396,7 @@ export const WorksheetPreview = ({
         </>
       )}
       <div className="flex items-center justify-center gap-1">
-        <span className="bg-gray-800 text-white text-[8px] font-bold px-1 py-0.5 rounded">Ex {exerciseNumber}</span>
+        <span className="text-[9px] font-bold text-gray-800">Ex {exerciseNumber}.</span>
         <h3 className="font-display text-base font-bold text-gray-800">{title}</h3>
       </div>
     </div>
@@ -411,7 +411,7 @@ export const WorksheetPreview = ({
     // For single letter tracing - optimized layout with more letters per row
     if (isSingleLetters) {
       return (
-        <div data-worksheet-card className="bg-white rounded-lg p-1 print:shadow-none">
+        <div data-worksheet-card className="bg-white p-1 print:shadow-none">
           <WorksheetHeader title={title} exerciseNumber={1} />
           <div className="space-y-4">
             {words.map((letter, idx) => {
@@ -426,7 +426,7 @@ export const WorksheetPreview = ({
               return (
                 <div key={idx} className="py-1">
                   {/* Header row: Large letter with related word */}
-                  <div className="flex items-center gap-3 mb-1 pb-0.5 border-b border-gray-200">
+                  <div className="flex items-center gap-3 mb-1 pb-0.5">
                     <span 
                       className="text-3xl font-medium text-gray-800 font-trace"
                     >
@@ -507,7 +507,7 @@ export const WorksheetPreview = ({
     
     // For word tracing - keep original design
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-1 print:shadow-none">
+      <div data-worksheet-card className="bg-white p-1 print:shadow-none">
         <WorksheetHeader title={title} exerciseNumber={1} />
         <div className="grid grid-cols-2 gap-2">
           {words.map((word, idx) => {
@@ -523,11 +523,11 @@ export const WorksheetPreview = ({
                 </div>
                 <div className="space-y-0">
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="bg-gray-50 rounded px-2 py-1 border-b border-dashed border-gray-300">
+                    <div key={lineNum} className="px-2 py-1 border-b border-dashed border-gray-300">
                       <span 
                         className="block text-center text-xl tracking-[0.15em] font-trace"
                         style={{ 
-                          fontWeight: 300,
+                          fontWeight: 500,
                           color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
                           WebkitTextStroke: '0.5px currentColor',
                           paintOrder: 'stroke fill',

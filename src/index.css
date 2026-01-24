@@ -61,6 +61,7 @@
     /* Typography */
     --font-display: 'Fredoka', sans-serif;
     --font-body: 'Nunito', sans-serif;
+    --font-trace: 'Playwrite US Trad', cursive;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -132,6 +133,10 @@
 
   .font-body {
     font-family: var(--font-body);
+  }
+
+  .font-trace {
+    font-family: var(--font-trace);
   }
 
   .gradient-primary {

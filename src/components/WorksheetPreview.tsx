@@ -561,91 +561,80 @@ export const WorksheetPreview = ({
     );
   }
 
-  if (worksheetType === "color") {
-    const colorInstructions = data?.colorInstructions || [{ item: "fish", color: "blue" }, { item: "apple", color: "red" }];
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Coloring Activity" exerciseNumber={2} />
-        <div className="mb-2 px-2 py-1 bg-gray-50 rounded">
-          <div className="flex flex-wrap gap-x-4 gap-y-1 justify-center">
-            {colorInstructions.map((instruction, idx) => (
-              <span key={idx} className="text-sm text-gray-700">
-                <strong className="capitalize">{instruction.item}</strong> → <strong className="uppercase">{instruction.color}</strong>
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-2 flex-1">
-          {colorInstructions.map((instruction, idx) => (
-            <div key={idx} className="flex flex-col items-center justify-center bg-white p-1">
-              <WordIconOrImage word={instruction.item} size={200} className="text-gray-400" wordImages={wordImages} />
-              <span className="text-base font-medium text-gray-600 capitalize">{instruction.item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+if (worksheetType === "combined") {
+    const colorInstructions = data?.colorInstructions || [];
+    const countingItems = data?.countingItems || [];
+    const allFillBlankWords = data?.fillBlankWords || [];
+    const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
 
-  if (worksheetType === "counting") {
-    const countingItems = data?.countingItems || [{ item: "apple", count: 3 }, { item: "fish", count: 5 }];
+    const hasColor = colorInstructions.length > 0;
+    const hasCounting = countingItems.length > 0;
+    const hasFillBlank = fillBlankWords.length > 0;
+
+    if (!hasColor && !hasCounting && !hasFillBlank) return null;
+
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Counting Activity" exerciseNumber={3} />
-        <div className="space-y-3 flex-1">
-          {countingItems.map((item, idx) => (
-            <div key={idx} className="py-2">
-              <div className="flex flex-wrap justify-center gap-3 mb-2">
-                {Array.from({ length: item.count }).map((_, i) => (
-                  <div key={i} className="flex items-center justify-center">
-                    <WordIconOrImage word={item.item} size={90} className="text-gray-600" wordImages={wordImages} />
+      <div data-worksheet-card className="worksheet-combined bg-white p-3 print:p-2">
+        <WorksheetHeader title="Universal Exercise" exerciseNumber={2} />
+        
+        <div className="grid grid-cols-2 gap-3 border-2 border-gray-800">
+          {hasColor && (
+            <div className="border-r border-b border-gray-400 p-2">
+              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">1. COLOR</div>
+              <div className="space-y-2">
+                {colorInstructions.slice(0, 3).map((instruction, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <WordIconOrImage word={instruction.item} size={50} className="text-gray-600" wordImages={wordImages} />
+                    <div className="text-xs">
+                      <span className="capitalize font-medium">{instruction.item}</span>
+                      <span className="mx-1">→</span>
+                      <span className="uppercase font-bold">{instruction.color}</span>
+                    </div>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-lg text-gray-700">How many <strong className="capitalize text-xl">{item.item}s</strong>?</span>
-                <div className="w-16 h-16 border-2 border-dashed border-gray-500 rounded flex items-center justify-center">
-                </div>
-              </div>
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+          )}
 
-  // Fill in the blank worksheet
-  if (worksheetType === "fill-blank") {
-    const allFillBlankWords = data?.fillBlankWords || [
-      { word: "cat", blankedWord: "c_t", missingLetter: "a" },
-      { word: "dog", blankedWord: "d_g", missingLetter: "o" }
-    ];
-    // Filter out words that don't have icons
-    const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
-    
-    if (fillBlankWords.length === 0) return null;
-    
-    return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title="Fill in the Missing Letter" exerciseNumber={5} />
-        <div className="grid grid-cols-2 gap-2 flex-1">
-          {fillBlankWords.map((item, idx) => (
-            <div key={idx} className="flex flex-col items-center justify-center py-2">
-              <WordIconOrImage word={item.word} size={100} className="text-gray-600" wordImages={wordImages} />
-              <div className="text-center mt-1">
-                <span className="text-4xl font-bold tracking-widest" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
-                  {item.blankedWord.split('').map((char, i) => (
-                    <span 
-                      key={i} 
-                      className={char === '_' ? 'inline-block w-10 border-b-4 border-gray-800 mx-1' : ''}
-                    >
-                      {char !== '_' ? char : ''}
-                    </span>
-                  ))}
-                </span>
+          {hasCounting && (
+            <div className="border-b border-gray-400 p-2">
+              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">2. COUNT</div>
+              <div className="space-y-2">
+                {countingItems.slice(0, 3).map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between gap-2">
+                    <div className="flex gap-1 flex-wrap">
+                      {Array.from({ length: Math.min(item.count, 6) }).map((_, i) => (
+                        <WordIconOrImage key={i} word={item.item} size={24} className="text-gray-600" wordImages={wordImages} />
+                      ))}
+                    </div>
+                    <div className="w-8 h-8 border-2 border-dashed border-gray-600 flex items-center justify-center text-xs font-bold">?</div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
+
+          {hasFillBlank && (
+            <div className={`p-2 ${hasColor && hasCounting ? 'col-span-2 border-t-0' : hasCounting ? 'border-r border-gray-400' : ''}`}>
+              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">3. FILL IN</div>
+              <div className="grid grid-cols-2 gap-2">
+                {fillBlankWords.slice(0, 4).map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <WordIconOrImage word={item.word} size={36} className="text-gray-600" wordImages={wordImages} />
+                    <span className="text-lg font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                      {item.blankedWord.split('').map((char, i) => (
+                        <span key={i} className={char === '_' ? 'inline-block w-4 border-b-2 border-gray-800 mx-0.5' : ''}>
+                          {char !== '_' ? char : ''}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!hasColor && hasCounting && hasFillBlank && <div className="border-l border-gray-400" />}
         </div>
       </div>
     );

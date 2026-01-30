@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Pencil, Palette, Hash, CircleDot, LucideIcon } from "lucide-react";
+import { Pencil, LayoutGrid, LucideIcon } from "lucide-react";
 
-export type WorksheetType = "trace" | "color" | "counting" | "fill-blank";
+export type WorksheetType = "trace" | "combined";
 
 interface WorksheetTypeSelectorProps {
   selected: WorksheetType[];
@@ -27,28 +27,12 @@ const typeOptions: TypeOption[] = [
     bgColor: "bg-primary/10 hover:bg-primary/20 border-primary/30",
   },
   {
-    id: "color",
-    label: "Coloring",
-    icon: Palette,
-    description: "Follow coloring instructions",
+    id: "combined",
+    label: "Universal Exercise",
+    icon: LayoutGrid,
+    description: "Color, Count & Fill-in-blank",
     color: "text-coral",
     bgColor: "bg-coral/10 hover:bg-coral/20 border-coral/30",
-  },
-  {
-    id: "counting",
-    label: "Counting",
-    icon: Hash,
-    description: "Count objects and write numbers",
-    color: "text-lavender",
-    bgColor: "bg-lavender/10 hover:bg-lavender/20 border-lavender/30",
-  },
-  {
-    id: "fill-blank",
-    label: "Fill in the Blank",
-    icon: CircleDot,
-    description: "Complete words with missing letters",
-    color: "text-amber-500",
-    bgColor: "bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30",
   },
 ];
 

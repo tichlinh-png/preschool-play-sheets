@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap&subset=vietnamese');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Edu+TAS+Beginner:wght@400;500;600;700&display=swap&subset=vietnamese');
 
 @tailwind base;
 @tailwind components;
@@ -214,26 +214,111 @@
   }
 }
 
+/* Worksheet page layout */
+.worksheet-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(297mm - 20mm);
+  padding: 10mm;
+  box-sizing: border-box;
+  font-family: 'Lexend', 'Be Vietnam Pro', sans-serif;
+}
+
+.exercise-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  background: #f3f4f6;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #1f2937;
+}
+
+.exercise-cell {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cell-header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.cell-content {
+  flex: 1;
+}
+
 @media print {
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
+  * { 
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
+  
+  html, body { 
+    width: 210mm !important;
+    height: 297mm !important;
+    background: white !important; 
+    margin: 0 !important; 
+    padding: 0 !important; 
+  }
+  
   body * { visibility: hidden; }
-  #worksheets-container, #worksheets-container * { visibility: visible !important; }
-  #worksheets-container { position: absolute; left: 0; top: 0; width: 210mm; }
-  header, footer, button, .no-print, nav { display: none !important; }
+  
+  #worksheets-container, 
+  #worksheets-container * { 
+    visibility: visible !important; 
+  }
+  
+  #worksheets-container { 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    width: 210mm; 
+  }
+  
+  header, footer, button, .no-print, nav, 
+  [class*="Dialog"], [class*="toast"] { 
+    display: none !important; 
+  }
+  
   [data-worksheet-card] {
     page-break-after: always !important;
     break-after: page !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    width: 100% !important;
-    min-height: calc(297mm - 4mm) !important;
-    padding: 2mm !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    padding: 10mm !important;
     margin: 0 !important;
     background: white !important;
     border: none !important;
     box-shadow: none !important;
+    overflow: hidden !important;
   }
-  [data-worksheet-card]:last-child { page-break-after: auto !important; break-after: auto !important; }
-  @page { size: A4 portrait; margin: 2mm; }
+  
+  [data-worksheet-card]:last-child { 
+    page-break-after: auto !important; 
+    break-after: auto !important; 
+  }
+  
+  .worksheet-header {
+    border-bottom: 2px solid #1f2937 !important;
+  }
+  
+  .exercise-cell {
+    border-color: #9ca3af !important;
+  }
+  
+  @page { 
+    size: A4 portrait; 
+    margin: 0; 
+  }
 }

@@ -372,196 +372,142 @@ export const WorksheetPreview = ({
   const isFirstPage = pageIndex === 0;
   const rowsArray = Array.from({ length: traceRows }, (_, i) => i + 1);
 
-  const WorksheetHeader = ({ title, exerciseNumber = 1 }: { title: string; exerciseNumber?: number }) => (
-    <div className="text-center mb-1">
-      {isFirstPage && (
-        <>
-          <div className="flex items-center justify-between">
-            {schoolLogo ? (
-              <img src={schoolLogo} alt="School logo" className="w-7 h-7 object-contain" />
-            ) : (
-              <div className="w-7 h-7" />
-            )}
-            <div className="flex-1 text-center">
-              {schoolName && (
-                <p className="text-xs font-semibold text-gray-700">{schoolName}</p>
-              )}
-              <p className="text-[10px] text-gray-500">
-                Class: {className || "______"} | Teacher: {teacherName || "______"}
-              </p>
-            </div>
-            <div className="w-7 h-7" />
-          </div>
-          <p className="text-[10px] text-gray-600">Name: __________ Date: ______</p>
-        </>
-      )}
-      <div className="flex items-center justify-center gap-1">
-        <span className="bg-gray-800 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Ex {exerciseNumber}</span>
-        <h3 className="font-display text-lg font-bold text-gray-800">{title}</h3>
+  const WorksheetHeader = () => (
+    <header className="worksheet-header border-b-2 border-gray-800 pb-2 mb-3">
+      <div className="flex items-center justify-between gap-2">
+        {schoolLogo ? (
+          <img src={schoolLogo} alt="Logo" className="w-10 h-10 object-contain" />
+        ) : (
+          <div className="w-10 h-10 border border-gray-300 rounded flex items-center justify-center text-xs text-gray-400">Logo</div>
+        )}
+        <div className="flex-1 text-center">
+          <h1 className="text-lg font-bold uppercase tracking-wide">{schoolName || "PRESCHOOL WORKSHEET"}</h1>
+          <p className="text-xs text-gray-600">{worksheetTopic}</p>
+        </div>
+        <div className="text-right text-xs">
+          <div>Score</div>
+          <div className="w-12 h-8 border-2 border-gray-800 mt-0.5"></div>
+        </div>
       </div>
-    </div>
+      <div className="grid grid-cols-3 gap-4 mt-2 text-sm">
+        <div className="flex items-center gap-1">
+          <span className="font-medium">Name:</span>
+          <span className="flex-1 border-b border-gray-400"></span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="font-medium">Class:</span>
+          <span className="flex-1 border-b border-gray-400">{className}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="font-medium">Date:</span>
+          <span className="flex-1 border-b border-gray-400"></span>
+        </div>
+      </div>
+    </header>
   );
 
   if (worksheetType === "trace") {
     const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
-    // Check if these are single letters (alphabet tracing)
     const isSingleLetters = words.every(word => word.length === 1);
-    const title = isSingleLetters ? "Letter Tracing Practice" : "Trace the Words";
     
-    // For single letter tracing - optimized layout with more letters per row
     if (isSingleLetters) {
       return (
-        <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-          <WorksheetHeader title={title} exerciseNumber={1} />
-          <div className="space-y-6">
-            {words.map((letter, idx) => {
-              const upperLetter = letter.toUpperCase();
-              const lowerLetter = letter.toLowerCase();
-              // Find a word that starts with this letter and has an icon
-              const sampleWord = Array.from(availableIconWords).find(w => 
-                w.toLowerCase().startsWith(lowerLetter)
-              ) || '';
-              const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
-              
-              return (
-                <div key={idx} className="py-2">
-                  {/* Header row: Large letter with related word */}
-                  <div className="flex items-center gap-4 mb-2 pb-1 border-b border-gray-200">
-                    <span 
-                      className="text-4xl font-bold text-gray-800"
-                      style={{ fontFamily: '"Edu TAS Beginner", cursive' }}
-                    >
-                      {upperLetter}{lowerLetter}
-                    </span>
-                    {wordHasIcon && sampleWord && (
-                      <div className="flex items-center gap-2">
-                        <WordIconOrImage word={sampleWord} size={32} className="text-gray-700" wordImages={wordImages} />
-                        <span className="text-base font-medium text-gray-600 capitalize">{sampleWord}</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Tracing rows - uppercase */}
-                  <div className="mb-2">
-                    <p className="text-xs text-gray-500 mb-0.5">Uppercase {upperLetter}</p>
+        <div data-worksheet-card className="worksheet-page bg-white">
+          {isFirstPage && <WorksheetHeader />}
+          <section className="flex-1 flex flex-col">
+            <div className="exercise-label">TRACE THE LETTERS</div>
+            <div className="flex-1 space-y-4">
+              {words.map((letter, idx) => {
+                const upperLetter = letter.toUpperCase();
+                const lowerLetter = letter.toLowerCase();
+                const sampleWord = Array.from(availableIconWords).find(w => 
+                  w.toLowerCase().startsWith(lowerLetter)
+                ) || '';
+                const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
+                
+                return (
+                  <div key={idx} className="trace-block">
+                    <div className="flex items-center gap-3 pb-1 border-b border-gray-300 mb-2">
+                      <span className="text-4xl font-bold" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                        {upperLetter}{lowerLetter}
+                      </span>
+                      {wordHasIcon && sampleWord && (
+                        <div className="flex items-center gap-2">
+                          <WordIconOrImage word={sampleWord} size={28} className="text-gray-700" wordImages={wordImages} />
+                          <span className="text-sm font-medium capitalize">{sampleWord}</span>
+                        </div>
+                      )}
+                    </div>
                     {rowsArray.map((rowNum) => (
-                      <div 
-                        key={`upper-${rowNum}`} 
-                        className="relative h-12 flex items-end border-b-2 border-gray-700"
-                      >
+                      <div key={`row-${rowNum}`} className="trace-line h-10 relative flex items-end border-b-2 border-gray-700 mb-1">
                         <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
                         <div className="flex items-end h-full w-full">
-                          {Array.from({ length: 14 }, (_, pos) => (
+                          {Array.from({ length: 16 }, (_, pos) => (
                             <span 
                               key={pos}
                               className="flex-1 text-center pb-0.5"
                               style={{ 
                                 fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.25rem',
-                                fontWeight: pos === 0 ? 600 : 400,
-                                color: pos === 0 ? '#374151' : 'transparent',
-                                WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
+                                fontSize: '1.75rem',
+                                fontWeight: pos < 2 ? 500 : 400,
+                                color: pos < 2 ? '#4b5563' : 'transparent',
+                                WebkitTextStroke: pos < 2 ? 'none' : '1px #9ca3af',
                               }}
                             >
-                              {upperLetter}
+                              {pos % 2 === 0 ? upperLetter : lowerLetter}
                             </span>
                           ))}
                         </div>
                       </div>
                     ))}
                   </div>
-                  
-                  {/* Tracing rows - lowercase */}
-                  <div>
-                    <p className="text-xs text-gray-500 mb-0.5">Lowercase {lowerLetter}</p>
-                    {rowsArray.map((rowNum) => (
-                      <div 
-                        key={`lower-${rowNum}`} 
-                        className="relative h-12 flex items-end border-b-2 border-gray-700"
-                      >
-                        <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-300"></div>
-                        <div className="flex items-end h-full w-full">
-                          {Array.from({ length: 14 }, (_, pos) => (
-                            <span 
-                              key={pos}
-                              className="flex-1 text-center pb-0.5"
-                              style={{ 
-                                fontFamily: '"Edu TAS Beginner", cursive',
-                                fontSize: '2.25rem',
-                                fontWeight: pos === 0 ? 600 : 400,
-                                color: pos === 0 ? '#374151' : 'transparent',
-                                WebkitTextStroke: pos === 0 ? 'none' : '1.5px #9ca3af',
-                              }}
-                            >
-                              {lowerLetter}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          </section>
         </div>
       );
     }
     
-    // For word tracing - keep original design
     return (
-      <div data-worksheet-card className="bg-white rounded-lg p-2 print:shadow-none">
-        <WorksheetHeader title={title} exerciseNumber={1} />
-        <div className="grid grid-cols-2 gap-4">
-          {words.map((word, idx) => {
-            const wordHasIcon = hasAvailableIcon(word, wordImages);
-            
-            return (
-              <div key={idx} className="p-2">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  {wordHasIcon && (
-                    <WordIconOrImage word={word} size={36} className="text-gray-700" wordImages={wordImages} />
-                  )}
-                  <span className="text-xl font-bold text-gray-800">{word}</span>
-                </div>
-                <div className="space-y-0.5">
+      <div data-worksheet-card className="worksheet-page bg-white">
+        {isFirstPage && <WorksheetHeader />}
+        <section className="flex-1 flex flex-col">
+          <div className="exercise-label">TRACE THE WORDS</div>
+          <div className="flex-1 grid grid-cols-2 gap-4">
+            {words.map((word, idx) => {
+              const wordHasIcon = hasAvailableIcon(word, wordImages);
+              return (
+                <div key={idx} className="trace-word-block border border-gray-300 rounded p-2">
+                  <div className="flex items-center justify-center gap-2 mb-2 pb-1 border-b border-gray-200">
+                    {wordHasIcon && <WordIconOrImage word={word} size={32} className="text-gray-700" wordImages={wordImages} />}
+                    <span className="text-lg font-bold">{word}</span>
+                  </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="bg-gray-50 rounded px-3 py-2 border-b border-dashed border-gray-300">
+                    <div key={lineNum} className="trace-line py-1 border-b border-dashed border-gray-300">
                       <span 
-                        className="block text-center text-2xl tracking-[0.2em]"
+                        className="block text-center text-xl tracking-widest"
                         style={{ 
                           fontFamily: '"Edu TAS Beginner", cursive',
                           fontWeight: 500,
-                          color: lineNum === 1 ? '#9ca3af' : '#d1d5db',
-                          WebkitTextStroke: '0.5px currentColor',
-                          paintOrder: 'stroke fill',
+                          color: lineNum === 1 ? '#6b7280' : 'transparent',
+                          WebkitTextStroke: lineNum === 1 ? 'none' : '1px #9ca3af',
                         }}
                       >
-                        {word.split('').map((char, i) => (
-                          <span 
-                            key={i} 
-                            style={{ 
-                              borderBottom: `2px dotted ${lineNum === 1 ? '#6b7280' : '#d1d5db'}`,
-                              paddingBottom: '2px',
-                              marginRight: '2px'
-                            }}
-                          >
-                            {char}
-                          </span>
-                        ))}
+                        {word}
                       </span>
                     </div>
                   ))}
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </section>
       </div>
     );
   }
 
-if (worksheetType === "combined") {
+  if (worksheetType === "combined") {
     const colorInstructions = data?.colorInstructions || [];
     const countingItems = data?.countingItems || [];
     const allFillBlankWords = data?.fillBlankWords || [];
@@ -574,68 +520,69 @@ if (worksheetType === "combined") {
     if (!hasColor && !hasCounting && !hasFillBlank) return null;
 
     return (
-      <div data-worksheet-card className="worksheet-combined bg-white p-3 print:p-2">
-        <WorksheetHeader title="Universal Exercise" exerciseNumber={2} />
-        
-        <div className="grid grid-cols-2 gap-3 border-2 border-gray-800">
-          {hasColor && (
-            <div className="border-r border-b border-gray-400 p-2">
-              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">1. COLOR</div>
-              <div className="space-y-2">
-                {colorInstructions.slice(0, 3).map((instruction, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <WordIconOrImage word={instruction.item} size={50} className="text-gray-600" wordImages={wordImages} />
-                    <div className="text-xs">
-                      <span className="capitalize font-medium">{instruction.item}</span>
-                      <span className="mx-1">→</span>
-                      <span className="uppercase font-bold">{instruction.color}</span>
+      <div data-worksheet-card className="worksheet-page bg-white">
+        {isFirstPage && <WorksheetHeader />}
+        <section className="flex-1 flex flex-col">
+          <div className="exercise-label">UNIVERSAL EXERCISES</div>
+          
+          <div className="flex-1 grid grid-cols-2 gap-0 border-2 border-gray-800">
+            {hasColor && (
+              <div className="exercise-cell border-r border-b border-gray-400">
+                <div className="cell-header">1. COLOR THE PICTURE</div>
+                <div className="cell-content space-y-3">
+                  {colorInstructions.slice(0, 4).map((instruction, idx) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <WordIconOrImage word={instruction.item} size={48} className="text-gray-600" wordImages={wordImages} />
+                      <div className="text-sm">
+                        <span className="capitalize">{instruction.item}</span>
+                        <span className="mx-1">→</span>
+                        <span className="font-bold uppercase">{instruction.color}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {hasCounting && (
-            <div className="border-b border-gray-400 p-2">
-              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">2. COUNT</div>
-              <div className="space-y-2">
-                {countingItems.slice(0, 3).map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between gap-2">
-                    <div className="flex gap-1 flex-wrap">
-                      {Array.from({ length: Math.min(item.count, 6) }).map((_, i) => (
-                        <WordIconOrImage key={i} word={item.item} size={24} className="text-gray-600" wordImages={wordImages} />
-                      ))}
+            {hasCounting && (
+              <div className="exercise-cell border-b border-gray-400">
+                <div className="cell-header">2. COUNT & WRITE</div>
+                <div className="cell-content space-y-3">
+                  {countingItems.slice(0, 4).map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between gap-2">
+                      <div className="flex gap-1 flex-wrap">
+                        {Array.from({ length: Math.min(item.count, 5) }).map((_, i) => (
+                          <WordIconOrImage key={i} word={item.item} size={22} className="text-gray-600" wordImages={wordImages} />
+                        ))}
+                      </div>
+                      <div className="w-10 h-10 border-2 border-dashed border-gray-600 flex items-center justify-center font-bold text-lg">?</div>
                     </div>
-                    <div className="w-8 h-8 border-2 border-dashed border-gray-600 flex items-center justify-center text-xs font-bold">?</div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {hasFillBlank && (
-            <div className={`p-2 ${hasColor && hasCounting ? 'col-span-2 border-t-0' : hasCounting ? 'border-r border-gray-400' : ''}`}>
-              <div className="text-xs font-bold text-gray-700 border-b border-gray-300 pb-1 mb-2">3. FILL IN</div>
-              <div className="grid grid-cols-2 gap-2">
-                {fillBlankWords.slice(0, 4).map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <WordIconOrImage word={item.word} size={36} className="text-gray-600" wordImages={wordImages} />
-                    <span className="text-lg font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
-                      {item.blankedWord.split('').map((char, i) => (
-                        <span key={i} className={char === '_' ? 'inline-block w-4 border-b-2 border-gray-800 mx-0.5' : ''}>
-                          {char !== '_' ? char : ''}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
-                ))}
+            {hasFillBlank && (
+              <div className={`exercise-cell ${hasColor && hasCounting ? 'col-span-2' : hasColor ? '' : 'border-r border-gray-400'}`}>
+                <div className="cell-header">3. FILL IN THE BLANK</div>
+                <div className="cell-content grid grid-cols-2 gap-3">
+                  {fillBlankWords.slice(0, 6).map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <WordIconOrImage word={item.word} size={40} className="text-gray-600" wordImages={wordImages} />
+                      <span className="text-lg font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                        {item.blankedWord.split('').map((char, i) => (
+                          <span key={i} className={char === '_' ? 'inline-block w-4 border-b-2 border-gray-800 mx-0.5' : ''}>
+                            {char !== '_' ? char : ''}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-
-          {!hasColor && hasCounting && hasFillBlank && <div className="border-l border-gray-400" />}
-        </div>
+            )}
+          </div>
+        </section>
       </div>
     );
   }

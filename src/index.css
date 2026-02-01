@@ -322,3 +322,10 @@
     margin: 0; 
   }
 }
+
+.fill-in-blank span {
+  border-bottom: 2px solid black;
+  min-width: 80px;
+  display: inline-block;
+  margin: 0 5px;
+}

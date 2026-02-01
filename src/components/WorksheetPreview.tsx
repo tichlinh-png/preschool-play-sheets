@@ -72,7 +72,25 @@ import {
   // Buildings
   CastleIcon, LighthouseIcon, WindmillIcon, BarnIcon,
   // Emotions
-  HappyIcon, SadIcon, AngryIcon, SurprisedIcon, ScaredIcon, SleepyIcon
+  HappyIcon, SadIcon, AngryIcon, SurprisedIcon, ScaredIcon, SleepyIcon,
+  // Cambridge Starters - Places
+  SchoolIcon, HospitalIcon, ShopIcon, ParkIcon, BeachIcon, ZooIcon, GardenIcon, PoolIcon,
+  // Cambridge Starters - Body
+  FaceIcon, BodyIcon, StomachIcon, ShoulderIcon,
+  // Cambridge Starters - Clothes
+  TshirtIcon, JeansIcon, SweaterIcon, SandalsIcon, TrainersIcon,
+  // Cambridge Starters - Family
+  GrandmotherIcon, GrandfatherIcon, FriendIcon, TeacherIcon,
+  // Cambridge Starters - Food
+  JuiceIcon, WaterIcon, ChipsIcon, SausageIcon, BiscuitIcon, PieIcon,
+  // Cambridge Starters - Animals
+  MouseIcon, SpiderIcon2, LizardIcon,
+  // Cambridge Starters - Classroom
+  BagIcon, ClassroomDeskIcon, ChairIcon, BoardIcon,
+  // Cambridge Starters - Toys
+  TrainToyIcon, CarToyIcon, BoatToyIcon, PlaneToyIcon,
+  // Cambridge Starters - Nature
+  GrassIcon, RockIcon, SandIcon, SeaIcon, SkyIcon
 } from './icons/AnimalIcons';
 import { ComponentType, SVGProps } from 'react';
 
@@ -201,6 +219,27 @@ const customIconMap: Record<string, CustomIcon> = {
   castle: CastleIcon, lighthouse: LighthouseIcon, windmill: WindmillIcon, barn: BarnIcon,
   // Emotions
   happy: HappyIcon, sad: SadIcon, angry: AngryIcon, surprised: SurprisedIcon, scared: ScaredIcon, sleepy: SleepyIcon,
+  // Cambridge Starters - Places
+  school: SchoolIcon, hospital: HospitalIcon, shop: ShopIcon, store: ShopIcon, park: ParkIcon,
+  beach: BeachIcon, zoo: ZooIcon, garden: GardenIcon, pool: PoolIcon, swimmingpool: PoolIcon,
+  // Cambridge Starters - Body
+  face: FaceIcon, body: BodyIcon, stomach: StomachIcon, tummy: StomachIcon, shoulder: ShoulderIcon,
+  // Cambridge Starters - Clothes
+  tshirt: TshirtIcon, "t-shirt": TshirtIcon, sweater: SweaterIcon, jumper: SweaterIcon,
+  sandals: SandalsIcon, trainers: TrainersIcon, sneakers: TrainersIcon,
+  // Cambridge Starters - Family
+  grandma: GrandmotherIcon, grandmother: GrandmotherIcon, grandpa: GrandfatherIcon, grandfather: GrandfatherIcon,
+  friend: FriendIcon, teacher: TeacherIcon,
+  // Cambridge Starters - Food
+  juice: JuiceIcon, chips: ChipsIcon, crisps: ChipsIcon, sausage: SausageIcon, biscuit: BiscuitIcon, pie: PieIcon,
+  // Cambridge Starters - Animals
+  lizard: LizardIcon,
+  // Cambridge Starters - Classroom
+  bag: BagIcon, schoolbag: BagIcon, chair: ChairIcon, board: BoardIcon, whiteboard: BoardIcon,
+  // Cambridge Starters - Toys
+  traintoy: TrainToyIcon, cartoy: CarToyIcon, boattoy: BoatToyIcon, planetoy: PlaneToyIcon,
+  // Cambridge Starters - Nature
+  grass: GrassIcon, rock: RockIcon, stone: RockIcon, sand: SandIcon, sea: SeaIcon, ocean: SeaIcon, sky: SkyIcon,
 };
 
 const lucideIconMap: Record<string, LucideIcon> = {
@@ -540,20 +579,6 @@ export const WorksheetPreview = ({
                     {rowsArray.map((rowNum) => (
                       <div key={`row-${rowNum}`} className="writing-line h-14 relative flex items-end border-b-2 border-gray-700 mb-2">
                         <div className="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-400"></div>
-                        <div className="flex items-end h-full w-full">
-                          <span 
-                            className="w-16 text-center pb-1"
-                            style={{ 
-                              fontFamily: '"Edu TAS Beginner", cursive',
-                              fontSize: '2rem',
-                              fontWeight: 600,
-                              color: '#374151',
-                            }}
-                          >
-                            {upperLetter}{lowerLetter}
-                          </span>
-                          <div className="flex-1"></div>
-                        </div>
                       </div>
                     ))}
                   </div>
@@ -580,19 +605,7 @@ export const WorksheetPreview = ({
                     <span className="text-2xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="writing-line py-2 border-b-2 border-dashed border-gray-400 flex items-center">
-                      <span 
-                        className="tracking-widest pr-4"
-                        style={{ 
-                          fontFamily: '"Edu TAS Beginner", cursive',
-                          fontSize: '1.75rem',
-                          fontWeight: 600,
-                          color: '#374151',
-                        }}
-                      >
-                        {word}
-                      </span>
-                      <div className="flex-1"></div>
+                    <div key={lineNum} className="writing-line py-3 border-b-2 border-dashed border-gray-400">
                     </div>
                   ))}
                 </div>

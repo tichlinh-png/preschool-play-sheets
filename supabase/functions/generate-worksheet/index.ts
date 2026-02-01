@@ -52,16 +52,18 @@ const availableIconWords = new Set([
   // More birds
   'parrot', 'flamingo', 'peacock', 'eagle', 'pelican',
   // More animals
-  'bat', 'moose', 'gorilla', 'llama',
+  'bat', 'moose', 'gorilla', 'llama', 'lizard',
   // Lucide icons - animals
   'fish', 'cat', 'dog', 'bird', 'rabbit', 'mouse', 'rat', 'bug', 'turtle', 'snail',
   // Family members
   'father', 'mother', 'dad', 'mom', 'parent', 'brother', 'sister', 
   'grandma', 'grandpa', 'grandmother', 'grandfather', 'uncle', 'aunt', 'cousin', 'family',
+  'friend', 'teacher',
   // People
   'girl', 'boy', 'man', 'woman', 'baby', 'child', 'kid',
   // Nature
   'flower', 'tree', 'sun', 'moon', 'star', 'leaf', 'mountain', 'cloud', 'rain', 'water', 'fire',
+  'grass', 'rock', 'stone', 'sand', 'sea', 'ocean', 'sky',
   // Food - Basic
   'apple', 'banana', 'cherry', 'grape', 'fruit', 'cookie', 'cake', 'pizza', 'icecream', 'ice', 'milk', 'food',
   'egg', 'carrot',
@@ -70,22 +72,24 @@ const availableIconWords = new Set([
   'sandwich', 'soup', 'fries', 'donut', 'doughnut', 'candy', 'chocolate', 'lollipop',
   'watermelon', 'strawberry', 'pear', 'lemon', 'pineapple', 'corn',
   'tomato', 'potato', 'onion', 'mushroom', 'mango', 'kiwi', 'coconut', 'avocado', 'broccoli', 'pepper',
+  'juice', 'chips', 'crisps', 'sausage', 'biscuit', 'pie',
   // Vehicles
   'car', 'bus', 'bike', 'bicycle', 'plane', 'airplane', 'ship', 'boat', 'train', 'truck',
   // Objects
   'book', 'pencil', 'pen', 'house', 'home', 'umbrella', 'camera', 'music', 'gift', 'present',
   'clock', 'watch', 'key', 'lock', 'bell', 'phone', 'telephone', 'shirt', 'clothes',
   'heart', 'love', 'smile', 'glasses', 'crown', 'gem', 'diamond',
-  // Clothing
+  // Clothing - Extended
   'pants', 'trousers', 'jeans', 'dress', 'skirt', 'socks', 'sock', 'shoes', 'shoe',
   'boots', 'boot', 'hat', 'cap', 'scarf', 'gloves', 'glove', 'jacket', 'coat',
+  'tshirt', 't-shirt', 'sweater', 'jumper', 'sandals', 'trainers', 'sneakers',
   // Rooms & Furniture
   'kitchen', 'bathroom', 'bedroom', 'livingroom', 'table', 'desk', 'door', 'window',
   'mirror', 'curtain', 'carpet', 'rug', 'chair', 'sofa', 'bed', 'lamp', 'fan',
   'fridge', 'refrigerator', 'bath', 'bathtub', 'toilet',
-  // Body parts
+  // Body parts - Extended
   'head', 'nose', 'mouth', 'tooth', 'teeth', 'hair', 'leg', 'arm', 'finger', 'toe',
-  'foot', 'feet', 'hand', 'eye', 'ear', 'brain',
+  'foot', 'feet', 'hand', 'eye', 'ear', 'brain', 'face', 'body', 'stomach', 'tummy', 'shoulder',
   // Actions/Verbs
   'run', 'running', 'walk', 'walking', 'jump', 'jumping', 'swim', 'swimming',
   'sleep', 'sleeping', 'eat', 'eating', 'drink', 'drinking', 'read', 'reading',
@@ -95,7 +99,7 @@ const availableIconWords = new Set([
   'sunny', 'cloudy', 'rainy', 'snowy', 'windy', 'stormy', 'rainbow',
   // School items
   'crayon', 'ruler', 'eraser', 'glue', 'notebook', 'blackboard', 'chalk', 'globe',
-  'scissors', 'brush', 'palette',
+  'scissors', 'brush', 'palette', 'bag', 'schoolbag', 'board', 'whiteboard',
   // Toys
   'ball', 'doll', 'teddy', 'teddybear', 'blocks', 'block', 'kite', 'puzzle', 'robot', 'drum',
   // Numbers
@@ -111,14 +115,15 @@ const availableIconWords = new Set([
   'trophy', 'medal', 'gamepad', 'game',
   // Musical instruments
   'guitar', 'piano', 'violin', 'trumpet',
-  // Buildings
+  // Buildings & Places
   'castle', 'lighthouse', 'windmill', 'barn',
+  'school', 'hospital', 'shop', 'store', 'park', 'beach', 'zoo', 'garden', 'pool', 'swimmingpool',
   // Emotions
   'happy', 'sad', 'angry', 'surprised', 'scared', 'sleepy', 'cry',
   // Electronics
   'tv', 'television', 'radio', 'laptop', 'computer', 'smartphone', 'mobile', 'tablet', 'headphones',
   // Accessories
-  'wallet', 'backpack', 'bag', 'briefcase', 'luggage', 'suitcase',
+  'wallet', 'backpack', 'briefcase', 'luggage', 'suitcase',
   // Tools
   'wrench', 'hammer', 'flashlight', 'battery', 'lightbulb', 'bulb', 'plug', 'thermometer'
 ]);

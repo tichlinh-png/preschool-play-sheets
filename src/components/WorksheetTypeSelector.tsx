@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Pencil, LayoutGrid, LucideIcon } from "lucide-react";
+import { Pencil, LayoutGrid, PenLine, LucideIcon } from "lucide-react";
 
-export type WorksheetType = "trace" | "combined";
+export type WorksheetType = "trace" | "writing" | "combined";
 
 interface WorksheetTypeSelectorProps {
   selected: WorksheetType[];
@@ -25,6 +25,14 @@ const typeOptions: TypeOption[] = [
     description: "Practice tracing dotted letters",
     color: "text-primary",
     bgColor: "bg-primary/10 hover:bg-primary/20 border-primary/30",
+  },
+  {
+    id: "writing",
+    label: "Writing Practice",
+    icon: PenLine,
+    description: "Sample letter + blank lines",
+    color: "text-secondary",
+    bgColor: "bg-secondary/10 hover:bg-secondary/20 border-secondary/30",
   },
   {
     id: "combined",

@@ -86,6 +86,7 @@ export interface WorksheetData {
   countingItems?: { item: string; count: number }[];
   matchingPairs?: { image: string; word: string }[];
   fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  writingExercises?: { word: string; count: number }[];
   instructions?: string;
 }
 
@@ -509,12 +510,14 @@ export const WorksheetPreview = ({
     const countingItems = data?.countingItems || [];
     const allFillBlankWords = data?.fillBlankWords || [];
     const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
+    const writingExercises = data?.writingExercises || [];
 
     const hasColor = colorInstructions.length > 0;
     const hasCounting = countingItems.length > 0;
     const hasFillBlank = fillBlankWords.length > 0;
+    const hasWriting = writingExercises.length > 0;
 
-    if (!hasColor && !hasCounting && !hasFillBlank) return null;
+    if (!hasColor && !hasCounting && !hasFillBlank && !hasWriting) return null;
 
     return (
       <div data-worksheet-card className="worksheet-page bg-white">
@@ -573,6 +576,26 @@ export const WorksheetPreview = ({
                           </span>
                         ))}
                       </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {hasWriting && (
+              <div className={`exercise-cell p-4 ${(hasColor || hasCounting || hasFillBlank) ? 'col-span-2 border-t-2 border-gray-600' : ''}`}>
+                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">4. WRITING PRACTICE</div>
+                <div className="space-y-3">
+                  {writingExercises.slice(0, 4).map((exercise, idx) => (
+                    <div key={idx}>
+                      <div className="text-lg font-semibold mb-2 capitalize">{exercise.word}</div>
+                      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${Math.min(exercise.count, 5)}, 1fr)` }}>
+                        {Array.from({ length: Math.min(exercise.count, 5) }).map((_, i) => (
+                          <div key={i} className="writing-box">
+                            {i === 0 && <span className="text-gray-400">{exercise.word}</span>}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>

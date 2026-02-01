@@ -8,7 +8,7 @@ const corsHeaders = {
 
 // Input validation schema
 const WorksheetTypeEnum = z.enum([
-  'trace', 'combined'
+  'trace', 'writing', 'combined'
 ]);
 
 const requestSchema = z.object({
@@ -19,12 +19,12 @@ const requestSchema = z.object({
 
 interface WorksheetRequest {
   description: string;
-  worksheetTypes: ('trace' | 'combined')[];
+  worksheetTypes: ('trace' | 'writing' | 'combined')[];
   imageBase64?: string;
 }
 
 interface WorksheetContent {
-  type: 'trace' | 'combined';
+  type: 'trace' | 'writing' | 'combined';
   topic: string;
   words?: string[];
   colorInstructions?: { item: string; color: string }[];
@@ -206,6 +206,16 @@ const worksheetPrompts: Record<string, string> = {
         - words: array containing EXACTLY the words the user provided (no duplicates, no additions)
         - instructions: a fun instruction in English for kids`,
       
+      writing: `Generate a writing practice worksheet for preschool children.
+        The user provided these words: "${description}"
+        
+        IMPORTANT: Use EXACTLY the words provided by the user, do not add or repeat words.
+        
+        Return JSON with:
+        - topic: a fun title for the worksheet
+        - words: array containing EXACTLY the words the user provided (no duplicates, no additions)
+        - instructions: a fun instruction in English for kids about practicing writing`,
+      
       combined: `Generate a combined worksheet for preschool children with coloring, counting, and fill-in-blank exercises.
         The user provided these words: "${description}"
         
@@ -320,7 +330,7 @@ const worksheetPrompts: Record<string, string> = {
             instructions: parsed.instructions || 'Have fun learning!'
           };
           
-          if (type === 'trace') {
+          if (type === 'trace' || type === 'writing') {
             worksheet.words = allUserWords;
           } else if (type === 'combined') {
             worksheet.colorInstructions = userWords.map((item, i) => {
@@ -361,7 +371,7 @@ const worksheetPrompts: Record<string, string> = {
             instructions: 'Have fun learning!'
           };
           
-          if (type === 'trace') {
+          if (type === 'trace' || type === 'writing') {
             fallback.words = userWords;
           } else if (type === 'combined') {
             fallback.colorInstructions = userWords.map((item, i) => ({

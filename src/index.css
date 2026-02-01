@@ -329,3 +329,13 @@
   display: inline-block;
   margin: 0 5px;
 }
+
+.writing-box {
+  border: 1px dashed #ccc;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-family: 'Edu TAS Beginner', cursive;
+}

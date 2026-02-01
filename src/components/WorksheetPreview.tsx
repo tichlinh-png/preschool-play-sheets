@@ -505,6 +505,105 @@ export const WorksheetPreview = ({
     );
   }
 
+  if (worksheetType === "writing") {
+    const words = (data?.words || ["Apple"]).map(safeString).filter(Boolean);
+    const isSingleLetters = words.every(word => word.length === 1);
+    
+    if (isSingleLetters) {
+      return (
+        <div data-worksheet-card className="worksheet-page bg-white">
+          {isFirstPage && <WorksheetHeader />}
+          <section className="flex-1 flex flex-col">
+            <div className="text-2xl font-bold text-gray-800 bg-gray-100 px-4 py-2 mb-4 border-l-4 border-gray-800">WRITING PRACTICE</div>
+            <div className="flex-1 space-y-6">
+              {words.map((letter, idx) => {
+                const upperLetter = letter.toUpperCase();
+                const lowerLetter = letter.toLowerCase();
+                const sampleWord = Array.from(availableIconWords).find(w => 
+                  w.toLowerCase().startsWith(lowerLetter)
+                ) || '';
+                const wordHasIcon = sampleWord && hasAvailableIcon(sampleWord, wordImages);
+                
+                return (
+                  <div key={idx} className="writing-block">
+                    <div className="flex items-center gap-4 pb-2 border-b-2 border-gray-400 mb-3">
+                      <span className="text-5xl font-bold" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                        {upperLetter}{lowerLetter}
+                      </span>
+                      {wordHasIcon && sampleWord && (
+                        <div className="flex items-center gap-3">
+                          <WordIconOrImage word={sampleWord} size={40} className="text-gray-700" wordImages={wordImages} />
+                          <span className="text-xl font-semibold capitalize">{sampleWord}</span>
+                        </div>
+                      )}
+                    </div>
+                    {rowsArray.map((rowNum) => (
+                      <div key={`row-${rowNum}`} className="writing-line h-14 relative flex items-end border-b-2 border-gray-700 mb-2">
+                        <div className="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-400"></div>
+                        <div className="flex items-end h-full w-full">
+                          <span 
+                            className="w-16 text-center pb-1"
+                            style={{ 
+                              fontFamily: '"Edu TAS Beginner", cursive',
+                              fontSize: '2rem',
+                              fontWeight: 600,
+                              color: '#374151',
+                            }}
+                          >
+                            {upperLetter}{lowerLetter}
+                          </span>
+                          <div className="flex-1"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+      );
+    }
+    
+    return (
+      <div data-worksheet-card className="worksheet-page bg-white">
+        {isFirstPage && <WorksheetHeader />}
+        <section className="flex-1 flex flex-col">
+          <div className="text-2xl font-bold text-gray-800 bg-gray-100 px-4 py-2 mb-4 border-l-4 border-gray-800">WRITING PRACTICE</div>
+          <div className="flex-1 grid grid-cols-2 gap-6">
+            {words.map((word, idx) => {
+              const wordHasIcon = hasAvailableIcon(word, wordImages);
+              return (
+                <div key={idx} className="writing-word-block border-2 border-gray-400 rounded-lg p-3">
+                  <div className="flex items-center justify-center gap-3 mb-3 pb-2 border-b-2 border-gray-300">
+                    {wordHasIcon && <WordIconOrImage word={word} size={40} className="text-gray-700" wordImages={wordImages} />}
+                    <span className="text-2xl font-bold">{word}</span>
+                  </div>
+                  {rowsArray.map((lineNum) => (
+                    <div key={lineNum} className="writing-line py-2 border-b-2 border-dashed border-gray-400 flex items-center">
+                      <span 
+                        className="tracking-widest pr-4"
+                        style={{ 
+                          fontFamily: '"Edu TAS Beginner", cursive',
+                          fontSize: '1.75rem',
+                          fontWeight: 600,
+                          color: '#374151',
+                        }}
+                      >
+                        {word}
+                      </span>
+                      <div className="flex-1"></div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   if (worksheetType === "combined") {
     const colorInstructions = data?.colorInstructions || [];
     const countingItems = data?.countingItems || [];

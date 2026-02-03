@@ -667,7 +667,7 @@ export const WorksheetPreview = ({
                           <WordIconOrImage key={i} word={item.item} size={36} className="text-gray-700" wordImages={wordImages} />
                         ))}
                       </div>
-                      <div className="w-14 h-14 border-2 border-dashed border-gray-700 flex items-center justify-center font-bold text-2xl">?</div>
+                      <div className="w-14 h-14 border-2 border-dashed border-gray-700 flex items-center justify-center font-bold text-2xl"></div>
                     </div>
                   ))}
                 </div>

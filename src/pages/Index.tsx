@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle, ExternalLink, Eye } from "lucide-react";
+import { Sparkles, Download, RefreshCw, FileText, Wand2, Printer, Image, User, School, Users, MessageCircle, Eye } from "lucide-react";
 import signatureImage from "@/assets/signature.png";
 import { useVisitorCount } from "@/hooks/useVisitorCount";
 import { Button } from "@/components/ui/button";
@@ -42,10 +42,7 @@ const Index = () => {
   const [className, setClassName] = useState("");
   const [schoolName, setSchoolName] = useState("");
   const [wordImages, setWordImages] = useState<WordImage[]>([]);
-  const [showAffiliateDialog, setShowAffiliateDialog] = useState(false);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
-  const [pendingAction, setPendingAction] = useState<'pdf' | 'print' | null>(null);
-  const [affiliateLinkClicked, setAffiliateLinkClicked] = useState(false);
   const [traceRows, setTraceRows] = useState(4);
 
   // Load saved teacher/class/school from localStorage
@@ -138,45 +135,21 @@ const Index = () => {
     }
   };
 
-  const handleExportPDF = () => {
-    setPendingAction('pdf');
-    setAffiliateLinkClicked(false);
-    setShowAffiliateDialog(true);
-  };
-
-  const handlePrint = () => {
-    setPendingAction('print');
-    setAffiliateLinkClicked(false);
-    setShowAffiliateDialog(true);
-  };
-
-  const handleAffiliateLinkClick = () => {
-    setAffiliateLinkClicked(true);
-  };
-
-  const handleConfirmExport = async () => {
-    if (!affiliateLinkClicked) {
-      toast.error("Vui lòng nhấn vào link trước khi xuất!");
-      return;
-    }
-    
-    setShowAffiliateDialog(false);
+  const handleExportPDF = async () => {
     setIsExporting(true);
-    
     try {
-      if (pendingAction === 'pdf') {
-        await exportToPDF(generatedWorksheets, 'worksheets-container');
-        toast.success("PDF exported!");
-      } else if (pendingAction === 'print') {
-        printWorksheets();
-        toast.success("Đang in...");
-      }
+      await exportToPDF(generatedWorksheets, 'worksheets-container');
+      toast.success("PDF exported!");
     } catch { 
       toast.error("Có lỗi xảy ra!"); 
     } finally { 
       setIsExporting(false);
-      setPendingAction(null);
     }
+  };
+
+  const handlePrint = () => {
+    printWorksheets();
+    toast.success("Đang in...");
   };
 
   return (
@@ -540,50 +513,6 @@ const Index = () => {
         traceRows={traceRows}
       />
 
-      {/* Affiliate Link Dialog */}
-      <Dialog open={showAffiliateDialog} onOpenChange={setShowAffiliateDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">🎁 Ủng hộ KidsSheet</DialogTitle>
-            <DialogDescription className="text-center">
-              Vui lòng nhấn vào link bên dưới để ủng hộ mình trước khi xuất bài tập nhé!
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col items-center gap-4 py-4">
-            <a
-              href="https://s.shopee.vn/7KqSV4KplI"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleAffiliateLinkClick}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
-                affiliateLinkClicked 
-                  ? 'bg-green-500 text-white' 
-                  : 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600'
-              }`}
-            >
-              <ExternalLink className="w-5 h-5" />
-              {affiliateLinkClicked ? '✓ Đã nhấn link' : 'Nhấn vào đây để ủng hộ'}
-            </a>
-            {affiliateLinkClicked && (
-              <p className="text-sm text-green-600 font-medium">Cảm ơn bạn đã ủng hộ! 💕</p>
-            )}
-            <Button 
-              onClick={handleConfirmExport}
-              disabled={!affiliateLinkClicked || isExporting}
-              className="w-full"
-              variant={affiliateLinkClicked ? "default" : "outline"}
-            >
-              {isExporting ? (
-                <><RefreshCw className="w-4 h-4 animate-spin mr-2" />Đang xử lý...</>
-              ) : pendingAction === 'pdf' ? (
-                <><Download className="w-4 h-4 mr-2" />Xuất PDF</>
-              ) : (
-                <><Printer className="w-4 h-4 mr-2" />In bài tập</>
-              )}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

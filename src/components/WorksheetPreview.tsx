@@ -520,12 +520,12 @@ export const WorksheetPreview = ({
                     <span className="text-3xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="trace-line py-2 border-b-2 border-dashed border-gray-400">
+                    <div key={lineNum} className="trace-line py-4 border-b-2 border-dashed border-gray-400">
                       <span 
                         className="block text-center tracking-widest"
                         style={{ 
                           fontFamily: '"Edu TAS Beginner", cursive',
-                          fontSize: '2rem',
+                          fontSize: '2.5rem',
                           fontWeight: 600,
                           color: lineNum === 1 ? '#374151' : 'transparent',
                           WebkitTextStroke: lineNum === 1 ? 'none' : '2px #9ca3af',
@@ -679,7 +679,7 @@ export const WorksheetPreview = ({
                 <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">3. FILL IN THE BLANK</div>
                 <div className="grid grid-cols-2 gap-5">
                   {fillBlankWords.slice(0, 6).map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
+                    <div key={idx} className="flex items-center justify-center gap-4">
                       <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
                       <span className="text-3xl font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                         {item.blankedWord.split('').map((char, i) => (

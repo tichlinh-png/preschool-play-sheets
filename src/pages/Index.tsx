@@ -43,7 +43,7 @@ const Index = () => {
   const [schoolName, setSchoolName] = useState("");
   const [wordImages, setWordImages] = useState<WordImage[]>([]);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
-  const [traceRows, setTraceRows] = useState(4);
+  const [traceRows, setTraceRows] = useState(5);
 
   // Load saved teacher/class/school from localStorage
   useEffect(() => {
@@ -290,7 +290,7 @@ const Index = () => {
                   <div className="pt-3 border-t border-border">
                     <Label className="text-sm font-medium mb-2 block">Số dòng tập viết mỗi chữ</Label>
                     <div className="flex gap-2">
-                      {[2, 3, 4, 5].map((num) => (
+                      {[3, 4, 5, 6].map((num) => (
                         <Button
                           key={num}
                           variant={traceRows === num ? "default" : "outline"}

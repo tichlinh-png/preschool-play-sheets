@@ -13,19 +13,49 @@ interface WordImageUploadProps {
   onImagesChange: (images: WordImage[]) => void;
 }
 
+const STORAGE_KEY = 'kidssheet_word_images';
+
+// Load saved images from localStorage
+const loadSavedImages = (): WordImage[] => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+};
+
+// Save images to localStorage
+const saveImagesToStorage = (images: WordImage[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+  } catch (e) {
+    console.warn('Could not save images to localStorage:', e);
+  }
+};
+
 export const WordImageUpload = ({ words, onImagesChange }: WordImageUploadProps) => {
-  const [wordImages, setWordImages] = useState<WordImage[]>([]);
+  const [wordImages, setWordImages] = useState<WordImage[]>(() => loadSavedImages());
   const [activeWord, setActiveWord] = useState<string | null>(null);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  // On mount, notify parent of any saved images
+  useEffect(() => {
+    const saved = loadSavedImages();
+    if (saved.length > 0) {
+      onImagesChange(saved);
+    }
+  }, []);
 
   const processImage = (word: string, file: File | Blob) => {
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result as string;
-        const newImages = wordImages.filter(img => img.word !== word);
-        newImages.push({ word, imageUrl: result });
+        const newImages = wordImages.filter(img => img.word.toLowerCase() !== word.toLowerCase());
+        newImages.push({ word: word.toLowerCase(), imageUrl: result });
         setWordImages(newImages);
+        saveImagesToStorage(newImages);
         onImagesChange(newImages);
         toast.success(`Đã thêm ảnh cho "${word}"`);
       };
@@ -58,8 +88,9 @@ export const WordImageUpload = ({ words, onImagesChange }: WordImageUploadProps)
   };
 
   const handleRemove = (word: string) => {
-    const newImages = wordImages.filter(img => img.word !== word);
+    const newImages = wordImages.filter(img => img.word.toLowerCase() !== word.toLowerCase());
     setWordImages(newImages);
+    saveImagesToStorage(newImages);
     onImagesChange(newImages);
     if (inputRefs.current[word]) {
       inputRefs.current[word]!.value = '';

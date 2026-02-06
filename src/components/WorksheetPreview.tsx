@@ -515,9 +515,9 @@ export const WorksheetPreview = ({
               const wordHasIcon = hasAvailableIcon(word, wordImages);
               return (
                 <div key={idx} className="trace-word-block border-2 border-gray-400 rounded-lg p-3">
-                  <div className="flex items-center justify-center gap-3 mb-3 pb-2 border-b-2 border-gray-300">
-                    {wordHasIcon && <WordIconOrImage word={word} size={40} className="text-gray-700" wordImages={wordImages} />}
-                    <span className="text-2xl font-bold">{word}</span>
+                  <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b-2 border-gray-300">
+                    {wordHasIcon && <WordIconOrImage word={word} size={56} className="text-gray-700" wordImages={wordImages} />}
+                    <span className="text-3xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
                     <div key={lineNum} className="trace-line py-2 border-b-2 border-dashed border-gray-400">
@@ -600,9 +600,9 @@ export const WorksheetPreview = ({
               const wordHasIcon = hasAvailableIcon(word, wordImages);
               return (
                 <div key={idx} className="writing-word-block border-2 border-gray-400 rounded-lg p-3">
-                  <div className="flex items-center justify-center gap-3 mb-3 pb-2 border-b-2 border-gray-300">
-                    {wordHasIcon && <WordIconOrImage word={word} size={40} className="text-gray-700" wordImages={wordImages} />}
-                    <span className="text-2xl font-bold">{word}</span>
+                  <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b-2 border-gray-300">
+                    {wordHasIcon && <WordIconOrImage word={word} size={56} className="text-gray-700" wordImages={wordImages} />}
+                    <span className="text-3xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
                     <div key={lineNum} className="writing-line py-3 border-b-2 border-dashed border-gray-400">
@@ -640,14 +640,14 @@ export const WorksheetPreview = ({
           <div className="flex-1 grid grid-cols-2 gap-0 border-2 border-gray-800">
             {hasColor && (
               <div className="exercise-cell border-r-2 border-b-2 border-gray-600 p-4">
-                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">1. COLOR THE PICTURE</div>
-                <div className="space-y-4">
+                <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">1. COLOR THE PICTURE</div>
+                <div className="space-y-5">
                   {colorInstructions.slice(0, 4).map((instruction, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                      <WordIconOrImage word={instruction.item} size={56} className="text-gray-700" wordImages={wordImages} />
-                      <div className="text-xl">
+                    <div key={idx} className="flex items-center gap-5">
+                      <WordIconOrImage word={instruction.item} size={72} className="text-gray-700" wordImages={wordImages} />
+                      <div className="text-2xl">
                         <span className="capitalize font-medium">{instruction.item}</span>
-                        <span className="mx-2">→</span>
+                        <span className="mx-3">→</span>
                         <span className="font-bold uppercase">{instruction.color}</span>
                       </div>
                     </div>
@@ -658,16 +658,16 @@ export const WorksheetPreview = ({
 
             {hasCounting && (
               <div className="exercise-cell border-b-2 border-gray-600 p-4">
-                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">2. COUNT & WRITE</div>
-                <div className="space-y-4">
+                <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">2. COUNT & WRITE</div>
+                <div className="space-y-5">
                   {countingItems.slice(0, 4).map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between gap-3">
-                      <div className="flex gap-2 flex-wrap">
+                    <div key={idx} className="flex items-center justify-between gap-4">
+                      <div className="flex gap-3 flex-wrap">
                         {Array.from({ length: Math.min(item.count, 5) }).map((_, i) => (
-                          <WordIconOrImage key={i} word={item.item} size={36} className="text-gray-700" wordImages={wordImages} />
+                          <WordIconOrImage key={i} word={item.item} size={48} className="text-gray-700" wordImages={wordImages} />
                         ))}
                       </div>
-                      <div className="w-14 h-14 border-2 border-dashed border-gray-700 flex items-center justify-center font-bold text-2xl"></div>
+                      <div className="w-16 h-16 border-2 border-dashed border-gray-700 flex items-center justify-center font-bold text-3xl"></div>
                     </div>
                   ))}
                 </div>
@@ -676,14 +676,14 @@ export const WorksheetPreview = ({
 
             {hasFillBlank && (
               <div className={`exercise-cell p-4 ${hasColor && hasCounting ? 'col-span-2' : hasColor ? '' : 'border-r-2 border-gray-600'}`}>
-                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">3. FILL IN THE BLANK</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">3. FILL IN THE BLANK</div>
+                <div className="grid grid-cols-2 gap-5">
                   {fillBlankWords.slice(0, 6).map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <WordIconOrImage word={item.word} size={48} className="text-gray-700" wordImages={wordImages} />
-                      <span className="text-2xl font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                    <div key={idx} className="flex items-center gap-4">
+                      <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
+                      <span className="text-3xl font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                         {item.blankedWord.split('').map((char, i) => (
-                          <span key={i} className={char === '_' ? 'inline-block w-5 border-b-2 border-gray-800 mx-1' : ''}>
+                          <span key={i} className={char === '_' ? 'inline-block w-6 border-b-2 border-gray-800 mx-1' : ''}>
                             {char !== '_' ? char : ''}
                           </span>
                         ))}

@@ -1,6 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, X, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+const LOGO_STORAGE_KEY = 'kidssheet_school_logo';
 
 interface LogoUploadProps {
   onLogoChange: (logoUrl: string | null) => void;
@@ -10,6 +12,15 @@ export const LogoUpload = ({ onLogoChange }: LogoUploadProps) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Load saved logo from localStorage on mount
+  useEffect(() => {
+    const savedLogo = localStorage.getItem(LOGO_STORAGE_KEY);
+    if (savedLogo) {
+      setLogoPreview(savedLogo);
+      onLogoChange(savedLogo);
+    }
+  }, []);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
@@ -18,6 +29,7 @@ export const LogoUpload = ({ onLogoChange }: LogoUploadProps) => {
         const result = reader.result as string;
         setLogoPreview(result);
         onLogoChange(result);
+        localStorage.setItem(LOGO_STORAGE_KEY, result);
       };
       reader.readAsDataURL(file);
     }
@@ -26,6 +38,7 @@ export const LogoUpload = ({ onLogoChange }: LogoUploadProps) => {
   const handleRemove = () => {
     setLogoPreview(null);
     onLogoChange(null);
+    localStorage.removeItem(LOGO_STORAGE_KEY);
     if (inputRef.current) {
       inputRef.current.value = '';
     }

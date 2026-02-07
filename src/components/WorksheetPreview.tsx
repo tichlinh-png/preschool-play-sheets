@@ -644,7 +644,7 @@ export const WorksheetPreview = ({
                 <div className="space-y-3">
                   {colorInstructions.slice(0, 4).map((instruction, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <WordIconOrImage word={instruction.item} size={48} className="text-gray-700" wordImages={wordImages} />
+                      <WordIconOrImage word={instruction.item} size={75} className="text-gray-700" wordImages={wordImages} />
                       <div className="text-lg">
                         <span className="capitalize font-medium">{instruction.item}</span>
                         <span className="mx-2">→</span>

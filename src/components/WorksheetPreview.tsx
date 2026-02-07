@@ -428,15 +428,15 @@ export const WorksheetPreview = ({
       <div className="grid grid-cols-3 gap-6 mt-3 text-lg">
         <div className="flex items-center gap-2">
           <span className="font-bold">Name:</span>
-          <span className="flex-1 border-b-2 border-gray-600"></span>
+          <span className="flex-1 min-w-[60px]"></span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-bold">Class:</span>
-          <span className="flex-1 border-b-2 border-gray-600">{className}</span>
+          <span className="flex-1 min-w-[60px]"></span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-bold">Date:</span>
-          <span className="flex-1 border-b-2 border-gray-600"></span>
+          <span className="flex-1 min-w-[60px]"></span>
         </div>
       </div>
     </header>
@@ -640,14 +640,14 @@ export const WorksheetPreview = ({
           <div className="flex-1 grid grid-cols-2 gap-0 border-2 border-gray-800">
             {hasColor && (
               <div className="exercise-cell border-r-2 border-b-2 border-gray-600 p-4">
-                <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">1. COLOR THE PICTURE</div>
-                <div className="space-y-5">
+                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-3">1. COLOR THE PICTURE</div>
+                <div className="space-y-3">
                   {colorInstructions.slice(0, 4).map((instruction, idx) => (
-                    <div key={idx} className="flex items-center gap-5">
-                      <WordIconOrImage word={instruction.item} size={72} className="text-gray-700" wordImages={wordImages} />
-                      <div className="text-2xl">
+                    <div key={idx} className="flex items-center gap-3">
+                      <WordIconOrImage word={instruction.item} size={48} className="text-gray-700" wordImages={wordImages} />
+                      <div className="text-lg">
                         <span className="capitalize font-medium">{instruction.item}</span>
-                        <span className="mx-3">→</span>
+                        <span className="mx-2">→</span>
                         <span className="font-bold uppercase">{instruction.color}</span>
                       </div>
                     </div>

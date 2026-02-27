@@ -283,6 +283,8 @@ export const printWorksheets = () => {
         .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
         .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
         .py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+        .py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+        .py-6 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
         .pb-1 { padding-bottom: 0.25rem !important; }
         .pb-3 { padding-bottom: 0.75rem !important; }
         

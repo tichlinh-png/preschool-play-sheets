@@ -520,7 +520,7 @@ export const WorksheetPreview = ({
                     <span className="text-3xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="trace-line py-4 border-b-2 border-dashed border-gray-400">
+                    <div key={lineNum} className="trace-line py-6 border-b-2 border-dashed border-gray-400">
                       <span 
                         className="block text-center tracking-widest"
                         style={{ 
@@ -605,7 +605,7 @@ export const WorksheetPreview = ({
                     <span className="text-3xl font-bold">{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="writing-line py-3 border-b-2 border-dashed border-gray-400">
+                    <div key={lineNum} className="writing-line py-6 border-b-2 border-dashed border-gray-400">
                     </div>
                   ))}
                 </div>

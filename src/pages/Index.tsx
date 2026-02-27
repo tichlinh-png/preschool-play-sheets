@@ -29,6 +29,45 @@ interface WordImage {
   imageUrl: string;
 }
 
+// Split worksheets into pages of max N words, always ensuring exactly 2 pages
+const splitIntoPages = (worksheets: WorksheetData[], maxWordsPerPage: number): WorksheetData[] => {
+  const result: WorksheetData[] = [];
+  
+  for (const ws of worksheets) {
+    if (ws.type === 'trace' || ws.type === 'writing') {
+      const words = ws.words || [];
+      // Split words into chunks of maxWordsPerPage
+      for (let i = 0; i < words.length; i += maxWordsPerPage) {
+        const chunk = words.slice(i, i + maxWordsPerPage);
+        result.push({ ...ws, words: chunk });
+      }
+      // If no words, still push the worksheet
+      if (words.length === 0) result.push(ws);
+    } else if (ws.type === 'combined') {
+      const colorInstructions = ws.colorInstructions?.slice(0, maxWordsPerPage) || [];
+      const countingItems = ws.countingItems?.slice(0, maxWordsPerPage) || [];
+      const fillBlankWords = ws.fillBlankWords?.slice(0, maxWordsPerPage + 2) || [];
+      result.push({ ...ws, colorInstructions, countingItems, fillBlankWords });
+    } else {
+      result.push(ws);
+    }
+  }
+  
+  // Ensure exactly 2 pages - pad or trim
+  while (result.length < 2) {
+    // Duplicate last page with remaining content, or add empty trace page
+    const lastWs = result[result.length - 1];
+    if (lastWs) {
+      result.push({ ...lastWs });
+    } else {
+      result.push({ type: 'trace', topic: 'Practice', words: [] });
+    }
+  }
+  
+  // Trim to exactly 2 pages
+  return result.slice(0, 2);
+};
+
 const Index = () => {
   const visitorCount = useVisitorCount();
   const [files, setFiles] = useState<File[]>([]);
@@ -115,7 +154,9 @@ const Index = () => {
       });
       if (error) throw new Error(error.message);
       if (data?.worksheets) {
-        setGeneratedWorksheets(data.worksheets);
+        // Split worksheets into pages of max 4 words and ensure exactly 2 pages
+        const splitWorksheets = splitIntoPages(data.worksheets, 4);
+        setGeneratedWorksheets(splitWorksheets);
         
         // Show notification about skipped words if any
         if (data.skippedWords && data.skippedWords.length > 0) {

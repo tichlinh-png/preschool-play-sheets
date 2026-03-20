@@ -338,7 +338,7 @@ const worksheetPrompts: Record<string, string> = {
           if (type === 'trace' || type === 'writing') {
             worksheet.words = allUserWords;
           } else if (type === 'combined') {
-            worksheet.colorInstructions = userWords.map((item, i) => {
+            worksheet.colorInstructions = allUserWords.map((item, i) => {
               const aiColor = parsed.colorInstructions?.find((c: any) => 
                 c.item?.toLowerCase() === item.toLowerCase()
               )?.color;
@@ -347,7 +347,7 @@ const worksheetPrompts: Record<string, string> = {
                 color: aiColor || colors[i % colors.length]
               };
             });
-            worksheet.countingItems = userWords.map((item, i) => {
+            worksheet.countingItems = allUserWords.map((item, i) => {
               const aiCount = parsed.countingItems?.find((c: any) => 
                 c.item?.toLowerCase() === item.toLowerCase()
               )?.count;
@@ -356,7 +356,7 @@ const worksheetPrompts: Record<string, string> = {
                 count: aiCount || Math.floor(Math.random() * 8) + 2
               };
             });
-            worksheet.fillBlankWords = parsed.fillBlankWords || userWords.map(word => {
+            worksheet.fillBlankWords = parsed.fillBlankWords || allUserWords.map(word => {
               const vowelIndex = word.split('').findIndex(c => 'aeiou'.includes(c.toLowerCase()));
               const idx = vowelIndex > 0 ? vowelIndex : Math.floor(word.length / 2);
               return {

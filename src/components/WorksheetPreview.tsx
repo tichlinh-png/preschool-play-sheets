@@ -420,9 +420,9 @@ export const WorksheetPreview = ({
           <h1 className="text-2xl font-bold uppercase tracking-wide">{schoolName || "PRESCHOOL WORKSHEET"}</h1>
           <p className="text-base text-gray-600 mt-1">{worksheetTopic}</p>
         </div>
-        <div className="text-right">
-          <div className="text-base font-semibold">Score</div>
-          <div className="w-14 h-10 border-2 border-gray-800 mt-1"></div>
+        <div className="text-right flex items-end gap-2">
+          <span className="text-base font-semibold">Score:</span>
+          <span className="inline-block w-20 border-b-2 border-gray-800">&nbsp;</span>
         </div>
       </div>
       <div className="grid grid-cols-3 gap-6 mt-3 text-lg">

@@ -683,8 +683,8 @@ export const WorksheetPreview = ({
                       <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
                       <span className="text-3xl font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                         {item.blankedWord.split('').map((char, i) => (
-                          <span key={i} className={char === '_' ? 'inline-block w-6 border-b-2 border-gray-800 mx-1' : ''}>
-                            {char !== '_' ? char : ''}
+                          <span key={i} className={char === '_' ? 'inline-block w-10 mx-0.5 align-bottom' : ''} style={char === '_' ? { borderBottom: '3px solid #1f2937', marginTop: '0.25rem' } : {}}>
+                            {char !== '_' ? char : '\u00A0'}
                           </span>
                         ))}
                       </span>

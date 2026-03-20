@@ -44,10 +44,8 @@ const splitIntoPages = (worksheets: WorksheetData[], maxWordsPerPage: number): W
       // If no words, still push the worksheet
       if (words.length === 0) result.push(ws);
     } else if (ws.type === 'combined') {
-      const colorInstructions = ws.colorInstructions?.slice(0, maxWordsPerPage) || [];
-      const countingItems = ws.countingItems?.slice(0, maxWordsPerPage) || [];
-      const fillBlankWords = ws.fillBlankWords?.slice(0, maxWordsPerPage + 2) || [];
-      result.push({ ...ws, colorInstructions, countingItems, fillBlankWords });
+      // Keep all user words for combined exercises
+      result.push(ws);
     } else {
       result.push(ws);
     }

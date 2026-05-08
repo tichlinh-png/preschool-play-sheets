@@ -618,8 +618,8 @@ export const WorksheetPreview = ({
   }
 
   if (worksheetType === "combined") {
-    const colorInstructions = data?.colorInstructions || [];
-    const countingItems = data?.countingItems || [];
+    const colorInstructions = (data?.colorInstructions || []).filter(item => hasAvailableIcon(item.item, wordImages));
+    const countingItems = (data?.countingItems || []).filter(item => hasAvailableIcon(item.item, wordImages));
     const allFillBlankWords = data?.fillBlankWords || [];
     const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
     const writingExercises = data?.writingExercises || [];

@@ -400,7 +400,9 @@ const worksheetPrompts: Record<string, string> = {
                 missingLetter: word[idx].toLowerCase()
               };
             });
+            fallback.circleWords = buildCircleWords(allUserWords);
           }
+
           
           worksheets.push(fallback);
         }

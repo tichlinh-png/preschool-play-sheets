@@ -30,8 +30,10 @@ interface WorksheetContent {
   colorInstructions?: { item: string; color: string }[];
   countingItems?: { item: string; count: number }[];
   fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  circleWords?: { word: string; options: string[] }[];
   instructions?: string;
 }
+
 
 // List of words that have available icons in the frontend
 const availableIconWords = new Set([
@@ -165,6 +167,28 @@ const getSampleWordsForLetters = (letters: string[]): string[] => {
 
 // Available icon words list as string for prompts
 const availableIconWordsList = Array.from(availableIconWords).join(', ');
+
+// Build "Circle the correct word" exercises with 2 distractors per word
+const commonDistractorPool = ['cat', 'dog', 'sun', 'cup', 'bat', 'bed', 'pen', 'box', 'hat', 'car', 'fish', 'star', 'tree', 'book', 'ball'];
+const buildCircleWords = (words: string[]): { word: string; options: string[] }[] => {
+  return words.map(w => {
+    const correct = w.toLowerCase();
+    const pool = [
+      ...words.filter(x => x.toLowerCase() !== correct).map(x => x.toLowerCase()),
+      ...commonDistractorPool.filter(x => x !== correct)
+    ];
+    // Pick 2 unique distractors
+    const distractors: string[] = [];
+    for (const d of pool) {
+      if (distractors.length >= 2) break;
+      if (!distractors.includes(d) && d !== correct) distractors.push(d);
+    }
+    // Shuffle options (correct + distractors)
+    const options = [correct, ...distractors].sort(() => Math.random() - 0.5);
+    return { word: correct, options };
+  });
+};
+
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -365,7 +389,9 @@ const worksheetPrompts: Record<string, string> = {
                 missingLetter: word[idx].toLowerCase()
               };
             });
+            worksheet.circleWords = buildCircleWords(allUserWords);
           }
+
           
           worksheets.push(worksheet);
         } catch (parseError) {
@@ -396,7 +422,9 @@ const worksheetPrompts: Record<string, string> = {
                 missingLetter: word[idx].toLowerCase()
               };
             });
+            fallback.circleWords = buildCircleWords(allUserWords);
           }
+
           
           worksheets.push(fallback);
         }

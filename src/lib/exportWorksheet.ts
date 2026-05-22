@@ -383,8 +383,8 @@ export const printWorksheets = () => {
           }
           
           [data-worksheet-card]:last-child {
-            page-break-after: auto !important;
-            break-after: auto !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
           }
         }
       </style>

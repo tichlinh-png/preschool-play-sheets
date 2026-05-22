@@ -170,19 +170,21 @@ export const printWorksheets = () => {
           display: flex !important;
           flex-direction: column !important;
           width: 100% !important;
-          min-height: calc(297mm - 4mm) !important;
+          height: calc(297mm - 6mm) !important;
+          max-height: calc(297mm - 6mm) !important;
           max-width: none !important;
           margin: 0 !important;
-          padding: 8px !important;
+          padding: 6px !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
           box-sizing: border-box !important;
+          overflow: hidden !important;
         }
         
         [data-worksheet-card]:last-child {
-          page-break-after: auto !important;
-          break-after: auto !important;
+          page-break-after: avoid !important;
+          break-after: avoid !important;
         }
         
         /* Hide any wrapper spacing */
@@ -381,8 +383,8 @@ export const printWorksheets = () => {
           }
           
           [data-worksheet-card]:last-child {
-            page-break-after: auto !important;
-            break-after: auto !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
           }
         }
       </style>

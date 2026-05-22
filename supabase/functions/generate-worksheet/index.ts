@@ -367,7 +367,9 @@ const worksheetPrompts: Record<string, string> = {
                 missingLetter: word[idx].toLowerCase()
               };
             });
+            worksheet.circleWords = buildCircleWords(allUserWords);
           }
+
           
           worksheets.push(worksheet);
         } catch (parseError) {

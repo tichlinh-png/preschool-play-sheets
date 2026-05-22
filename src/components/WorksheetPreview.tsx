@@ -104,9 +104,11 @@ export interface WorksheetData {
   countingItems?: { item: string; count: number }[];
   matchingPairs?: { image: string; word: string }[];
   fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  circleWords?: { word: string; options: string[] }[];
   writingExercises?: { word: string; count: number }[];
   instructions?: string;
 }
+
 
 interface WordImage {
   word: string;

@@ -624,14 +624,17 @@ export const WorksheetPreview = ({
     const countingItems = (data?.countingItems || []).filter(item => hasAvailableIcon(item.item, wordImages));
     const allFillBlankWords = data?.fillBlankWords || [];
     const fillBlankWords = allFillBlankWords.filter(item => hasAvailableIcon(item.word, wordImages));
+    const circleWords = (data?.circleWords || []).filter(item => hasAvailableIcon(item.word, wordImages));
     const writingExercises = data?.writingExercises || [];
 
     const hasColor = colorInstructions.length > 0;
     const hasCounting = countingItems.length > 0;
     const hasFillBlank = fillBlankWords.length > 0;
+    const hasCircle = circleWords.length > 0;
     const hasWriting = writingExercises.length > 0;
 
-    if (!hasColor && !hasCounting && !hasFillBlank && !hasWriting) return null;
+    if (!hasColor && !hasCounting && !hasFillBlank && !hasCircle && !hasWriting) return null;
+
 
     return (
       <div data-worksheet-card className="worksheet-page bg-white">

@@ -701,9 +701,33 @@ export const WorksheetPreview = ({
               </div>
             )}
 
-            {hasWriting && (
+            {hasCircle && (
               <div className={`exercise-cell p-4 ${(hasColor || hasCounting || hasFillBlank) ? 'col-span-2 border-t-2 border-gray-600' : ''}`}>
-                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">4. WRITING PRACTICE</div>
+                <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">4. CIRCLE THE CORRECT WORD</div>
+                <div className="grid grid-cols-2 gap-5">
+                  {circleWords.slice(0, 6).map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-4">
+                      <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
+                      <div className="flex flex-wrap items-center gap-3">
+                        {item.options.map((opt, i) => (
+                          <span
+                            key={i}
+                            className="text-2xl font-bold capitalize px-3 py-1"
+                            style={{ border: '2px solid #1f2937', borderRadius: '9999px', backgroundColor: '#ffffff' }}
+                          >
+                            {opt}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {hasWriting && (
+              <div className={`exercise-cell p-4 ${(hasColor || hasCounting || hasFillBlank || hasCircle) ? 'col-span-2 border-t-2 border-gray-600' : ''}`}>
+                <div className="text-xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">5. WRITING PRACTICE</div>
                 <div className="space-y-3">
                   {writingExercises.slice(0, 4).map((exercise, idx) => (
                     <div key={idx}>
@@ -720,6 +744,7 @@ export const WorksheetPreview = ({
                 </div>
               </div>
             )}
+
           </div>
         </section>
       </div>

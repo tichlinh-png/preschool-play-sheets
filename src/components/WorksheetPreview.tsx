@@ -681,11 +681,13 @@ export const WorksheetPreview = ({
                   {fillBlankWords.slice(0, 6).map((item, idx) => (
                     <div key={idx} className="flex items-center justify-center gap-4">
                       <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
-                      <span className="text-3xl font-bold tracking-wide" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
+                      <span className="text-3xl font-bold tracking-wide inline-flex items-center gap-1" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                         {item.blankedWord.split('').map((char, i) => (
-                          <span key={i} className={char === '_' ? 'inline-block w-10 mx-0.5 align-bottom' : ''} style={char === '_' ? { borderBottom: '3px solid #1f2937', marginTop: '0.25rem' } : {}}>
-                            {char !== '_' ? char : '\u00A0'}
-                          </span>
+                          char === '_' ? (
+                            <span key={i} className="inline-block align-middle" style={{ width: '2.25rem', height: '2.25rem', border: '2px solid #1f2937', borderRadius: '4px', backgroundColor: '#ffffff' }} />
+                          ) : (
+                            <span key={i}>{char}</span>
+                          )
                         ))}
                       </span>
                     </div>

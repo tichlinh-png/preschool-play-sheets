@@ -30,8 +30,10 @@ interface WorksheetContent {
   colorInstructions?: { item: string; color: string }[];
   countingItems?: { item: string; count: number }[];
   fillBlankWords?: { word: string; blankedWord: string; missingLetter: string }[];
+  circleWords?: { word: string; options: string[] }[];
   instructions?: string;
 }
+
 
 // List of words that have available icons in the frontend
 const availableIconWords = new Set([

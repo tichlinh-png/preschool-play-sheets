@@ -507,27 +507,34 @@ export const WorksheetPreview = ({
       );
     }
     
+    const isCompact = words.length >= 5;
+    const linePadY = isCompact ? '0.5rem' : '1.5rem';
+    const traceFontSize = isCompact ? '1.75rem' : '2.5rem';
+    const headerFontSize = isCompact ? 'text-2xl' : 'text-3xl';
+    const iconSize = isCompact ? 40 : 56;
+    const gapSize = isCompact ? 'gap-3' : 'gap-6';
+    const blockPad = isCompact ? 'p-2' : 'p-3';
     return (
       <div data-worksheet-card className="worksheet-page bg-white">
         {isFirstPage && <WorksheetHeader />}
         <section className="flex-1 flex flex-col">
           <div className="text-2xl font-bold text-gray-800 bg-gray-100 px-4 py-2 mb-4 border-l-4 border-gray-800">TRACE THE WORDS</div>
-          <div className="flex-1 grid grid-cols-2 gap-6">
+          <div className={`flex-1 grid grid-cols-2 ${gapSize}`}>
             {words.map((word, idx) => {
               const wordHasIcon = hasAvailableIcon(word, wordImages);
               return (
-                <div key={idx} className="trace-word-block border-2 border-gray-400 rounded-lg p-3">
-                  <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b-2 border-gray-300">
-                    {wordHasIcon && <WordIconOrImage word={word} size={56} className="text-gray-700" wordImages={wordImages} />}
-                    <span className="text-3xl font-bold">{word}</span>
+                <div key={idx} className={`trace-word-block border-2 border-gray-400 rounded-lg ${blockPad}`}>
+                  <div className={`flex items-center justify-center gap-3 ${isCompact ? 'mb-1 pb-1' : 'mb-3 pb-2'} border-b-2 border-gray-300`}>
+                    {wordHasIcon && <WordIconOrImage word={word} size={iconSize} className="text-gray-700" wordImages={wordImages} />}
+                    <span className={`${headerFontSize} font-bold`}>{word}</span>
                   </div>
                   {rowsArray.map((lineNum) => (
-                    <div key={lineNum} className="trace-line py-6 border-b-2 border-dashed border-gray-400">
+                    <div key={lineNum} className="trace-line border-b-2 border-dashed border-gray-400" style={{ paddingTop: linePadY, paddingBottom: linePadY }}>
                       <span 
                         className="block text-center tracking-widest"
                         style={{ 
                           fontFamily: '"Edu TAS Beginner", cursive',
-                          fontSize: '2.5rem',
+                          fontSize: traceFontSize,
                           fontWeight: 600,
                           color: lineNum === 1 ? '#374151' : 'transparent',
                           WebkitTextStroke: lineNum === 1 ? 'none' : '2px #9ca3af',

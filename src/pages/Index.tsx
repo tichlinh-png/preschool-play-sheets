@@ -29,40 +29,40 @@ interface WordImage {
   imageUrl: string;
 }
 
-// Split worksheets into pages of max N words, always ensuring exactly 2 pages
+// Split into exactly 2 pages, preserving every selected worksheet type
 const splitIntoPages = (worksheets: WorksheetData[], maxWordsPerPage: number): WorksheetData[] => {
-  const result: WorksheetData[] = [];
-  
-  for (const ws of worksheets) {
+  const perType: WorksheetData[][] = worksheets.map(ws => {
     if (ws.type === 'trace' || ws.type === 'writing') {
       const words = ws.words || [];
-      // Split words into chunks of maxWordsPerPage
+      if (words.length === 0) return [ws];
+      const pages: WorksheetData[] = [];
       for (let i = 0; i < words.length; i += maxWordsPerPage) {
-        const chunk = words.slice(i, i + maxWordsPerPage);
-        result.push({ ...ws, words: chunk });
+        pages.push({ ...ws, words: words.slice(i, i + maxWordsPerPage) });
       }
-      // If no words, still push the worksheet
-      if (words.length === 0) result.push(ws);
-    } else if (ws.type === 'combined') {
-      // Keep all user words for combined exercises
-      result.push(ws);
-    } else {
-      result.push(ws);
+      return pages;
+    }
+    return [ws];
+  });
+
+  // Guarantee 1 page per selected type first
+  const result: WorksheetData[] = [];
+  for (const pages of perType) {
+    if (result.length >= 2) break;
+    if (pages.length > 0) result.push(pages[0]);
+  }
+  // Fill remaining slot(s) with extra trace/writing pages
+  if (result.length < 2) {
+    for (const pages of perType) {
+      for (let i = 1; i < pages.length && result.length < 2; i++) {
+        result.push(pages[i]);
+      }
     }
   }
-  
-  // Ensure exactly 2 pages - pad or trim
   while (result.length < 2) {
-    // Duplicate last page with remaining content, or add empty trace page
-    const lastWs = result[result.length - 1];
-    if (lastWs) {
-      result.push({ ...lastWs });
-    } else {
-      result.push({ type: 'trace', topic: 'Practice', words: [] });
-    }
+    const last = result[result.length - 1];
+    if (last) result.push({ ...last });
+    else result.push({ type: 'trace', topic: 'Practice', words: [] });
   }
-  
-  // Trim to exactly 2 pages
   return result.slice(0, 2);
 };
 

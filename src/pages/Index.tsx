@@ -153,7 +153,7 @@ const Index = () => {
       if (error) throw new Error(error.message);
       if (data?.worksheets) {
         // Split worksheets into pages of max 4 words and ensure exactly 2 pages
-        const splitWorksheets = splitIntoPages(data.worksheets, 4);
+        const splitWorksheets = splitIntoPages(data.worksheets, 6);
         setGeneratedWorksheets(splitWorksheets);
         
         // Show notification about skipped words if any

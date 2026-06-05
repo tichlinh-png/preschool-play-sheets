@@ -600,7 +600,7 @@ export const WorksheetPreview = ({
     }
     
     const isCompact = words.length >= 5;
-    const linePadY = isCompact ? '0.9rem' : '1.5rem';
+    const linePadY = isCompact ? '1.3rem' : '1.9rem';
     const iconSize = isCompact ? 40 : 56;
     const headerFontSize = isCompact ? 'text-2xl' : 'text-3xl';
     const gapSize = isCompact ? 'gap-3' : 'gap-6';

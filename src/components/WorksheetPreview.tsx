@@ -696,7 +696,7 @@ export const WorksheetPreview = ({
             {hasFillBlank && (
               <div className={`exercise-cell p-4 ${hasColor && hasCounting ? 'col-span-2' : hasColor ? '' : 'border-r-2 border-gray-600'}`}>
                 <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">3. FILL IN THE BLANK</div>
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 gap-3">
                   {fillBlankWords.slice(0, 6).map((item, idx) => (
                     <div key={idx} className="flex items-center justify-center gap-4">
                       <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />

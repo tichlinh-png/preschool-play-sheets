@@ -413,32 +413,32 @@ export const WorksheetPreview = ({
   const rowsArray = Array.from({ length: traceRows }, (_, i) => i + 1);
 
   const WorksheetHeader = () => (
-    <header className="worksheet-header border-b-2 border-gray-800 pb-3 mb-4">
+    <header className="worksheet-header border-b-2 border-gray-800 pb-1.5 mb-2">
       <div className="flex items-center justify-between gap-3">
         {schoolLogo ? (
-          <img src={schoolLogo} alt="Logo" className="w-14 h-14 object-contain" />
+          <img src={schoolLogo} alt="Logo" className="w-10 h-10 object-contain" />
         ) : null}
         <div className="flex-1 text-center">
-          <h1 className="text-2xl font-bold uppercase tracking-wide">{schoolName || "PRESCHOOL WORKSHEET"}</h1>
-          <p className="text-base text-gray-600 mt-1">{worksheetTopic}</p>
+          <h1 className="text-xl font-bold uppercase tracking-wide leading-tight">{schoolName || "PRESCHOOL WORKSHEET"}</h1>
+          <p className="text-sm text-gray-600 leading-tight">{worksheetTopic}</p>
         </div>
         <div className="text-right flex items-end gap-2">
-          <span className="text-base font-semibold">Score:</span>
-          <span className="inline-block w-20 border-b-2 border-gray-800">&nbsp;</span>
+          <span className="text-sm font-semibold">Score:</span>
+          <span className="inline-block w-16 border-b-2 border-gray-800">&nbsp;</span>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-6 mt-3 text-lg">
+      <div className="grid grid-cols-3 gap-4 mt-1.5 text-sm">
         <div className="flex items-center gap-2">
           <span className="font-bold">Name:</span>
-          <span className="flex-1 min-w-[60px]"></span>
+          <span className="flex-1 min-w-[60px] border-b border-gray-500"></span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-bold">Class:</span>
-          <span className="flex-1 min-w-[60px]"></span>
+          <span className="flex-1 min-w-[60px] border-b border-gray-500"></span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-bold">Date:</span>
-          <span className="flex-1 min-w-[60px]"></span>
+          <span className="flex-1 min-w-[60px] border-b border-gray-500"></span>
         </div>
       </div>
     </header>

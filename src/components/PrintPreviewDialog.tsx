@@ -69,16 +69,6 @@ export const PrintPreviewDialog = ({
                 <Printer className="w-4 h-4" />
                 In
               </Button>
-              <Button
-                variant="default"
-                size="sm"
-                onClick={onExportPDF}
-                disabled={isExporting}
-                className="gap-1"
-              >
-                <Download className="w-4 h-4" />
-                PDF
-              </Button>
             </div>
           </div>
         </DialogHeader>

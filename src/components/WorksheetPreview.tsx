@@ -620,7 +620,7 @@ export const WorksheetPreview = ({
                     {wordHasIcon && <WordIconOrImage word={word} size={iconSize} className="text-gray-700" wordImages={wordImages} />}
                     <span className={`${headerFontSize} font-bold`}>{word}</span>
                   </div>
-                  {rowsArray.map((lineNum) => (
+                  {writingRows.map((lineNum) => (
                     <div key={lineNum} className="writing-line border-b-2 border-dashed border-gray-400" style={{ paddingTop: linePadY, paddingBottom: linePadY }}>
                     </div>
                   ))}

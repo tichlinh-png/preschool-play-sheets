@@ -716,18 +716,18 @@ export const WorksheetPreview = ({
             )}
 
             {hasCircle && (
-              <div className={`exercise-cell p-4 ${(hasColor || hasCounting || hasFillBlank) ? 'col-span-2 border-t-2 border-gray-600' : ''}`}>
+              <div className={`exercise-cell p-4 overflow-hidden ${(hasColor || hasCounting || hasFillBlank) ? 'col-span-2 border-t-2 border-gray-600' : ''}`}>
                 <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">4. CIRCLE THE CORRECT WORD</div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {circleWords.slice(0, 6).map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-6">
-                      <WordIconOrImage word={item.word} size={56} className="text-gray-700 flex-shrink-0" wordImages={wordImages} />
-                      <div className="flex flex-1 items-center justify-around gap-4">
+                    <div key={idx} className="flex items-center gap-4 w-full">
+                      <WordIconOrImage word={item.word} size={48} className="text-gray-700 flex-shrink-0" wordImages={wordImages} />
+                      <div className="flex flex-1 min-w-0 items-center justify-around gap-2">
                         {item.options.map((opt, i) => (
                           <span
                             key={i}
-                            className="text-xl font-bold capitalize px-5 py-1"
-                            style={{ border: '2px solid #1f2937', borderRadius: '9999px', backgroundColor: '#ffffff' }}
+                            className="text-base font-bold capitalize px-3 py-1 text-center truncate"
+                            style={{ border: '2px solid #1f2937', borderRadius: '9999px', backgroundColor: '#ffffff', maxWidth: '32%' }}
                           >
                             {opt}
                           </span>

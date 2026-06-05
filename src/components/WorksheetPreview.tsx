@@ -698,7 +698,7 @@ export const WorksheetPreview = ({
                 <div className="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2 mb-4">3. FILL IN THE BLANK</div>
                 <div className="grid grid-cols-1 gap-3">
                   {fillBlankWords.slice(0, 6).map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-center gap-4">
+                    <div key={idx} className="flex items-center gap-4">
                       <WordIconOrImage word={item.word} size={64} className="text-gray-700" wordImages={wordImages} />
                       <span className="text-3xl font-bold tracking-wide inline-flex items-center gap-1" style={{ fontFamily: '"Edu TAS Beginner", cursive' }}>
                         {item.blankedWord.split('').map((char, i) => (

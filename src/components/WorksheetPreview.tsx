@@ -600,11 +600,12 @@ export const WorksheetPreview = ({
     }
     
     const isCompact = words.length >= 5;
-    const linePadY = isCompact ? '0.5rem' : '1.5rem';
+    const linePadY = isCompact ? '0.9rem' : '1.5rem';
     const iconSize = isCompact ? 40 : 56;
     const headerFontSize = isCompact ? 'text-2xl' : 'text-3xl';
     const gapSize = isCompact ? 'gap-3' : 'gap-6';
     const blockPad = isCompact ? 'p-2' : 'p-3';
+    const writingRows = Array.from({ length: 4 }, (_, i) => i + 1);
     return (
       <div data-worksheet-card className="worksheet-page bg-white">
         {isFirstPage && <WorksheetHeader />}
